@@ -2,21 +2,27 @@ package ch.heig_vd.app;
 
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
+import picocli.CommandLine.Option;
+import picocli.CommandLine.Parameters;
 
 import java.util.concurrent.Callable;
 
-@Command(name = "gen")
-public class Main implements Callable<Integer> {
+@Command(name = "gen", subcommands = {Build.class, New.class, Serve.class, Clean.class},
+        synopsisSubcommandLabel = "COMMAND")
+public class Main implements Runnable {
+    @CommandLine.Spec
+    CommandLine.Model.CommandSpec spec;
+    @Parameters(index = "0", description = "The command to execute")
+    private String param;
 
-    @Override
-    public Integer call() {
-        System.out.println("Please use one of the subcommands: 'new', 'clean', 'build' or 'serve'");
-        return 0;
+
+    public void run() {
+        throw new CommandLine.ParameterException(spec.commandLine(), "Missing required subcommand");
     }
 
-    public static void main(String[] args) {
-        int rc = new CommandLine(new Main()).execute(args);
-        System.exit(rc);
+    public static void main(String... args) {
+        System.exit(new CommandLine(new Main()).execute(args));
     }
 
 }
+
