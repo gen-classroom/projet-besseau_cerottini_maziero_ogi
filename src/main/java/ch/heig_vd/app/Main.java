@@ -2,10 +2,8 @@ package ch.heig_vd.app;
 
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
-import picocli.CommandLine.Option;
 import picocli.CommandLine.Parameters;
 
-import java.util.concurrent.Callable;
 
 @Command(name = "gen", subcommands = {Build.class, New.class, Serve.class, Clean.class},
         synopsisSubcommandLabel = "COMMAND")
