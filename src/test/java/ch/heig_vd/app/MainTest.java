@@ -1,7 +1,7 @@
 package ch.heig_vd.app;
 
-import static org.junit.Assert.assertTrue;
-
+import static org.junit.Assert.assertEquals;
+import picocli.CommandLine;
 import org.junit.Test;
 
 /**
@@ -10,11 +10,13 @@ import org.junit.Test;
 public class MainTest
 {
     /**
-     * Rigorous Test :-)
+     * Tests the -v and --version options
      */
     @Test
-    public void shouldAnswerWithTrue()
+    public void shouldDisplayTheCurrentVersion()
     {
-        assertTrue( true );
+        int result = new CommandLine(new Main()).execute("statique", "-v");
+        int result2 = new CommandLine(new Main()).execute("statique", "--version");
+        assertEquals(0, result + result2);
     }
 }

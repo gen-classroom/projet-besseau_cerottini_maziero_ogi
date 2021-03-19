@@ -7,7 +7,7 @@ import picocli.CommandLine.Parameters;
 // Main command info
 @Command(name = "statique",
         description = "Static websites generator",
-        version = "statique v1.0",
+        version = {"@|yellow Statique v1.0|@"},
         subcommands = {Build.class, New.class, Serve.class, Clean.class},
         synopsisSubcommandLabel = "COMMAND")
 public class Main {
