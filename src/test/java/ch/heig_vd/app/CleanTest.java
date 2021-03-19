@@ -15,7 +15,7 @@ public class CleanTest {
     public void cleanShouldDeleteBuildFolder() throws IOException {
         File dir = new File("./mon/site/build");
         dir.mkdirs();
-        new CommandLine(new Main()).execute(new String[]{"statique", "Clean"});
+        new CommandLine(new Main()).execute("statique", "Clean");
 
         assertFalse(dir.exists());
     }
