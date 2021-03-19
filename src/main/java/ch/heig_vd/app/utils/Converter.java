@@ -23,15 +23,16 @@ public class Converter {
             Node document = parser.parse(mdText.toString());
             HtmlRenderer renderer = HtmlRenderer.builder().build();
 
-            // Gets the output fiel name
+            // Gets the output field name
             String fileName = mdFile.getName();
             int dotIndex = fileName.lastIndexOf('.');
             if (dotIndex != -1) fileName = fileName.substring(0, dotIndex);
 
             // Creates and writes in the output
-            File output = new File(ouputPath + mdFile.getName() + fileName);
+            File output = new File(ouputPath + fileName + ".html");
             FileWriter outWriter = new FileWriter(output);
             outWriter.write(renderer.render(document));
+            outWriter.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
