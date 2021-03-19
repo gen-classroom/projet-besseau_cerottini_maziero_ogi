@@ -5,7 +5,7 @@ import picocli.CommandLine.Command;
 import picocli.CommandLine.Parameters;
 
 
-@Command(name = "statique", subcommands = {Build.class, New.class, Serve.class, Clean.class},
+@Command(name = "statique", subcommands = {Build.class, New.class, Serve.class, Clean.class, Init.class},
         synopsisSubcommandLabel = "COMMAND")
 public class Main {
     @CommandLine.Spec
