@@ -10,6 +10,8 @@ import java.util.Date;
 
 import org.json.simple.JSONObject;
 
+// Classe définissant la commande Init permettant de créer les dossiers du site web ainsi qu'un exemple de fichier
+// config.json et index.md
 @CommandLine.Command(name = "Init")
 class Init implements Runnable {
 
@@ -20,7 +22,6 @@ class Init implements Runnable {
     Date date = new Date();
 
     public void run() {
-        System.out.println("All good, executing Init");
 
         File dir = new File("./mon/site/");
 
@@ -28,6 +29,7 @@ class Init implements Runnable {
             dir.mkdirs();
         }
 
+        // Création de la structure du fichier json
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("title", "Titre");
         jsonObject.put("description", "Une ambiance délétère");
@@ -35,6 +37,7 @@ class Init implements Runnable {
 
 
         try {
+            // Instanciation du fichir json
             FileWriter jsonFile = new FileWriter(FILEPATH_JSON);
             jsonFile.write(jsonObject.toJSONString());
             jsonFile.close();
@@ -45,6 +48,7 @@ class Init implements Runnable {
         }
 
         try {
+            // Création du fichier Markdown
             FileWriter mdFile = new FileWriter(FILEPATH_MD);
             mdFile.write("# Mon site trop classe !\n");
             mdFile.write("Auteur : un énorme bg\n");
