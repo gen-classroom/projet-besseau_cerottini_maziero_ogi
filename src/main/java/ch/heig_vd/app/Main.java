@@ -33,7 +33,7 @@ public class Main {
         }
 
         // Executes the subcommands
-        System.exit(new CommandLine(new Main()).execute(args));
+        System.exit(commandLine.execute(args));
     }
 
 }
