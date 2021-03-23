@@ -41,12 +41,9 @@ public class ConverterTest {
             // Assert
             assertEquals("<p>This is <em>Sparta</em></p>", line);
 
-
         } catch (IOException e) {
             System.out.println("An error occured when working with the files");
             fail();
         }
-
-
     }
 }
