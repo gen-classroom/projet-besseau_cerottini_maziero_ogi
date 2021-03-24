@@ -1,6 +1,8 @@
 package ch.heig_vd.app.utils;
 
 import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -55,5 +57,11 @@ public class ConverterTest {
     public void givenFileShouldHaveMarkdownExtension() {
         File file = new File("./testFile.txt");
         Converter.MarkdownToHTML(file, "./");
+    }
+
+    @AfterAll
+    public void cleanUp() {
+        File file = new File("testFile.txt");
+        file.delete();
     }
 }
