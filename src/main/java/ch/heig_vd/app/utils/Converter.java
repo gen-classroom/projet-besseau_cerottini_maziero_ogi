@@ -1,6 +1,8 @@
 package ch.heig_vd.app.utils;
 import java.io.BufferedReader;
 import java.io.*;
+
+import org.apache.commons.io.FilenameUtils;
 import org.commonmark.node.*;
 import org.commonmark.parser.Parser;
 import org.commonmark.renderer.html.HtmlRenderer;
@@ -12,8 +14,7 @@ public class Converter {
             throw new RuntimeException("File cannot be a directory");
 
         String fileName = mdFile.getName();
-        String test = fileName.substring(fileName.lastIndexOf(".") + 1);
-        if (!fileName.substring(fileName.lastIndexOf(".") + 1).equals("md"))
+        if (!FilenameUtils.getExtension(fileName).equals("md"))
             throw new RuntimeException("File extension must be .md");
 
         BufferedReader reader;
@@ -33,8 +34,7 @@ public class Converter {
             HtmlRenderer renderer = HtmlRenderer.builder().build();
 
             // Gets the output field name
-            int dotIndex = fileName.lastIndexOf('.');
-            if (dotIndex != -1) fileName = fileName.substring(0, dotIndex);
+            fileName = FilenameUtils.getBaseName(fileName);
 
             // Creates and writes in the output
             File output = new File(ouputPath + fileName + ".html");
