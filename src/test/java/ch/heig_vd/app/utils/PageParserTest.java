@@ -2,6 +2,7 @@ package ch.heig_vd.app.utils;
 
 import static org.junit.Assert.*;
 import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
 
 import java.io.*;
 
@@ -121,7 +122,6 @@ public class PageParserTest {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     @Test(expected = RuntimeException.class)
@@ -146,5 +146,11 @@ public class PageParserTest {
     public void givenFileShouldHaveMarkdownExtensionForMarkdownExtraction() {
         File file = new File("./testFile.txt");
         PageParser.extractMarkdownContent(file);
+    }
+
+    @AfterAll
+    public static void CleanUp() {
+        File file = new File("./input.md");
+        file.delete();
     }
 }
