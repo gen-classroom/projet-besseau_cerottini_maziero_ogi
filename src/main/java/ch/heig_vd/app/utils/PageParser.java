@@ -21,7 +21,7 @@ public class PageParser {
             throw new RuntimeException("Incorrect " + head +  " line");
     }
 
-    public static Metadata exctractMetadata(File mdFile) throws RuntimeException {
+    public static Metadata extractMetadata(File mdFile) throws RuntimeException {
         // Checks file validity
         if (!isFileValid(mdFile))
             throw new RuntimeException("Invalid input file");

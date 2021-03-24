@@ -22,7 +22,7 @@ public class PageParserTest {
             writer.close();
 
             // Extracts the metadata
-            Metadata meta = PageParser.exctractMetadata(input);
+            Metadata meta = PageParser.extractMetadata(input);
 
             // Checks validity
             assertEquals("metaTitle", meta.title);
@@ -52,7 +52,7 @@ public class PageParserTest {
             writer.close();
 
             // Extracts the metadata
-            Metadata meta = PageParser.exctractMetadata(input);
+            Metadata meta = PageParser.extractMetadata(input);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -72,7 +72,7 @@ public class PageParserTest {
             writer.close();
 
             // Extracts the metadata
-            Metadata meta = PageParser.exctractMetadata(input);
+            Metadata meta = PageParser.extractMetadata(input);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -127,13 +127,13 @@ public class PageParserTest {
     @Test(expected = RuntimeException.class)
     public void givenFileShouldNotBeDirectoryForMetaExtraction() {
         File dir = new File("./");
-        PageParser.exctractMetadata(dir);
+        PageParser.extractMetadata(dir);
     }
 
     @Test(expected = RuntimeException.class)
     public void givenFileShouldHaveMarkdownExtensionForMetaExtraction() {
         File file = new File("./testFile.txt");
-        PageParser.exctractMetadata(file);
+        PageParser.extractMetadata(file);
     }
 
     @Test(expected = RuntimeException.class)
