@@ -67,13 +67,11 @@ public class MetadataParser {
             // Deletes old file and renames tmp
             mdFile.delete();
             tmpFile.renameTo(new File(filename));
-
-            // Returns the parsed metadata
-            return outputMeta;
         } catch (IOException e) {
             e.printStackTrace();
         }
 
+        // Returns the parsed metadata
         return outputMeta;
     }
 }
