@@ -15,11 +15,11 @@ public class CleanTest {
     public void cleanShouldDeleteBuildFolderWithRelativePath() throws IOException {
         String path1 = "./mon/site/";
         String path2 = "mon/site/";
-        File directory = new File(path1+"/build");
+        File directory = new File(path1 + "/build");
         directory.mkdirs();
         new CommandLine(new Main()).execute("statique", "Clean", path1);
         assertFalse(directory.exists());
-        directory = new File(path2+"/build");
+        directory = new File(path2 + "/build");
         directory.mkdirs();
         new CommandLine(new Main()).execute("statique", "Clean", path2);
         assertFalse(directory.exists());
@@ -28,12 +28,12 @@ public class CleanTest {
     @Test
     public void cleanShouldDeleteBuildFolderWithAbsolutePath() throws IOException {
         String path = "/mon/site/";
-        File directory = new File(path+"/build/");
+        File directory = new File(path + "/build/");
         directory.delete();
-        if(directory.mkdirs()){
-            new CommandLine(new Main()).execute("statique", "Clean" );
+        if (directory.mkdirs()) {
+            new CommandLine(new Main()).execute("statique", "Clean");
             assertFalse(directory.exists());
-        }else{
+        } else {
             System.err.println("Could not test for absolute path");
         }
     }
