@@ -24,6 +24,7 @@ public class CleanTest {
         directory.mkdirs();
         new CommandLine(new Main()).execute("statique", "clean", path2);
         assertFalse(directory.exists());
+
     }
 
     @Test
@@ -47,6 +48,4 @@ public class CleanTest {
 
 
     }
-
-
 }
