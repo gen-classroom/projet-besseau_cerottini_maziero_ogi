@@ -1,5 +1,7 @@
 package ch.heig_vd.app.utils;
 
+import org.apache.commons.io.FilenameUtils;
+
 import java.io.*;
 
 public class MetadataParser {
@@ -16,26 +18,24 @@ public class MetadataParser {
             throw new RuntimeException("File cannot be a directory");
 
         String filename = mdFile.getName();
-        if (filename.substring(filename.lastIndexOf(".") + 1) != "md")
+        if (!filename.substring(filename.lastIndexOf(".") + 1).equals("md"))
             throw new RuntimeException("File extension must be .md");
 
         // Local vars
         int nbMetaLines = 4;
         String[] metaLines = new String[nbMetaLines];
-        String titleLine;
-        String authorLine;
-        String dateLine;
         Metadata outputMeta = new Metadata();
 
         // Reads the file
         BufferedReader reader;
         try {
             reader = new BufferedReader(new FileReader(mdFile));
+            reader.mark(1);
 
             // Reads the title line
             for (int i = 0; i < metaLines.length; ++i) {
-                titleLine = reader.readLine();
-                if (titleLine == null)
+                metaLines[i] = reader.readLine();
+                if (metaLines[i] == null)
                     throw new RuntimeException("Metadata are incomplete");
             }
 
@@ -55,7 +55,7 @@ public class MetadataParser {
             for (int i = 0; i < nbMetaLines; ++i) reader.readLine();
 
             // creates temp file to write in
-            File tmpFile = new File(mdFile.getPath() + "/tmp" + mdFile.getName());
+            File tmpFile = new File(FilenameUtils.getPath(mdFile.getPath()) + "/tmp" + mdFile.getName());
             FileWriter writer = new FileWriter(tmpFile);
 
             // writes in tmp file
