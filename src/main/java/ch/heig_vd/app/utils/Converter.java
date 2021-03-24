@@ -12,7 +12,8 @@ public class Converter {
             throw new RuntimeException("File cannot be a directory");
 
         String fileName = mdFile.getName();
-        if (fileName.substring(fileName.lastIndexOf(".") + 1) != "md")
+        String test = fileName.substring(fileName.lastIndexOf(".") + 1);
+        if (!fileName.substring(fileName.lastIndexOf(".") + 1).equals("md"))
             throw new RuntimeException("File extension must be .md");
 
         BufferedReader reader;
