@@ -1,9 +1,85 @@
 package ch.heig_vd.app.utils;
 
-import java.io.File;
+import java.io.*;
 
 public class MetadataParser {
-    public static Metadata ExctractMetadata(File file) {
-        return new Metadata("", "", "");
+    private static String parseMetaLine(String head, String line) {
+        if (line.substring(0, head.length()).equals(head))
+            return line.substring(head.length());
+        else
+            throw new RuntimeException("Incorrect " + head +  " line");
+    }
+
+    public static Metadata exctractMetadata(File mdFile) throws RuntimeException {
+        // Checks file validity
+        if (mdFile.isDirectory())
+            throw new RuntimeException("File cannot be a directory");
+
+        String filename = mdFile.getName();
+        if (filename.substring(filename.lastIndexOf(".") + 1) != "md")
+            throw new RuntimeException("File extension must be .md");
+
+        // Local vars
+        int nbMetaLines = 4;
+        String[] metaLines = new String[nbMetaLines];
+        String titleLine;
+        String authorLine;
+        String dateLine;
+        Metadata outputMeta = new Metadata();
+
+        // Reads the file
+        BufferedReader reader;
+        try {
+            reader = new BufferedReader(new FileReader(mdFile));
+
+            // Reads the title line
+            for (int i = 0; i < metaLines.length; ++i) {
+                titleLine = reader.readLine();
+                if (titleLine == null)
+                    throw new RuntimeException("Metadata are incomplete");
+            }
+
+            // Checks end of metadata line
+            if (!metaLines[nbMetaLines - 1].equals("---"))
+                throw new RuntimeException("Missing end of metadata line");
+
+            // Parses the extracted lines
+            outputMeta.title = parseMetaLine("titre:", metaLines[0]);
+            outputMeta.author = parseMetaLine("auteur:", metaLines[1]);
+            outputMeta.date = parseMetaLine("date:", metaLines[2]);
+
+            // Removes the metadata from source file
+            reader.reset();
+
+            // Passes over the metadata lines
+            for (int i = 0; i < nbMetaLines; ++i) reader.readLine();
+
+            // creates temp file to write in
+            File tmpFile = new File(mdFile.getPath() + "/tmp" + mdFile.getName());
+            FileWriter writer = new FileWriter(tmpFile);
+
+            // writes in tmp file
+            String newLine = reader.readLine();
+            while (newLine != null) {
+                writer.write(newLine);
+                newLine = reader.readLine();
+            }
+
+            // Closes streams
+            writer.flush();
+            writer.close();
+            reader.close();
+
+            // Deletes old file and renames tmp
+            mdFile.delete();
+            tmpFile.renameTo(new File(filename));
+
+            // Returns the parsed metadata
+            return outputMeta;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return outputMeta;
     }
 }
