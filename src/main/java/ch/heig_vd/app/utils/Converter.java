@@ -7,6 +7,14 @@ import org.commonmark.renderer.html.HtmlRenderer;
 
 public class Converter {
     public static void MarkdownToHTML(File mdFile, String ouputPath) {
+        // Checks file validity
+        if (mdFile.isDirectory())
+            throw new RuntimeException("File cannot be a directory");
+
+        String fileName = mdFile.getName();
+        if (fileName.substring(fileName.lastIndexOf(".") + 1) != "md")
+            throw new RuntimeException("File extension must be .md");
+
         BufferedReader reader;
         try {
             reader = new BufferedReader(new FileReader(mdFile));
@@ -18,13 +26,12 @@ public class Converter {
             }
             reader.close();
 
-            // Parses the markdon
+            // Parses the markdown
             Parser parser = Parser.builder().build();
             Node document = parser.parse(mdText.toString());
             HtmlRenderer renderer = HtmlRenderer.builder().build();
 
             // Gets the output field name
-            String fileName = mdFile.getName();
             int dotIndex = fileName.lastIndexOf('.');
             if (dotIndex != -1) fileName = fileName.substring(0, dotIndex);
 
