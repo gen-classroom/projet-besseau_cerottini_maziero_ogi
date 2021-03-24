@@ -18,7 +18,8 @@ public class MetadataParser {
             throw new RuntimeException("File cannot be a directory");
 
         String filename = mdFile.getName();
-        if (!filename.substring(filename.lastIndexOf(".") + 1).equals("md"))
+
+        if (!FilenameUtils.getExtension(filename).equals("md"))
             throw new RuntimeException("File extension must be .md");
 
         // Local vars
