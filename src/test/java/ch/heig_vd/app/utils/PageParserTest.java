@@ -149,7 +149,7 @@ public class PageParserTest {
     }
 
     @AfterAll
-    public static void CleanUp() {
+    public static void cleanUp() {
         File file = new File("./input.md");
         file.delete();
     }
