@@ -1,22 +1,63 @@
 package ch.heig_vd.app;
 
 import org.apache.commons.io.FileUtils;
+import org.junit.AfterClass;
 import org.junit.Test;
+import picocli.CommandLine;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.*;
 
 public class CleanTest {
 
+    @Test
+    public void cleanShouldDeleteBuildFolderWithRelativePath() throws IOException {
+        String path1 = "./test_folder/mon/site/";
+        String path2 = "test_folder/mon/site/";
+
+        File directory = new File(path1 + "/build");
+        directory.mkdirs();
+        new CommandLine(new Main()).execute("statique", "clean", path1);
+        assertFalse(directory.exists());
+        directory = new File(path2 + "/build");
+        directory.mkdirs();
+        new CommandLine(new Main()).execute("statique", "clean", path2);
+        assertFalse(directory.exists());
+
+    }
 
     @Test
-    public void cleanShouldDeleteBuildFolder() throws IOException {
-        File dir = new File("./mon/site/build");
-        dir.mkdirs();
-        FileUtils.deleteDirectory(dir);
+    public void cleanShouldDeleteBuildFolderWithAbsolutePath() throws IOException {
+        String path = "/test_folder/mon/site/";
+        String pwd = new File(".").getCanonicalPath();
+        File directory = new File(pwd + "/" + path + "/build/");
+        directory.delete();
+        if (directory.mkdirs()) {
+            new CommandLine(new Main()).execute("statique", "clean", pwd + "/" + path);
+            assertFalse(directory.exists());
+        } else {
+            System.err.println("Could not test for absolute path");
+        }
+    }
 
-        assertFalse(dir.exists());
+    @Test
+    public void cleanShouldThrowsWhenGivenAnNonExistentPath() throws IOException {
+        String path = "/should/not/exists/";
+        assertEquals(2, new CommandLine(new Main()).execute("statique", "clean", path));
+    }
+
+    @AfterClass
+    public static void cleanAll() throws IOException {
+        Path path = Paths.get("./test_folder").normalize().toAbsolutePath();
+        System.out.println("Cleaning ALL");
+        if (!path.toFile().exists()) {
+            throw new IllegalArgumentException("Directory does not exists");
+        }
+        FileUtils.deleteDirectory(path.toFile());
+
     }
 }
