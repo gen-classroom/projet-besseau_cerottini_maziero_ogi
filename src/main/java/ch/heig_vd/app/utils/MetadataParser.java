@@ -30,7 +30,6 @@ public class MetadataParser {
         BufferedReader reader;
         try {
             reader = new BufferedReader(new FileReader(mdFile));
-            reader.mark(1);
 
             // Reads the title line
             for (int i = 0; i < metaLines.length; ++i) {
@@ -47,12 +46,6 @@ public class MetadataParser {
             outputMeta.title = parseMetaLine("titre:", metaLines[0]);
             outputMeta.author = parseMetaLine("auteur:", metaLines[1]);
             outputMeta.date = parseMetaLine("date:", metaLines[2]);
-
-            // Removes the metadata from source file
-            reader.reset();
-
-            // Passes over the metadata lines
-            for (int i = 0; i < nbMetaLines; ++i) reader.readLine();
 
             // creates temp file to write in
             File tmpFile = new File(FilenameUtils.getPath(mdFile.getPath()) + "/tmp" + mdFile.getName());
