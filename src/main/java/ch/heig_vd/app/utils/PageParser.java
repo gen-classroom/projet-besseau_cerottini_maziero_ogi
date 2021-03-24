@@ -4,7 +4,16 @@ import org.apache.commons.io.FilenameUtils;
 
 import java.io.*;
 
-public class MetadataParser {
+public class PageParser {
+    private static boolean isFileValid(File file) {
+        // Checks file validity
+        if (file.isDirectory())
+            return false;
+
+        String filename = file.getName();
+        return FilenameUtils.getExtension(filename).equals("md");
+    }
+
     private static String parseMetaLine(String head, String line) {
         if (line.substring(0, head.length()).equals(head))
             return line.substring(head.length());
@@ -14,13 +23,8 @@ public class MetadataParser {
 
     public static Metadata exctractMetadata(File mdFile) throws RuntimeException {
         // Checks file validity
-        if (mdFile.isDirectory())
-            throw new RuntimeException("File cannot be a directory");
-
-        String filename = mdFile.getName();
-
-        if (!FilenameUtils.getExtension(filename).equals("md"))
-            throw new RuntimeException("File extension must be .md");
+        if (!isFileValid(mdFile))
+            throw new RuntimeException("Invalid input file");
 
         // Local vars
         int nbMetaLines = 4;
@@ -38,6 +42,7 @@ public class MetadataParser {
                 if (metaLines[i] == null)
                     throw new RuntimeException("Metadata are incomplete");
             }
+            reader.close();
 
             // Checks end of metadata line
             if (!metaLines[nbMetaLines - 1].equals("---"))
@@ -47,31 +52,42 @@ public class MetadataParser {
             outputMeta.title = parseMetaLine("titre:", metaLines[0]);
             outputMeta.author = parseMetaLine("auteur:", metaLines[1]);
             outputMeta.date = parseMetaLine("date:", metaLines[2]);
-
-            // creates temp file to write in
-            File tmpFile = new File(FilenameUtils.getPath(mdFile.getPath()) + "/tmp" + mdFile.getName());
-            FileWriter writer = new FileWriter(tmpFile);
-
-            // writes in tmp file
-            String newLine = reader.readLine();
-            while (newLine != null) {
-                writer.write(newLine);
-                newLine = reader.readLine();
-            }
-
-            // Closes streams
-            writer.flush();
-            writer.close();
-            reader.close();
-
-            // Deletes old file and renames tmp
-            mdFile.delete();
-            tmpFile.renameTo(new File(filename));
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         // Returns the parsed metadata
         return outputMeta;
+    }
+
+    public static String extractMarkdownContent(File mdFile) throws RuntimeException {
+        // Checks file validity
+        if (!isFileValid(mdFile))
+            throw new RuntimeException("Invalid input file");
+
+        // Local vars
+        StringBuilder output = new StringBuilder();
+        boolean beginRead = false;
+
+        try {
+            // Reads the given file
+            BufferedReader reader = new BufferedReader(new FileReader(mdFile));
+
+            String line = reader.readLine();
+            while (line != null) {
+                // Stores the content line
+                if (beginRead) output.append(line);
+
+                // Starts to read
+                if (line.equals("---")) beginRead = true;
+                line = reader.readLine();
+            }
+            reader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // returns the extracted content
+        return output.toString();
     }
 }
