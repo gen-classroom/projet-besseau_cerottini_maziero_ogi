@@ -63,7 +63,7 @@ public class JsonParserTest {
 
         final ArrayList<Metadata> data = new ArrayList<>();
 
-        JsonParser parser = new JsonParser(new File(filePath), new JsonParserVisitor() {
+        JsonParser.parse(new File(filePath), new JsonParserVisitor() {
             @Override
             public void visit(String field, String value) {
                 data.add(new Metadata(field, value));
@@ -79,7 +79,7 @@ public class JsonParserTest {
         final ArrayList<Metadata> data = new ArrayList<>();
 
         assertThrows(JsonParseException.class, () -> {
-            JsonParser parser = new JsonParser(new File(fileFailPath), new JsonParserVisitor() {
+            JsonParser.parse(new File(fileFailPath), new JsonParserVisitor() {
             @Override
             public void visit(String field, String value) {
                 data.add(new Metadata(field, value));
@@ -93,7 +93,7 @@ public class JsonParserTest {
         final ArrayList<Metadata> data = new ArrayList<>();
 
         assertThrows(IllegalArgumentException.class, () -> {
-            JsonParser parser = new JsonParser(new File(folderPath), new JsonParserVisitor() {
+            JsonParser.parse(new File(folderPath), new JsonParserVisitor() {
                 @Override
                 public void visit(String field, String value) {
                     data.add(new Metadata(field, value));

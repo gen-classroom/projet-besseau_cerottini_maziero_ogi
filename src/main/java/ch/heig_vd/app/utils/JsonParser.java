@@ -6,12 +6,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
 
+/**
+ * This class allows to parse Json
+ * @author Besseau Leonard
+ */
 public class JsonParser {
-    JsonParser(File f, JsonParserVisitor visitor) throws IOException {
+    public static void parse(File f, JsonParserVisitor visitor) throws IOException {
         if (f.isDirectory()){
             throw new IllegalArgumentException("File must not be a directory");
         }
@@ -24,7 +27,6 @@ public class JsonParser {
         while (fieldsIterator.hasNext()) {
             Map.Entry<String,JsonNode> field = fieldsIterator.next();
             visitor.visit(field.getKey().toString(), field.getValue().asText());
-
         }
     }
 }
