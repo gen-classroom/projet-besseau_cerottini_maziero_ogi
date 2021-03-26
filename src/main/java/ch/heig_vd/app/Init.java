@@ -1,5 +1,7 @@
 package ch.heig_vd.app;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import picocli.CommandLine;
 import java.io.FileWriter;
 import java.io.File;
@@ -8,7 +10,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.json.simple.JSONObject;
 
 // Classe définissant la commande Init permettant de créer les dossiers du site web ainsi qu'un exemple de fichier
 // config.json et index.md
@@ -30,18 +31,19 @@ class Init implements Runnable {
         }
 
         // Création de la structure du fichier json
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("title", "Titre");
-        jsonObject.put("description", "Une ambiance délétère");
-        jsonObject.put("domaine", "ambiance.deletere.org");
+        ObjectMapper mapper = new ObjectMapper();
+        ObjectNode rootNode = mapper.createObjectNode();
+        rootNode.put("title", "Titre");
+        rootNode.put("description", "Une ambiance délétère");
+        rootNode.put("domaine", "ambiance.deletere.org");
 
 
         try {
             // Instanciation du fichir json
             FileWriter jsonFile = new FileWriter(FILEPATH_JSON);
-            jsonFile.write(jsonObject.toJSONString());
+            jsonFile.write(mapper.writerWithDefaultPrettyPrinter().writeValueAsString(rootNode));
             jsonFile.close();
-            System.out.println("JSON file created: " + jsonObject);
+            System.out.println("JSON file created: " + mapper);
 
         } catch (IOException e) {
             e.printStackTrace();
