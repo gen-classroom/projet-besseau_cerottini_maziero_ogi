@@ -27,7 +27,8 @@ public class JsonParserTest {
             BufferedWriter writer = new BufferedWriter(new FileWriter(config));
             writer.write("{\n" +
                     "\"title\":\"a\",\n" +
-                    "\"b\":\"c\"\n}");
+                    "\"b\":\"c\"\n," +
+                    "\"d\":1\n}");
             writer.flush();
             writer.close();
         }else{
@@ -41,6 +42,7 @@ public class JsonParserTest {
         ArrayList<Metadata> expected = new ArrayList<>();
         expected.add(new Metadata("title", "a"));
         expected.add(new Metadata("b", "c"));
+        expected.add(new Metadata("d", "1"));
 
         final ArrayList<Metadata> data = new ArrayList<>();
 
