@@ -1,6 +1,7 @@
 package ch.heig_vd.app.utils;
 import java.io.BufferedReader;
 import java.io.*;
+import java.util.ArrayList;
 
 import org.apache.commons.io.FilenameUtils;
 import org.commonmark.node.*;
@@ -8,6 +9,11 @@ import org.commonmark.parser.Parser;
 import org.commonmark.renderer.html.HtmlRenderer;
 
 public class Converter {
+    // Atributes
+    private ArrayList<Metadata> configMeta;
+
+    public Converter(File jsonMetadata) {}
+
     public static void MarkdownToHTML(File mdFile, String ouputPath) {
         // Checks file validity
         if (mdFile.isDirectory())
@@ -44,5 +50,9 @@ public class Converter {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private String generateHtmlMeta(Metadata meta) {
+        return "<meta name=\"" + meta.getName() + "\" content=\"" + meta.getContent() + "\">";
     }
 }
