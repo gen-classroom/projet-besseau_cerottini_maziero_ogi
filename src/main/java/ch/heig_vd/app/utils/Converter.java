@@ -11,10 +11,40 @@ import org.commonmark.renderer.html.HtmlRenderer;
 public class Converter {
     // Atributes
     private ArrayList<Metadata> configMeta;
+    private String pageTitle;
 
-    public Converter(File jsonMetadata) {}
+    public Converter(File jsonMetadata) {
+        configMeta = new ArrayList<>();
 
-    public static void MarkdownToHTML(File mdFile, String ouputPath) {
+        // Parses the json config metadata
+        try {
+            JsonParser.parse(jsonMetadata, new JsonParserVisitor() {
+                @Override
+                public void visit(String field, String value) {
+                    configMeta.add(new Metadata(field, value));
+                }
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // Extracts page title
+        Metadata titleMeta = null;
+        for (Metadata meta : configMeta) {
+            if (meta.getName().equals("title")) {
+                titleMeta = meta;
+                pageTitle = meta.getContent();
+            }
+        }
+
+        // Warns if title not found or removes the title from list
+        if (pageTitle.isEmpty())
+            System.err.println("Warning: No title metadata found in JSON config file");
+        else
+            configMeta.remove(titleMeta);
+    }
+
+    public void MarkdownToHTML(File mdFile, String ouputPath) {
         // Checks file validity
         if (mdFile.isDirectory())
             throw new RuntimeException("File cannot be a directory");
@@ -24,8 +54,9 @@ public class Converter {
             throw new RuntimeException("File extension must be .md");
 
         // Output variables
-        ArrayList<Metadata> mdMeta;
-        String mdContent;
+        StringBuilder htmlOutput = new StringBuilder();
+        ArrayList<Metadata> mdMeta = new ArrayList<>();
+        String mdContent = "";
 
         // Retrieves the metas inside md file
         try {
@@ -44,30 +75,42 @@ public class Converter {
             System.err.println("Content could not be parsed in file " + mdFile.getName());
         }
 
-        // Adds
-        BufferedReader reader;
+        // Inits html data
+        htmlOutput.append("<!DOCTYPE html>\n");
+        htmlOutput.append("<html>\n");
+        htmlOutput.append("<head>\n");
+
+        // Adds the metadata to the html output
+        htmlOutput.append("<title>").append(pageTitle).append("</title>\n");
+
+        for (Metadata meta : configMeta)
+            htmlOutput.append(generateHtmlMeta(meta)).append("\n");
+
+        for (Metadata meta : mdMeta)
+            htmlOutput.append(generateHtmlMeta(meta)).append("\n");
+
+        // Adds the markdown content to html file
+        htmlOutput.append("</head>\n<body>\n");
+
+        // Parses the markdown
+        Parser parser = Parser.builder().build();
+        Node document = parser.parse(mdContent.toString());
+        HtmlRenderer renderer = HtmlRenderer.builder().build();
+
+        // Gets the output field name
+        fileName = FilenameUtils.getBaseName(fileName);
+
+        // Creates and writes in the output
         try {
-            reader = new BufferedReader(new FileReader(mdFile));
-            StringBuilder mdText = new StringBuilder();
-            String line = reader.readLine();
-            while (line != null) {
-                mdText.append(line);
-                line = reader.readLine();
-            }
-            reader.close();
-
-            // Parses the markdown
-            Parser parser = Parser.builder().build();
-            Node document = parser.parse(mdText.toString());
-            HtmlRenderer renderer = HtmlRenderer.builder().build();
-
-            // Gets the output field name
-            fileName = FilenameUtils.getBaseName(fileName);
-
-            // Creates and writes in the output
             File output = new File(ouputPath + fileName + ".html");
             FileWriter outWriter = new FileWriter(output);
-            outWriter.write(renderer.render(document));
+
+            // Appends content to html
+            htmlOutput.append(renderer.render(document));
+            htmlOutput.append("</body>\n").append("</html>");
+
+            // Writes to final html file
+            outWriter.write(htmlOutput.toString());
             outWriter.close();
         } catch (IOException e) {
             e.printStackTrace();
