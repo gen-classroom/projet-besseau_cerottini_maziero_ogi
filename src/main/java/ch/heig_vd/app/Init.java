@@ -13,47 +13,46 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 
-// Classe définissant la commande Init permettant de créer les dossiers du site web ainsi qu'un exemple de fichier
-// config.json et index.md
+// Class defining the init command used to create the website folders as well as an example of config.json and index.md file
 @CommandLine.Command(name = "init", exitCodeOnExecutionException = 2)
 class Init implements Runnable {
 
     @CommandLine.Parameters(index = "0")
-    String filePath; // Picocli met l'argument venant après init dans cette variable
+    String filePath; // Picocli puts the argument after init into this variable
 
     DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
     Date date = new Date();
 
     public void run() {
 
-        // Permet de normaliser le chemin pour retirer les éventuels "//" ou ".." insérés par erreur
+        // Normalize the path to remove any "//" or ".." inserted by mistake
         Path path = Paths.get(filePath).normalize().toAbsolutePath();
 
         File dir = new File(path.toString());
 
-        // Crée l'arborescence si elle n'est pas déjà créée
+        // Creates the tree structure if it is not already created
         if (!dir.exists()) {
             dir.mkdirs();
         }
 
-        // Création de la structure du fichier json
+        // Creating the structure of the json file
         ObjectMapper mapper = new ObjectMapper();
         ObjectNode rootNode = mapper.createObjectNode();
-        rootNode.put("title", "Titre");
-        rootNode.put("description", "Une ambiance délétère");
-        rootNode.put("domain", "ambiance.deletere.org");
+        rootNode.put("title", "Title");
+        rootNode.put("description", "A poisonous atmosphere");
+        rootNode.put("domain", "poisonous.atmosphere.org");
 
         try {
-            // Création du fichier json
+            //Creating the json file
             FileWriter jsonFile = new FileWriter(path.toString() + "/config.json");
             jsonFile.write(mapper.writerWithDefaultPrettyPrinter().writeValueAsString(rootNode));
             jsonFile.close();
             System.out.println("JSON file created: " + mapper);
 
-            // Création du fichier Markdown
+            // Creating the Markdown file
             FileWriter mdFile = new FileWriter(path.toString() + "/index.md");
-            mdFile.write("# Mon site trop classe !\n");
-            mdFile.write("Auteur : un énorme bg\n");
+            mdFile.write("# My too classy site !\n");
+            mdFile.write("Author : a huge bg\n");
             mdFile.write("Date : " + dateFormat.format(date));
             mdFile.close();
             System.out.println("Markdown file created");
