@@ -21,22 +21,8 @@ public class JsonParser {
         while (fieldsIterator.hasNext()) {
             Map.Entry<String,JsonNode> field = fieldsIterator.next();
             System.out.println("Key: " + field.getKey() + "\tValue:" + field.getValue());
-            visitor.visit(field.getKey().toString(), field.getValue().toString());
+            visitor.visit(field.getKey().toString(), field.getValue().textValue());
 
-        }
-    }
-
-    public static void main(String[] args) throws IOException {
-        final ArrayList<Metadata> data = new ArrayList<>();
-
-        JsonParser c = new JsonParser(new File("./test.json"), new JsonParserVisitor() {
-            @Override
-            public void visit(String field, String value) {
-                data.add(new Metadata(field, value));
-            }
-        });
-        for (Metadata m : data){
-            System.out.println(m);
         }
     }
 }
