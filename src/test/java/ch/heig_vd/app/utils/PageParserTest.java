@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.junit.jupiter.api.AfterAll;
 
 import java.io.*;
+import java.util.ArrayList;
 
 public class PageParserTest {
     @Test
@@ -22,12 +23,12 @@ public class PageParserTest {
             writer.close();
 
             // Extracts the metadata
-            Metadata meta = PageParser.extractMetadata(input);
+            ArrayList<Metadata> meta = PageParser.extractMetadata(input);
 
             // Checks validity
-            assertEquals("metaTitle", meta.title);
-            assertEquals("metaAuthor", meta.author);
-            assertEquals("metaDate", meta.date);
+            assertEquals("metaTitle", meta.get(0).getContent());
+            assertEquals("metaAuthor", meta.get(1).getContent());
+            assertEquals("metaDate", meta.get(2).getContent());
 
             // Deletes test file
             input.delete();
@@ -52,7 +53,7 @@ public class PageParserTest {
             writer.close();
 
             // Extracts the metadata
-            Metadata meta = PageParser.extractMetadata(input);
+            ArrayList<Metadata> meta = PageParser.extractMetadata(input);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -72,7 +73,7 @@ public class PageParserTest {
             writer.close();
 
             // Extracts the metadata
-            Metadata meta = PageParser.extractMetadata(input);
+            ArrayList<Metadata> meta = PageParser.extractMetadata(input);
         } catch (IOException e) {
             e.printStackTrace();
         }

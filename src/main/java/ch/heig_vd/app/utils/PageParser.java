@@ -3,6 +3,7 @@ package ch.heig_vd.app.utils;
 import org.apache.commons.io.FilenameUtils;
 
 import java.io.*;
+import java.util.ArrayList;
 
 public class PageParser {
     private static boolean isFileValid(File file) {
@@ -21,7 +22,7 @@ public class PageParser {
             throw new RuntimeException("Incorrect " + head +  " line");
     }
 
-    public static Metadata extractMetadata(File mdFile) throws RuntimeException {
+    public static ArrayList<Metadata> extractMetadata(File mdFile) throws RuntimeException {
         // Checks file validity
         if (!isFileValid(mdFile))
             throw new RuntimeException("Invalid input file");
@@ -29,7 +30,7 @@ public class PageParser {
         // Local vars
         int nbMetaLines = 4;
         String[] metaLines = new String[nbMetaLines];
-        Metadata outputMeta = new Metadata();
+        ArrayList<Metadata> outputMeta = new ArrayList<>();
 
         // Reads the file
         BufferedReader reader;
@@ -49,9 +50,9 @@ public class PageParser {
                 throw new RuntimeException("Missing end of metadata line");
 
             // Parses the extracted lines
-            outputMeta.title = parseMetaLine("titre:", metaLines[0]);
-            outputMeta.author = parseMetaLine("auteur:", metaLines[1]);
-            outputMeta.date = parseMetaLine("date:", metaLines[2]);
+            outputMeta.add(new Metadata("title", parseMetaLine("titre:", metaLines[0])));
+            outputMeta.add(new Metadata("author", parseMetaLine("auteur:", metaLines[1])));
+            outputMeta.add(new Metadata("date", parseMetaLine("date:", metaLines[2])));
         } catch (IOException e) {
             e.printStackTrace();
         }
