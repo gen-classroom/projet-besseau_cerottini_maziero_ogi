@@ -20,7 +20,6 @@ public class JsonParser {
         Iterator<Map.Entry<String,JsonNode>> fieldsIterator = rootNode.fields();
         while (fieldsIterator.hasNext()) {
             Map.Entry<String,JsonNode> field = fieldsIterator.next();
-            System.out.println("Key: " + field.getKey() + "\tValue:" + field.getValue());
             visitor.visit(field.getKey().toString(), field.getValue().textValue());
 
         }
