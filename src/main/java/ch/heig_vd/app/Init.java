@@ -21,15 +21,17 @@ class Init implements Runnable {
     @CommandLine.Parameters(index = "0")
     String filePath; // Picocli met l'argument venant après init dans cette variable
 
-    DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+    DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
     Date date = new Date();
 
     public void run() {
 
+        // Permet de normaliser le chemin pour retirer les éventuels "//" ou ".." insérés par erreur
         Path path = Paths.get(filePath).normalize().toAbsolutePath();
 
         File dir = new File(path.toString());
 
+        // Crée l'arborescence si elle n'est pas déjà créée
         if (!dir.exists()) {
             dir.mkdirs();
         }
@@ -42,7 +44,7 @@ class Init implements Runnable {
         rootNode.put("domain", "ambiance.deletere.org");
 
         try {
-            // Création du fichir json
+            // Création du fichier json
             FileWriter jsonFile = new FileWriter(path.toString() + "/config.json");
             jsonFile.write(mapper.writerWithDefaultPrettyPrinter().writeValueAsString(rootNode));
             jsonFile.close();
