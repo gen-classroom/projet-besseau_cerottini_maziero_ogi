@@ -40,7 +40,7 @@ public class PageParser {
             // Reads the title line
             for (int i = 0; i < metaLines.length; ++i) {
                 metaLines[i] = reader.readLine();
-                if (metaLines[i] == null)
+                if (metaLines[i] == null || i != nbMetaLines - 1 && metaLines[i].equals("---"))
                     throw new RuntimeException("Metadata are incomplete");
             }
             reader.close();
