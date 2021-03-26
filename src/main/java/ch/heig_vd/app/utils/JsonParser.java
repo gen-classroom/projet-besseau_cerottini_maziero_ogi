@@ -12,6 +12,9 @@ import java.util.Map;
 
 public class JsonParser {
     JsonParser(File f, JsonParserVisitor visitor) throws IOException {
+        if (f.isDirectory()){
+            throw new IllegalArgumentException("File must not be a directory");
+        }
         JsonFactory factory = new JsonFactory();
 
         ObjectMapper mapper = new ObjectMapper(factory);
