@@ -1,5 +1,6 @@
 package ch.heig_vd.app.utils;
 
+import org.apache.commons.io.FilenameUtils;
 import org.junit.AfterClass;
 import org.junit.Test;
 import ch.heig_vd.app.utils.Metadata;
@@ -72,7 +73,7 @@ public class ConverterTest {
                     "<body>\n" +
                     "<p>This is <em>Sparta</em></p>\n" +
                     "</body>\n" +
-                    "</html>\n";
+                    "</html>" + System.lineSeparator();
 
             assertEquals(expectedOutput, output.toString());
 
@@ -126,26 +127,25 @@ public class ConverterTest {
             ByteArrayOutputStream os = new ByteArrayOutputStream();
             PrintStream ps = new PrintStream(os);
             PrintStream sysOut = System.err;
-            System.setOut(ps);
+            System.setErr(ps);
 
             // Converts
             Converter conv = new Converter(jsonConfig);
             conv.MarkdownToHTML(input, "./");
 
             // Checks console
-            String expected = "File input.md could not be" +
-                    "parsed and was not added to destination\n" +
-                    "Error : Metadata are incomplete";
-            assertEquals(expected, os.toString());
-            System.out.flush();
-
-            // Resets the system output
+            String expected = "File input.md could not be parsed and was not added to destination\n" +
+                    "Error : Metadata are incomplete" + System.lineSeparator();
+            String result = os.toString();
+            FilenameUtils.normalize(result);
+            FilenameUtils.normalize(expected);
+            System.err.flush();
             System.setErr(sysOut);
+            assertEquals(expected, result);
 
         } catch(IOException e) {
             e.printStackTrace();
         }
-
     }
 
     @AfterClass
