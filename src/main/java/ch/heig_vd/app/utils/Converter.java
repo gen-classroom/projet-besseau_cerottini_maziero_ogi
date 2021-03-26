@@ -23,6 +23,28 @@ public class Converter {
         if (!FilenameUtils.getExtension(fileName).equals("md"))
             throw new RuntimeException("File extension must be .md");
 
+        // Output variables
+        ArrayList<Metadata> mdMeta;
+        String mdContent;
+
+        // Retrieves the metas inside md file
+        try {
+            mdMeta = PageParser.extractMetadata(mdFile);
+        } catch (RuntimeException e) {
+            System.err.println("File " +
+                    mdFile.getName() +
+                    " could not be parsed and was not added to destination\n" +
+                    "Error : " + e.getMessage());
+        }
+
+        // Extracts md content
+        try {
+            mdContent = PageParser.extractMarkdownContent(mdFile);
+        } catch (RuntimeException e) {
+            System.err.println("Content could not be parsed in file " + mdFile.getName());
+        }
+
+        // Adds
         BufferedReader reader;
         try {
             reader = new BufferedReader(new FileReader(mdFile));
