@@ -29,7 +29,7 @@ public class JsonParser {
     public static void main(String[] args) throws IOException {
         final ArrayList<Metadata> data = new ArrayList<>();
 
-        JsonParser c = new JsonParser(new File("/home/leonard/IdeaProjects/BA4/GEN/projet-besseau_cerottini_maziero_ogi/test.json"), new JsonParserVisitor() {
+        JsonParser c = new JsonParser(new File("./test.json"), new JsonParserVisitor() {
             @Override
             public void visit(String field, String value) {
                 data.add(new Metadata(field, value));
@@ -38,6 +38,5 @@ public class JsonParser {
         for (Metadata m : data){
             System.out.println(m);
         }
-
     }
 }
