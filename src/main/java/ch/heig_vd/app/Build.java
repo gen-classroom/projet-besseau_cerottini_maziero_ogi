@@ -7,7 +7,7 @@ import java.io.IOException;
 import org.apache.commons.io.FileUtils;
 
 
-@CommandLine.Command(name = "Build")
+@CommandLine.Command(name = "build")
 class Build implements Runnable {
     @CommandLine.Parameters(index = "0")
     String filePath;
