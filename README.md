@@ -1,11 +1,31 @@
-# Projet - Besseau_Cerottini_Maziero_Ogi
+# GEN Project | Command line static website generator
 
-### Features
+**Authors**
 
-None
+> Cerottini Alexandra
+>
+> Besseau Léonard
+>
+> Ogi Nicolas
+>
+> Maziero Marco
 
-### Installation
+## About the project
 
-Don't know  ¯\ _(ツ)_/¯
+The goal of this project is to train the software engineering skills of the team and create a simple but powerful command line tool that allows anyone to generate a simple static website with only a couple of markdown files and configuration files.
 
-**Warning: Use this program at your own risk**
+## Installation
+
+Check the **releases** section for more detail about the different versions and available user installation guides. 
+
+## Roadmap
+
+### Sprint 1
+
+First iteration of the project, the tool should offer basic commands such as init, build, clean, etc...
+
+### [More to come]
+
+## License
+
+See the LICENE.md file to get more information about the license.
