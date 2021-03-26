@@ -1,5 +1,6 @@
 package ch.heig_vd.app.utils;
 
+import org.junit.AfterClass;
 import org.junit.Test;
 import org.junit.jupiter.api.AfterAll;
 
@@ -98,8 +99,8 @@ public class ConverterTest {
         conv.MarkdownToHTML(file, "./");
     }
 
-    @AfterAll
-    public void cleanUp() {
+    @AfterClass
+    public static void cleanUp() {
         File file = new File("testFile.txt");
         File jsonConfig = new File("./conf.json");
         File input = new File("./input.md");
