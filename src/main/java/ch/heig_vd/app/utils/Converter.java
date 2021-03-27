@@ -102,7 +102,7 @@ public class Converter {
 
         // Creates and writes in the output
         try {
-            File output = new File(ouputPath + fileName + ".html");
+            File output = new File(ouputPath +"/"+ fileName + ".html");
             FileWriter outWriter = new FileWriter(output);
 
             // Appends content to html
