@@ -1,10 +1,14 @@
 package ch.heig_vd.app;
 
+import org.apache.commons.io.FileUtils;
+import org.junit.AfterClass;
 import org.junit.Test;
 import picocli.CommandLine;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import static org.junit.Assert.*;
@@ -99,5 +103,16 @@ public class BuildTest {
                 assertTrue(listBuild2.contains(file));
             }
         }
+    }
+
+    @AfterClass
+    public static void cleanAll() throws IOException {
+        Path path = Paths.get("./mon").normalize().toAbsolutePath();
+        System.out.println("Cleaning ALL");
+        if (!path.toFile().exists()) {
+            throw new IllegalArgumentException("Directory does not exists");
+        }
+        FileUtils.deleteDirectory(path.toFile());
+
     }
 }
