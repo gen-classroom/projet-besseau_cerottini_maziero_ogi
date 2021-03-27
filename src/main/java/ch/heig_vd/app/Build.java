@@ -11,7 +11,7 @@ import java.nio.file.Paths;
 import org.apache.commons.io.FileUtils;
 
 
-@CommandLine.Command(name = "build")
+@CommandLine.Command(name = "build", exitCodeOnExecutionException = 2)
 class Build implements Runnable {
     @CommandLine.Parameters(index = "0")
     String filePath;

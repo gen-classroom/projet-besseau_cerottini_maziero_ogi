@@ -6,10 +6,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import picocli.CommandLine;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -22,7 +19,7 @@ import static org.junit.Assert.*;
 public class BuildTest {
     static String root = "./buildTest";
     static String directoryPath = root +"/mon/site";
-
+    static PrintStream original = System.err;
     @BeforeClass
     public static void setup() {
         File directoryTest = new File(directoryPath);
@@ -133,14 +130,32 @@ public class BuildTest {
         }
     }
 
+    @Test
+    public void buildShoulThrowWhenNoConfigIsPresent() throws IOException {
+        String path = directoryPath+"/noConfigTest";
+        File directoryTest = new File(path);
+        directoryTest.mkdirs();
+        File buildDirectory = new File(path+"/build"); //build new directory
+        // Suppress warning
+        System.setErr(new PrintStream(new OutputStream() {
+            public void write(int b) {
+                //DO NOTHING
+            }
+        }));
+        assertEquals(2, new CommandLine(new Main()).execute("statique", "build", path));
+        System.setErr(original);
+    }
+
     @AfterClass
     public static void cleanAll() throws IOException {
+        System.setErr(original);
         Path path = Paths.get(root).normalize().toAbsolutePath();
-        System.out.println("Cleaning ALL");
         if (!path.toFile().exists()) {
             throw new IllegalArgumentException("Directory does not exists");
         }
         FileUtils.deleteDirectory(path.toFile());
 
     }
+
+
 }
