@@ -73,7 +73,7 @@ public class ConverterTest {
                     "<body>\n" +
                     "<p>This is <em>Sparta</em></p>\n" +
                     "</body>\n" +
-                    "</html>" + System.lineSeparator();
+                    "</html>\n";
 
             assertEquals(expectedOutput, output.toString());
 
