@@ -7,13 +7,15 @@ import picocli.CommandLine;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import static org.junit.Assert.*;
 
 public class CleanTest {
-
+    static PrintStream original = System.err;
     @Test
     public void cleanShouldDeleteBuildFolderWithRelativePath() throws IOException {
         String path1 = "./test_folder/mon/site/";
@@ -47,11 +49,18 @@ public class CleanTest {
     @Test
     public void cleanShouldThrowsWhenGivenAnNonExistentPath() throws IOException {
         String path = "/should/not/exists/";
+        System.setErr(new PrintStream(new OutputStream() {
+            public void write(int b) {
+                //DO NOTHING
+            }
+        }));
+        System.setErr(original);
         assertEquals(2, new CommandLine(new Main()).execute("statique", "clean", path));
     }
 
     @AfterClass
     public static void cleanAll() throws IOException {
+        System.setErr(original);
         Path path = Paths.get("./test_folder").normalize().toAbsolutePath();
         System.out.println("Cleaning ALL");
         if (!path.toFile().exists()) {

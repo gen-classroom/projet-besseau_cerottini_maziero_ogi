@@ -3,12 +3,9 @@ package ch.heig_vd.app.utils;
 import org.apache.commons.io.FilenameUtils;
 import org.junit.AfterClass;
 import org.junit.Test;
-import ch.heig_vd.app.utils.Metadata;
-import org.junit.jupiter.api.AfterAll;
 
 import java.io.*;
-import java.nio.Buffer;
-import java.util.Scanner;
+
 import static org.junit.Assert.*;
 
 /**
@@ -41,7 +38,7 @@ public class ConverterTest {
 
             // Converts
             Converter conv = new Converter(jsonConfig);
-            conv.MarkdownToHTML(input, "./");
+            conv.markdownToHTML(input, "./");
 
             // Checks output
             File ouput = new File("./input.html");
@@ -90,7 +87,7 @@ public class ConverterTest {
         File jsonConfig = new File("./conf.json");
         File dir = new File("./");
         Converter conv = new Converter(jsonConfig);
-        conv.MarkdownToHTML(dir, "./");
+        conv.markdownToHTML(dir, "./");
     }
 
     @Test(expected = RuntimeException.class)
@@ -98,7 +95,7 @@ public class ConverterTest {
         File jsonConfig = new File("./conf.json");
         File file = new File("./testFile.txt");
         Converter conv = new Converter(jsonConfig);
-        conv.MarkdownToHTML(file, "./");
+        conv.markdownToHTML(file, "./");
     }
 
     @Test
@@ -131,7 +128,7 @@ public class ConverterTest {
 
             // Converts
             Converter conv = new Converter(jsonConfig);
-            conv.MarkdownToHTML(input, "./");
+            conv.markdownToHTML(input, "./");
 
             // Checks console
             String expected = "File input.md could not be parsed and was not added to destination\n" +

@@ -10,7 +10,7 @@ import org.commonmark.renderer.html.HtmlRenderer;
 
 public class Converter {
     // Atributes
-    private ArrayList<Metadata> configMeta;
+    private final ArrayList<Metadata> configMeta;
     private String pageTitle;
 
     public Converter(File jsonMetadata) {
@@ -44,7 +44,7 @@ public class Converter {
             configMeta.remove(titleMeta);
     }
 
-    public void MarkdownToHTML(File mdFile, String ouputPath) {
+    public void markdownToHTML(File mdFile, String ouputPath) {
         // Checks file validity
         if (mdFile.isDirectory())
             throw new RuntimeException("File cannot be a directory");
@@ -102,7 +102,7 @@ public class Converter {
 
         // Creates and writes in the output
         try {
-            File output = new File(ouputPath + fileName + ".html");
+            File output = new File(ouputPath +"/"+ fileName + ".html");
             FileWriter outWriter = new FileWriter(output);
 
             // Appends content to html
