@@ -21,7 +21,7 @@ class Build implements Runnable {
 
         File buildDirectory = new File(path + "/build"); //build new directory
         buildDirectory.mkdir();
-        File filesDirectory = new File(String.valueOf(path)); //get all directory from there
+        File filesDirectory = new File(path.toString()); //get all directory from there
 
         try {
             explore(filesDirectory, buildDirectory);
