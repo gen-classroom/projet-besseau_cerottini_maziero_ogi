@@ -1,5 +1,6 @@
 package ch.heig_vd.app;
 
+import ch.heig_vd.app.utils.Converter;
 import picocli.CommandLine;
 
 import java.io.File;
@@ -14,6 +15,7 @@ import org.apache.commons.io.FileUtils;
 class Build implements Runnable {
     @CommandLine.Parameters(index = "0")
     String filePath;
+    Converter converter;
 
     public void run() {
 
@@ -22,7 +24,11 @@ class Build implements Runnable {
         File buildDirectory = new File(path + "/build"); //build new directory
         buildDirectory.mkdir();
         File filesDirectory = new File(path.toString()); //get all directory from there
-
+        File configFile = new File(path+"/config.json");
+        if (!configFile.exists()){
+            throw new RuntimeException("Config file does not exist");
+        }
+        converter = new Converter(configFile);
         try {
             explore(filesDirectory, buildDirectory);
         } catch (IOException e) {
@@ -31,7 +37,7 @@ class Build implements Runnable {
     }
 
     //Get all the files and directories
-    public void explore(File filesDirectory, File buildDirectory) throws IOException {
+    void explore(File filesDirectory, File buildDirectory) throws IOException {
 
         File[] listOfFiles = filesDirectory.listFiles();
 
@@ -39,8 +45,7 @@ class Build implements Runnable {
             for (File file : listOfFiles) {
                 String fileName = file.getName();
                 if (fileName.contains(".md")) {//MD files become HTML files
-                    ;
-                    //MarkdownToHTML(file, buildDirectory); //la fonction de Marco
+                    converter.markdownToHTML(file, buildDirectory.toString());
                 } else if (!fileName.contains("config") && !file.isDirectory()) {
                     File newDirectory = new File(buildDirectory + "/" + fileName);
                     FileUtils.copyFile(file, newDirectory);
