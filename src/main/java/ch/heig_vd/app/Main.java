@@ -1,6 +1,8 @@
 package ch.heig_vd.app;
 
 import ch.heig_vd.app.command.*;
+import ch.heig_vd.app.utils.PrintExceptionMessageHandler;
+import ch.heig_vd.app.utils.ShortErrorMessageHandler;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Parameters;
@@ -26,25 +28,28 @@ public class Main implements Callable<Integer> {
             description = "Displays the current version")
     boolean showVersion;
     private static CommandLine.Help.ColorScheme colorScheme;
+
     public static void main(String... args) {
         colorScheme = new CommandLine.Help.ColorScheme.Builder()
-                .commands    (CommandLine.Help.Ansi.Style.fg_blue)    // combine multiple styles
-                .options     (CommandLine.Help.Ansi.Style.fg_yellow)                // yellow foreground color
-                .parameters  (CommandLine.Help.Ansi.Style.fg_green)
+                .commands(CommandLine.Help.Ansi.Style.fg_blue)    // combine multiple styles
+                .options(CommandLine.Help.Ansi.Style.fg_yellow)                // yellow foreground color
+                .parameters(CommandLine.Help.Ansi.Style.fg_green)
                 .optionParams(CommandLine.Help.Ansi.Style.italic).build();
 
         // Parses and executes the options
-        CommandLine commandLine = new CommandLine(new Main());
-        commandLine.parseArgs(args);
-        if (commandLine.isVersionHelpRequested()) { // Show version
-            commandLine.printVersionHelp(System.out);
-            exit(commandLine.getCommandSpec().exitCodeOnSuccess());
-        }
-
-        // Executes the subcommands
+        CommandLine commandLine = new CommandLine(new Main()).setColorScheme(colorScheme).setParameterExceptionHandler(new ShortErrorMessageHandler())
+                .setExecutionExceptionHandler(new PrintExceptionMessageHandler());;
         try {
-            exit(commandLine.setColorScheme(colorScheme).execute(args));
-        }catch (CommandLine.ParameterException ex){
+            commandLine.parseArgs(args);
+            if (commandLine.isVersionHelpRequested()) { // Show version
+                commandLine.printVersionHelp(System.out);
+                exit(commandLine.getCommandSpec().exitCodeOnSuccess());
+            }
+
+            // Executes the subcommands
+
+            exit(commandLine.execute(args));
+        } catch (CommandLine.ParameterException ex) {
             commandLine.getErr().println(ex.getMessage());
             if (!CommandLine.UnmatchedArgumentException.printSuggestions(ex, commandLine.getErr())) {
                 ex.getCommandLine().usage(commandLine.getErr());

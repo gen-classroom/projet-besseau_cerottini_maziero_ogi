@@ -12,13 +12,12 @@ import org.apache.commons.io.FileUtils;
         description = "Clean a static site",
         exitCodeOnExecutionException = 2)
 public class Clean implements Runnable {
-    @CommandLine.Parameters(description = "Path to site to clean. (Must contain a build folder")
+    @CommandLine.Parameters(description = "Path to site to clean. (Must contain a build folder)")
     String filePath;
 
     public void run() {
         try {
             Path path = Paths.get(filePath, "/build").normalize().toAbsolutePath();
-            System.out.println(path);
             if (!path.toFile().exists()) {
                 throw new IllegalArgumentException("Directory does not exists");
             }
