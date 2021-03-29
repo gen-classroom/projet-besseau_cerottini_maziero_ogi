@@ -11,7 +11,9 @@ import java.nio.file.Paths;
 import org.apache.commons.io.FileUtils;
 
 
-@CommandLine.Command(name = "build", exitCodeOnExecutionException = 2)
+@CommandLine.Command(name = "build",
+        exitCodeOnExecutionException = 2,
+        description = "Clean a static site")
 public class Build implements Runnable {
     @CommandLine.Parameters(index = "0")
     String filePath;

@@ -19,10 +19,6 @@ import static java.lang.System.exit;
         subcommands = {Build.class, Serve.class, Clean.class, Init.class},
         synopsisSubcommandLabel = "COMMAND")
 public class Main implements Callable<Integer> {
-    @CommandLine.Spec
-    CommandLine.Model.CommandSpec spec;
-    @Parameters(index = "0", description = "The command to execute")
-    private String param;
 
     // Option -v to display the program version
     @CommandLine.Option(names = {"-v", "--version"},
@@ -31,15 +27,12 @@ public class Main implements Callable<Integer> {
     boolean showVersion;
     private static CommandLine.Help.ColorScheme colorScheme;
     public static void main(String... args) {
-        if (args.length == 0){
-            System.err.println("Invalid number of argument. You should use statique as first argument");
-            exit(1);
-        }
         colorScheme = new CommandLine.Help.ColorScheme.Builder()
                 .commands    (CommandLine.Help.Ansi.Style.fg_blue)    // combine multiple styles
                 .options     (CommandLine.Help.Ansi.Style.fg_yellow)                // yellow foreground color
                 .parameters  (CommandLine.Help.Ansi.Style.fg_green)
                 .optionParams(CommandLine.Help.Ansi.Style.italic).build();
+
         // Parses and executes the options
         CommandLine commandLine = new CommandLine(new Main());
         commandLine.parseArgs(args);
