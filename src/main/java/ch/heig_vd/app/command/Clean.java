@@ -12,7 +12,7 @@ import org.apache.commons.io.FileUtils;
         description = "Clean a static site",
         exitCodeOnExecutionException = 2)
 public class Clean implements Runnable {
-    @CommandLine.Parameters(index = "0")
+    @CommandLine.Parameters(arity = "1")
     String filePath;
 
     public void run() {

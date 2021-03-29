@@ -12,7 +12,7 @@ import static java.lang.System.exit;
 // Main command info
 @Command(name = "statique",
         description = "A brand new static site generator.",
-        version = {"@|yellow Statique v1.0|@"},
+        version = {"Statique @|yellow v0.0.1|@"},
         descriptionHeading = "%n@|bold,underline Description|@:%n",
         parameterListHeading = "%n@|bold,underline Parameters|@:%n",
         optionListHeading = "%n@|bold,underline Options|@:%n",
