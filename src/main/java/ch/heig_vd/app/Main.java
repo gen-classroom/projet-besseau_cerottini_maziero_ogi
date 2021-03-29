@@ -7,6 +7,8 @@ import picocli.CommandLine.Parameters;
 
 import java.util.concurrent.Callable;
 
+import static java.lang.System.exit;
+
 // Main command info
 @Command(name = "statique",
         description = "A brand new static site generator.",
@@ -26,6 +28,10 @@ public class Main implements Callable<Integer> {
     boolean showVersion;
 
     public static void main(String... args) {
+        if (args.length == 0){
+            System.err.println("Invalid number of argument. You should use statique as first argument");
+            exit(1);
+        }
         // Parses and executes the options
         CommandLine commandLine = new CommandLine(new Main());
         commandLine.parseArgs(args);
@@ -35,7 +41,7 @@ public class Main implements Callable<Integer> {
         }
 
         // Executes the subcommands
-        System.exit(commandLine.execute(args));
+        exit(commandLine.execute(args));
     }
 
     @Override
