@@ -20,7 +20,7 @@ Download the latest release and lanch the .jar. with `java -jar`
 
 Executing it should result in the following result
 
- ![Usage](/home/leonard/IdeaProjects/BA4/GEN/projet-besseau_cerottini_maziero_ogi/images/Usage.png)
+ ![Usage](./images/Usage.png)
 
 ## Usage
 
