@@ -1,6 +1,6 @@
 package ch.heig_vd.app;
 
-import ch.heig_vd.app.commands.*;
+import ch.heig_vd.app.command.*;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Parameters;

@@ -1,4 +1,4 @@
-package ch.heig_vd.app.commands;
+package ch.heig_vd.app.command;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;

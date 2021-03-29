@@ -1,4 +1,4 @@
-package ch.heig_vd.app.commands;
+package ch.heig_vd.app.command;
 
 import ch.heig_vd.app.utils.Converter;
 import picocli.CommandLine;
