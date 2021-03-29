@@ -3,6 +3,7 @@ package ch.heig_vd.app.utils;
 import static org.junit.Assert.*;
 
 import org.apache.commons.io.FileUtils;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.jupiter.api.AfterAll;
@@ -160,7 +161,8 @@ public class PageParserTest {
         PageParser.extractMarkdownContent(file);
     }
 
-    @AfterAll
+
+    @AfterClass
     public static void cleanUp() throws IOException {
         Path path = Paths.get("./PageParser").normalize().toAbsolutePath();
         if (!path.toFile().exists()) {
