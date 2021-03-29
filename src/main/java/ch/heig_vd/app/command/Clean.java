@@ -8,7 +8,9 @@ import java.nio.file.Paths;
 
 import org.apache.commons.io.FileUtils;
 
-@CommandLine.Command(name = "clean", exitCodeOnExecutionException = 2)
+@CommandLine.Command(name = "clean",
+        description = "Clean a static site",
+        exitCodeOnExecutionException = 2)
 public class Clean implements Runnable {
     @CommandLine.Parameters(index = "0")
     String filePath;

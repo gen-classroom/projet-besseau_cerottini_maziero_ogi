@@ -14,7 +14,9 @@ import java.util.Date;
 
 
 // Class defining the init command used to create the website folders as well as an example of config.json and index.md file
-@CommandLine.Command(name = "init", exitCodeOnExecutionException = 2)
+@CommandLine.Command(name = "init",
+        description = "Initialize a static site directory",
+        exitCodeOnExecutionException = 2)
 public class Init implements Runnable {
 
     @CommandLine.Parameters(index = "0")
