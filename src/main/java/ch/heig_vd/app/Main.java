@@ -1,11 +1,10 @@
 package ch.heig_vd.app;
 
 import ch.heig_vd.app.command.*;
-import ch.heig_vd.app.utils.PrintExceptionMessageHandler;
-import ch.heig_vd.app.utils.ShortErrorMessageHandler;
+import ch.heig_vd.app.errorHandler.PrintExceptionMessageHandler;
+import ch.heig_vd.app.errorHandler.ShortErrorMessageHandler;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
-import picocli.CommandLine.Parameters;
 
 import java.util.concurrent.Callable;
 

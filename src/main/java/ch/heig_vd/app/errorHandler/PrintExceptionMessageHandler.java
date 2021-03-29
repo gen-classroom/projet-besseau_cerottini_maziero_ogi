@@ -1,4 +1,4 @@
-package ch.heig_vd.app.utils;
+package ch.heig_vd.app.errorHandler;
 
 import picocli.CommandLine;
 
