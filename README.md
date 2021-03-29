@@ -18,7 +18,7 @@ The goal of this project is to train the software engineering skills of the team
 
 Download the latest release and lanch the .jar. with `java -jar`
 
-Executing it should result in the following result
+Executing it should produce the following result:
 
  ![Usage](./images/Usage.png)
 
@@ -30,7 +30,7 @@ Initialise the static website to the given path. Make sure you have the permissi
 
 -  `statique build PATH` 
 
-Convert the different markdown file present in the path into hmtl files.
+Convert the different markdown file present in the path into hmtl files with the site and file metadata specified in the header.
 
 - `statique clean PATH`
 
@@ -46,7 +46,7 @@ Not yet implemented
 mvn clean install 
 ```
 
-There should be a .jar in the `target` folder.
+There should be a `statique-VERSION.jar` in the `target` folder.
 
 ## Others
 
