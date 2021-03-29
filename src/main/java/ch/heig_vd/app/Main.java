@@ -38,11 +38,25 @@ public class Main implements Callable<Integer> {
         commandLine.parseArgs(args);
         if (commandLine.isVersionHelpRequested()) { // Show version
             commandLine.printVersionHelp(System.out);
-            return;
+            exit(commandLine.getCommandSpec().exitCodeOnSuccess());
         }
 
         // Executes the subcommands
-        exit(commandLine.setColorScheme(colorScheme).execute(args));
+        try {
+            exit(commandLine.setColorScheme(colorScheme).execute(args));
+        }catch (CommandLine.ParameterException ex){
+            commandLine.getErr().println(ex.getMessage());
+            if (!CommandLine.UnmatchedArgumentException.printSuggestions(ex, commandLine.getErr())) {
+                ex.getCommandLine().usage(commandLine.getErr());
+            }
+            exit(commandLine.getCommandSpec().exitCodeOnInvalidInput());
+// exception occurred in business logic
+        } catch (Exception ex) {
+            ex.printStackTrace(commandLine.getErr());
+            exit(commandLine.getCommandSpec().exitCodeOnExecutionException());
+        }
+        exit(commandLine.getCommandSpec().exitCodeOnSuccess());
+
     }
 
     @Override
