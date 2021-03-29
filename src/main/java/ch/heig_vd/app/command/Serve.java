@@ -6,6 +6,7 @@ import picocli.CommandLine;
         description = "Serve a static site")
 public class Serve implements Runnable{
     @CommandLine.Parameters(description = "Path of site to serve.")
+    String filePath;
     public void run(){
         System.out.println("All good, executing Serve");
     }

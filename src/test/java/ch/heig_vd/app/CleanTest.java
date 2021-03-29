@@ -23,11 +23,11 @@ public class CleanTest {
 
         File directory = new File(path1 + "/build");
         directory.mkdirs();
-        new CommandLine(new Main()).execute("statique", "clean", path1);
+        new CommandLine(new Main()).execute( "clean", path1);
         assertFalse(directory.exists());
         directory = new File(path2 + "/build");
         directory.mkdirs();
-        new CommandLine(new Main()).execute("statique", "clean", path2);
+        new CommandLine(new Main()).execute( "clean", path2);
         assertFalse(directory.exists());
 
     }
@@ -39,7 +39,7 @@ public class CleanTest {
         File directory = new File(pwd + "/" + path + "/build/");
         directory.delete();
         if (directory.mkdirs()) {
-            new CommandLine(new Main()).execute("statique", "clean", pwd + "/" + path);
+            new CommandLine(new Main()).execute( "clean", pwd + "/" + path);
             assertFalse(directory.exists());
         } else {
             System.err.println("Could not test for absolute path");
@@ -55,7 +55,7 @@ public class CleanTest {
             }
         }));
         System.setErr(original);
-        assertEquals(2, new CommandLine(new Main()).execute("statique", "clean", path));
+        assertEquals(2, new CommandLine(new Main()).execute( "clean", path));
     }
 
     @AfterClass

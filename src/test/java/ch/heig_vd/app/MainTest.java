@@ -26,12 +26,12 @@ public class MainTest
         System.setOut(ps);
 
         // Tests the first command
-        int result = new CommandLine(new Main()).execute("statique", "-v");
+        int result = new CommandLine(new Main()).execute("-v");
         assertEquals("Statique", os.toString().substring(0,8));
         System.out.flush();
 
         // Tests the second command
-        int result2 = new CommandLine(new Main()).execute("statique", "--version");
+        int result2 = new CommandLine(new Main()).execute("--version");
         assertEquals("Statique", os.toString().substring(0,8));
         System.out.flush();
 

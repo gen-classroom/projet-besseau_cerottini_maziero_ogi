@@ -37,7 +37,7 @@ public class Main implements Callable<Integer> {
 
         // Parses and executes the options
         CommandLine commandLine = new CommandLine(new Main()).setColorScheme(colorScheme).setParameterExceptionHandler(new ShortErrorMessageHandler())
-                .setExecutionExceptionHandler(new PrintExceptionMessageHandler());;
+                .setExecutionExceptionHandler(new PrintExceptionMessageHandler());
         try {
             commandLine.parseArgs(args);
             if (commandLine.isVersionHelpRequested()) { // Show version
