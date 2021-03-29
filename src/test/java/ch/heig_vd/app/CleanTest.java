@@ -62,7 +62,6 @@ public class CleanTest {
     public static void cleanAll() throws IOException {
         System.setErr(original);
         Path path = Paths.get("./test_folder").normalize().toAbsolutePath();
-        System.out.println("Cleaning ALL");
         if (!path.toFile().exists()) {
             throw new IllegalArgumentException("Directory does not exists");
         }
