@@ -46,7 +46,7 @@ Not yet implemented
 mvn clean install 
 ```
 
-There should be a .jar in the `target` folder.
+There should be a `statique-VERSION.jar` in the `target` folder.
 
 ## Others
 
