@@ -54,8 +54,14 @@ public class CleanTest {
                 //DO NOTHING
             }
         }));
-        System.setErr(original);
+        System.setOut(new PrintStream(new OutputStream() {
+            public void write(int b) {
+                //DO NOTHING
+            }
+        }));
+
         assertEquals(2, new CommandLine(new Main()).execute( "clean", path));
+        System.setErr(original);
     }
 
     @AfterClass
