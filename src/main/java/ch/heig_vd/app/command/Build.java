@@ -15,7 +15,7 @@ import org.apache.commons.io.FileUtils;
         exitCodeOnExecutionException = 2,
         description = "Build a static site")
 public class Build implements Runnable {
-    @CommandLine.Parameters(index = "0")
+    @CommandLine.Parameters(description = "Path to site to build. (Must contain a config.json file)")
     String filePath;
     Converter converter;
 

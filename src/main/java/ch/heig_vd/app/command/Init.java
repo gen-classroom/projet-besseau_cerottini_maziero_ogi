@@ -19,7 +19,7 @@ import java.util.Date;
         exitCodeOnExecutionException = 2)
 public class Init implements Runnable {
 
-    @CommandLine.Parameters(index = "0")
+    @CommandLine.Parameters(description = "Path to site to init.")
     String filePath; // Picocli puts the argument after init into this variable
 
     DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
