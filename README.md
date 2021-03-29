@@ -16,16 +16,16 @@ The goal of this project is to train the software engineering skills of the team
 
 ## Installation
 
-Check the **releases** section for more detail about the different versions and available user installation guides. 
+Download the latest release and lanch the .jar. with `java -jar`
 
-## Roadmap
+Executing it should result in the following result
 
-### Sprint 1
+ ![Usage](/home/leonard/IdeaProjects/BA4/GEN/projet-besseau_cerottini_maziero_ogi/images/Usage.png)
 
-First iteration of the project, the tool should offer basic commands such as init, build, clean, etc...
+## Build the project
 
-### [More to come]
+```bash
+mvn clean install 
+```
 
-## License
-
-See the LICENE.md file to get more information about the license.
+If you use an IDE you can add `-Dpicocli.ansi=TRUE` in the vm option in order to enable the colouring.
