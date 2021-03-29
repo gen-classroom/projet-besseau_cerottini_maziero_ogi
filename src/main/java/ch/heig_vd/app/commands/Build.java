@@ -1,4 +1,4 @@
-package ch.heig_vd.app;
+package ch.heig_vd.app.commands;
 
 import ch.heig_vd.app.utils.Converter;
 import picocli.CommandLine;
@@ -12,7 +12,7 @@ import org.apache.commons.io.FileUtils;
 
 
 @CommandLine.Command(name = "build", exitCodeOnExecutionException = 2)
-class Build implements Runnable {
+public class Build implements Runnable {
     @CommandLine.Parameters(index = "0")
     String filePath;
     Converter converter;

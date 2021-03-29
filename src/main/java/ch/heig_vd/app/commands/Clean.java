@@ -1,4 +1,4 @@
-package ch.heig_vd.app;
+package ch.heig_vd.app.commands;
 
 import picocli.CommandLine;
 
@@ -9,7 +9,7 @@ import java.nio.file.Paths;
 import org.apache.commons.io.FileUtils;
 
 @CommandLine.Command(name = "clean", exitCodeOnExecutionException = 2)
-class Clean implements Runnable {
+public class Clean implements Runnable {
     @CommandLine.Parameters(index = "0")
     String filePath;
 
