@@ -9,7 +9,6 @@ public class ShortErrorMessageHandler implements CommandLine.IParameterException
     public int handleParseException(CommandLine.ParameterException ex, String[] args) {
         CommandLine cmd = ex.getCommandLine();
         PrintWriter err = cmd.getErr();
-        System.out.println("HELLO");
         // if tracing at DEBUG level, show the location of the issue
         if ("DEBUG".equalsIgnoreCase(System.getProperty("picocli.trace"))) {
             err.println(cmd.getColorScheme().stackTraceText(ex));
