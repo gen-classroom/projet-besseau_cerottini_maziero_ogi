@@ -23,11 +23,11 @@ public class CleanTest {
 
         File directory = new File(path1 + "/build");
         directory.mkdirs();
-        new CommandLine(new Main()).execute("statique", "clean", path1);
+        new CommandLine(new Main()).execute( "clean", path1);
         assertFalse(directory.exists());
         directory = new File(path2 + "/build");
         directory.mkdirs();
-        new CommandLine(new Main()).execute("statique", "clean", path2);
+        new CommandLine(new Main()).execute( "clean", path2);
         assertFalse(directory.exists());
 
     }
@@ -39,7 +39,7 @@ public class CleanTest {
         File directory = new File(pwd + "/" + path + "/build/");
         directory.delete();
         if (directory.mkdirs()) {
-            new CommandLine(new Main()).execute("statique", "clean", pwd + "/" + path);
+            new CommandLine(new Main()).execute( "clean", pwd + "/" + path);
             assertFalse(directory.exists());
         } else {
             System.err.println("Could not test for absolute path");
@@ -54,15 +54,20 @@ public class CleanTest {
                 //DO NOTHING
             }
         }));
+        System.setOut(new PrintStream(new OutputStream() {
+            public void write(int b) {
+                //DO NOTHING
+            }
+        }));
+
+        assertEquals(2, new CommandLine(new Main()).execute( "clean", path));
         System.setErr(original);
-        assertEquals(2, new CommandLine(new Main()).execute("statique", "clean", path));
     }
 
     @AfterClass
     public static void cleanAll() throws IOException {
         System.setErr(original);
         Path path = Paths.get("./test_folder").normalize().toAbsolutePath();
-        System.out.println("Cleaning ALL");
         if (!path.toFile().exists()) {
             throw new IllegalArgumentException("Directory does not exists");
         }

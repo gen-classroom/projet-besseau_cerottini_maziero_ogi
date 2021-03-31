@@ -18,7 +18,7 @@ public class InitTest {
 
     @BeforeClass
     public static void invokeCommandLine() {
-        new CommandLine(new Main()).execute("statique", "init", "test_folder/mon//site");
+        new CommandLine(new Main()).execute( "init", "test_folder/mon/site");
     }
 
     @Test

@@ -43,7 +43,7 @@ public class BuildTest {
         directoryTest.mkdirs();
         File buildDirectory = new File(path + "/build");
         createConfig(path);
-        new CommandLine(new Main()).execute("statique", "build", path);
+        new CommandLine(new Main()).execute( "build", path);
         assertTrue(buildDirectory.exists());
     }
 
@@ -55,7 +55,7 @@ public class BuildTest {
         createConfig(path);
         File buildDirectory = new File(path+"/build"); //build new directory
 
-        new CommandLine(new Main()).execute("statique", "build", path);
+        new CommandLine(new Main()).execute( "build", path);
 
         String[] listOfFiles = buildDirectory.list();
         assertEquals(listOfFiles.length, 0);
@@ -70,7 +70,7 @@ public class BuildTest {
 
         File buildDirectory = new File(path + "/build"); //build new directory
 
-        new CommandLine(new Main()).execute("statique", "build", path);
+        new CommandLine(new Main()).execute( "build", path);
 
         String[] listOfFiles = buildDirectory.list();
         for (String file : listOfFiles) {
@@ -102,7 +102,7 @@ public class BuildTest {
 
         File buildDirectory = new File( path + "/build");
 
-        new CommandLine(new Main()).execute("statique", "build", directoryTest.getPath());
+        new CommandLine(new Main()).execute( "build", directoryTest.getPath());
 
         ArrayList<String> list = new ArrayList<String>(Arrays.asList(Objects.requireNonNull(directoryTest.list())));
         ArrayList<String> listBuild = new ArrayList<String>(Arrays.asList(Objects.requireNonNull(buildDirectory.list())));
@@ -142,7 +142,7 @@ public class BuildTest {
                 //DO NOTHING
             }
         }));
-        assertEquals(2, new CommandLine(new Main()).execute("statique", "build", path));
+        assertEquals(2, new CommandLine(new Main()).execute( "build", path));
         System.setErr(original);
     }
 

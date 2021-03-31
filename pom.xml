@@ -5,10 +5,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>ch.heig-vd.app</groupId>
-    <artifactId>projet-besseau_cerottini_maziero_ogi</artifactId>
-    <version>1.0-SNAPSHOT</version>
-
-    <name>projet-besseau_cerottini_maziero_ogi</name>
+    <artifactId>statique</artifactId>
+    <version>0.0.1</version>
+    <packaging>jar</packaging>
+    <name>statique</name>
     <!-- FIXME change it to the project's website -->
     <url>http://www.example.com</url>
 
@@ -105,6 +105,29 @@
                     <source>8</source>
                     <target>8</target>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.0.0</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <transformers>
+                                <transformer
+                                        implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <manifestEntries>
+                                        <Main-Class>ch.heig_vd.app.Main</Main-Class>
+                                    </manifestEntries>
+                                </transformer>
+                            </transformers>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

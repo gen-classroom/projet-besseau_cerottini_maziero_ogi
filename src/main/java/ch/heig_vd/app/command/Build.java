@@ -1,4 +1,4 @@
-package ch.heig_vd.app;
+package ch.heig_vd.app.command;
 
 import ch.heig_vd.app.utils.Converter;
 import picocli.CommandLine;
@@ -11,9 +11,11 @@ import java.nio.file.Paths;
 import org.apache.commons.io.FileUtils;
 
 
-@CommandLine.Command(name = "build", exitCodeOnExecutionException = 2)
-class Build implements Runnable {
-    @CommandLine.Parameters(index = "0")
+@CommandLine.Command(name = "build",
+        exitCodeOnExecutionException = 2,
+        description = "Build a static site")
+public class Build implements Runnable {
+    @CommandLine.Parameters(description = "Path to site to build. (Must contain a config.json file)")
     String filePath;
     Converter converter;
 

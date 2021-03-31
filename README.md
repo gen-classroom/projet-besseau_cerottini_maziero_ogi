@@ -16,16 +16,39 @@ The goal of this project is to train the software engineering skills of the team
 
 ## Installation
 
-Check the **releases** section for more detail about the different versions and available user installation guides. 
+Download the latest release and lanch the .jar. with `java -jar`
 
-## Roadmap
+Executing it should produce the following result:
 
-### Sprint 1
+ ![Usage](./images/Usage.png)
 
-First iteration of the project, the tool should offer basic commands such as init, build, clean, etc...
+## Usage
 
-### [More to come]
+- `statique init PATH`
 
-## License
+Initialise the static website to the given path. Make sure you have the permission to do so. For now, it creates a config file (`config.json`) and an index.md. In another iteration we might allow you to directly specifies those information.
 
-See the LICENE.md file to get more information about the license.
+-  `statique build PATH` 
+
+Convert the different markdown file present in the path into hmtl files with the site and file metadata specified in the header.
+
+- `statique clean PATH`
+
+Remove the build folder inside the path
+
+- `statique serve PATH`
+
+Not yet implemented
+
+## Build the project
+
+```bash
+mvn clean install 
+```
+
+There should be a `statique-VERSION.jar` in the `target` folder.
+
+## Others
+
+If you use an IDE you can add `-Dpicocli.ansi=TRUE` in the vm option in order to enable the colouring.
+

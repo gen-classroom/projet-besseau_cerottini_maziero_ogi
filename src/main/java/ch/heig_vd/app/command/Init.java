@@ -1,4 +1,4 @@
-package ch.heig_vd.app;
+package ch.heig_vd.app.command;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -14,10 +14,12 @@ import java.util.Date;
 
 
 // Class defining the init command used to create the website folders as well as an example of config.json and index.md file
-@CommandLine.Command(name = "init", exitCodeOnExecutionException = 2)
-class Init implements Runnable {
+@CommandLine.Command(name = "init",
+        description = "Initialize a static site directory",
+        exitCodeOnExecutionException = 2)
+public class Init implements Runnable {
 
-    @CommandLine.Parameters(index = "0")
+    @CommandLine.Parameters(description = "Path to site to init.")
     String filePath; // Picocli puts the argument after init into this variable
 
     DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
