@@ -1,6 +1,6 @@
 ---
 name: Feature request
-about: Add a strory for your feature
+about: Add a story for your feature
 title: ''
 labels: Feature
 assignees: ''
