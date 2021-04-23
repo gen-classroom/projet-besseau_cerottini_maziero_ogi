@@ -18,12 +18,7 @@ public class Converter {
 
         // Parses the json config metadata
         try {
-            JsonParser.parse(jsonMetadata, new JsonParserVisitor() {
-                @Override
-                public void visit(String field, String value) {
-                    configMeta.add(new Metadata(field, value));
-                }
-            });
+            JsonParser.parse(jsonMetadata, (field, value) -> configMeta.add(new Metadata(field, value)));
         } catch (IOException e) {
             e.printStackTrace();
         }
