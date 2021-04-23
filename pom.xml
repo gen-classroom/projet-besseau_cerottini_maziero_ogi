@@ -40,6 +40,11 @@
             <artifactId>handlebars</artifactId>
             <version>4.2.0</version>
         </dependency>
+        <dependency>
+            <groupId>com.github.jknack</groupId>
+            <artifactId>handlebars-markdown</artifactId>
+            <version>${handlebars-version}</version>
+        </dependency>
 
         <dependency>
             <groupId>info.picocli</groupId>
