@@ -6,9 +6,9 @@ public class Metadata {
     private final String name;
     private final String content;
 
-    public Metadata(String name, String contenu) {
+    public Metadata(String name, String content) {
         this.name = name;
-        this.content = contenu;
+        this.content = content;
     }
 
     public String getName() {
