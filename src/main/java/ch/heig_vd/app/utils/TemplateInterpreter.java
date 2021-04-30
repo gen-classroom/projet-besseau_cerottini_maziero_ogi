@@ -6,6 +6,7 @@ import com.github.jknack.handlebars.io.CompositeTemplateLoader;
 import com.github.jknack.handlebars.io.FileTemplateLoader;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class TemplateInterpreter {
@@ -19,7 +20,18 @@ public class TemplateInterpreter {
         handlebars.setPrettyPrint(true);
     }
 
-    public String generate(ArrayList<Metadata> global, ArrayList<Metadata> page, String content){
-        String layout =
+    public String generate(ArrayList<Metadata> global, ArrayList<Metadata> page, String content) throws IOException {
+        Template a = null;
+        for (Metadata metadata: page) {
+            if (metadata.getName().equals("template")){
+                a = handlebars.compile(metadata.getContent());
+                break;
+            }
+        }
+        if (a == null){
+            a = handlebars.compile("default");
+        }
+
+        return "TODO";
     }
 }
