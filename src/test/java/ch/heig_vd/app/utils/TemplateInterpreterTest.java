@@ -5,8 +5,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.NotDirectoryException;
 import java.nio.file.Path;
@@ -19,11 +18,12 @@ public class TemplateInterpreterTest {
 
     private static ArrayList<Metadata> globalMeta = new ArrayList<>();
     private static String mdContent = "# Mon titre\n" +
-                                      "## Mon sous-titre\n" +
-                                      "Le contenu de mon article.\n" +
-                                      "![Une image](./image.png)";
-    private static ArrayList<Metadata> localMeta  = new ArrayList<>();
-       @BeforeClass
+            "## Mon sous-titre\n" +
+            "Le contenu de mon article.\n" +
+            "![Une image](./image.png)";
+    private static ArrayList<Metadata> localMeta = new ArrayList<>();
+
+    @BeforeClass
     public static void setup() throws IOException {
         globalMeta.add(new Metadata("title", "MyWebsite"));
         globalMeta.add(new Metadata("description", "Website description"));
@@ -49,7 +49,7 @@ public class TemplateInterpreterTest {
         String path = "./templateInterpreter/notAFile";
         File dir = new File(path);
         dir.mkdir();
-        File file = new File(path+"template");
+        File file = new File(path + "template.html");
         file.createNewFile();
         Exception exception = assertThrows(NotDirectoryException.class, () -> {
             TemplateInterpreter templateInterpreter = new TemplateInterpreter(file);
@@ -58,39 +58,146 @@ public class TemplateInterpreterTest {
 
 
     // test if directory is empty and wrong template is asked
-    @Test(expected = RuntimeException.class)
+    @Test(expected = NoSuchFileException.class)
     public void templateNotFoundShouldThrows() throws IOException {
-        String path = "./templateInterpreter/notAFile";
+        String path = "./templateInterpreter/notFound";
         File dir = new File(path);
         dir.mkdir();
-        File file = new File(path+"wrongtemplate");
+        File file = new File(path + "wrongtemplate.html");
         file.createNewFile();
         TemplateInterpreter templateInterpreter = new TemplateInterpreter(dir);
-        templateInterpreter.generate(globalMeta, localMeta, mdContent);
+        ArrayList<Metadata> localMeta = new ArrayList<>();
+        localMeta.add(new Metadata("author", "Website author"));
+        localMeta.add(new Metadata("template", "templateA"));
+        Exception exception = assertThrows(NoSuchFileException.class, () -> {
+            templateInterpreter.generate(globalMeta, localMeta, mdContent);
+        });
     }
 
     @Test(expected = RuntimeException.class)
-    public void noMatchingMetaRequiredInTemplateShouldThrows() {
-
+    public void noMatchingMetaRequiredInTemplateShouldThrows() throws IOException {
+        String path = "./templateInterpreter/noMatch";
+        File dir = new File(path);
+        dir.mkdir();
+        File file = new File(path + "templateA.html");
+        file.createNewFile();
+        PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(file)));
+        writer.write("<html lang=\"en\">\n" +
+                "<head>\n" +
+                "<meta charset=\"utf-8\">\n" +
+                "<title>{{ site.title }} | {{ page.title }}</title>\n" +
+                "</head>\n" +
+                "<body>\n" +
+                "{{ content }}\n" +
+                "</body>\n" +
+                "</html>");
+        writer.flush();
+        TemplateInterpreter templateInterpreter = new TemplateInterpreter(dir);
+        ArrayList<Metadata> localMeta = new ArrayList<>();
+        localMeta.add(new Metadata("author", "Website author"));
+        localMeta.add(new Metadata("template", "templateA"));
+        Exception exception = assertThrows(RuntimeException.class, () -> {
+            templateInterpreter.generate(globalMeta, localMeta, mdContent);
+        });
 
     }
 
     // Maybe check if a warning is displayed if any
     @Test
-    public void tooManyMetaInFileShouldWork() {
-
+    public void tooManyMetaInFileShouldWork() throws IOException {
+        String path = "./templateInterpreter/noMatch";
+        File dir = new File(path);
+        dir.mkdir();
+        File file = new File(path + "templateA.html");
+        file.createNewFile();
+        PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(file)));
+        writer.write("<html lang=\"en\">\n" +
+                "<head>\n" +
+                "<meta charset=\"utf-8\">\n" +
+                "<title>{{ site.title }} | {{ page.title }}</title>\n" +
+                "</head>\n" +
+                "<body>\n" +
+                "{{ content }}\n" +
+                "</body>\n" +
+                "</html>");
+        writer.flush();
+        TemplateInterpreter templateInterpreter = new TemplateInterpreter(dir);
+        ArrayList<Metadata> localMeta = new ArrayList<>();
+        localMeta.add(new Metadata("author", "Website author"));
+        localMeta.add(new Metadata("template", "templateA"));
+        localMeta.add(new Metadata("title", "test"));
+        templateInterpreter.generate(globalMeta, localMeta, mdContent);
     }
 
     // Should use default template file
     @Test
-    public void shouldWorkWithNoTemplateInFileMetadata() {
-
+    public void shouldWorkWithNoTemplateInFileMetadata() throws IOException {
+        String path = "./templateInterpreter/noMatch";
+        File dir = new File(path);
+        dir.mkdir();
+        File file = new File(path + "default.html");
+        file.createNewFile();
+        PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(file)));
+        writer.write("<html lang=\"en\">\n" +
+                "<head>\n" +
+                "<meta charset=\"utf-8\">\n" +
+                "<title>{{ site.title }} | {{ page.title }}</title>\n" +
+                "</head>\n" +
+                "<body>\n" +
+                "{{ content }}\n" +
+                "</body>\n" +
+                "</html>");
+        writer.flush();
+        TemplateInterpreter templateInterpreter = new TemplateInterpreter(dir);
+        ArrayList<Metadata> localMeta = new ArrayList<>();
+        localMeta.add(new Metadata("author", "Website author"));
+        localMeta.add(new Metadata("template", "templateA"));
+        localMeta.add(new Metadata("title", "test"));
+        templateInterpreter.generate(globalMeta, localMeta, mdContent);
+        // TODO check if correspond to template with data
     }
 
     // Should use given template
     @Test
-    public void shouldWorkWithTemplateGivenInFileMetadata() {
-
+    public void shouldWorkWithTemplateGivenInFileMetadata() throws IOException {
+        String path = "./templateInterpreter/noMatch";
+        File dir = new File(path);
+        dir.mkdir();
+        File file = new File(path + "default.html");
+        File file2 = new File(path + "templateA.html");
+        file.createNewFile();
+        file2.createNewFile();
+        PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(file)));
+        writer.write("<html lang=\"en\">\n" +
+                "<head>\n" +
+                "<meta charset=\"utf-8\">\n" +
+                "<title>{{ site.title }} | {{ page.title }}</title>\n" +
+                "</head>\n" +
+                "<body>\n" +
+                "{{ content }}\n" +
+                "</body>\n" +
+                "</html>");
+        writer.flush();
+        writer.close();
+        writer = new PrintWriter(new BufferedWriter(new FileWriter(file2)));
+        writer.write("<html lang=\"en\">\n" +
+                "<head>\n" +
+                "<meta charset=\"utf-8\">\n" +
+                "<title>{{ site.title }} | {{ page.title }}</title>\n" +
+                "</head>\n" +
+                "<body>\n" +
+                "{{ page.author }}\n" +
+                "{{ content }}\n" +
+                "</body>\n" +
+                "</html>");
+        writer.flush();
+        TemplateInterpreter templateInterpreter = new TemplateInterpreter(dir);
+        ArrayList<Metadata> localMeta = new ArrayList<>();
+        localMeta.add(new Metadata("author", "Website author"));
+        localMeta.add(new Metadata("template", "templateA"));
+        localMeta.add(new Metadata("title", "test"));
+        templateInterpreter.generate(globalMeta, localMeta, mdContent);
+        // TODO check that content is used with template A and not default
     }
 
     @AfterClass
