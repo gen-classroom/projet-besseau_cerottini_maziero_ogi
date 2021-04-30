@@ -4,6 +4,7 @@ import org.apache.commons.io.FilenameUtils;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class PageParser {
     private static boolean isFileValid(File file) {
@@ -15,11 +16,10 @@ public class PageParser {
         return FilenameUtils.getExtension(filename).equals("md");
     }
 
-    private static String parseMetaLine(String head, String line) {
-        if (line.substring(0, head.length()).equals(head))
-            return line.substring(head.length());
-        else
-            throw new RuntimeException("Incorrect " + head +  " line");
+    private static Metadata parseMetaLine(String line) {
+        String[] tokens = line.split(":");
+        if (tokens.length < 2) throw new RuntimeException("Incorrect " + line +  " metadata line\nCheck end of metadata separator \"---\"");
+        return new Metadata(tokens[0], tokens[1]);
     }
 
     public static ArrayList<Metadata> extractMetadata(File mdFile) throws RuntimeException {
@@ -28,33 +28,30 @@ public class PageParser {
             throw new RuntimeException("Invalid input file");
 
         // Local vars
-        int nbMetaLines = 4;
-        String[] metaLines = new String[nbMetaLines];
         ArrayList<Metadata> outputMeta = new ArrayList<>();
 
         // Reads the file
-        BufferedReader reader;
+        BufferedReader reader = null;
+        String readLine;
         try {
             reader = new BufferedReader(new FileReader(mdFile));
+            readLine = reader.readLine();
 
-            // Reads the title line
-            for (int i = 0; i < metaLines.length; ++i) {
-                metaLines[i] = reader.readLine();
-                if (metaLines[i] == null || i != nbMetaLines - 1 && metaLines[i].equals("---"))
-                    throw new RuntimeException("Metadata are incomplete");
+            // Reads the file lines
+            while (readLine != null && !readLine.equals("---")) {
+                outputMeta.add(parseMetaLine(readLine));
+                readLine = reader.readLine();
             }
             reader.close();
 
-            // Checks end of metadata line
-            if (!metaLines[nbMetaLines - 1].equals("---"))
-                throw new RuntimeException("Missing end of metadata line");
-
-            // Parses the extracted lines
-            outputMeta.add(new Metadata("title", parseMetaLine("titre:", metaLines[0])));
-            outputMeta.add(new Metadata("author", parseMetaLine("auteur:", metaLines[1])));
-            outputMeta.add(new Metadata("date", parseMetaLine("date:", metaLines[2])));
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                if (reader != null) reader.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
         // Returns the parsed metadata

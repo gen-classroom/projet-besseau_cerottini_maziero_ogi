@@ -24,9 +24,9 @@ public class PageParserTest {
     public void metadataShouldBeParsedRetrieved() {
         try {
             // Creates test file
-            File input = new File("./PageParser/input.md");
+            File input = new File("./PageParser/input1.md");
             String inputContent = "titre:metaTitle\n" +
-                                  "auteur:metaAuthor\n" +
+                                  "myMetaName:metaContentText\n" +
                                   "date:metaDate\n" +
                                   "---\n" +
                                   "# MarkdownTitle";
@@ -38,12 +38,15 @@ public class PageParserTest {
             ArrayList<Metadata> meta = PageParser.extractMetadata(input);
 
             // Checks validity
+            assertEquals("titre", meta.get(0).getName());
+            assertEquals("myMetaName", meta.get(1).getName());
+            assertEquals("date", meta.get(2).getName());
             assertEquals("metaTitle", meta.get(0).getContent());
-            assertEquals("metaAuthor", meta.get(1).getContent());
+            assertEquals("metaContentText", meta.get(1).getContent());
             assertEquals("metaDate", meta.get(2).getContent());
 
             // Deletes test file
-            input.delete();
+            //input.delete();
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -54,10 +57,10 @@ public class PageParserTest {
     public void exceptionWhenParsingWrongMetadataFields() {
         try {
             // Creates test file
-            File input = new File("./PageParser/input.md");
+            File input = new File("./PageParser/input2.md");
             String inputContent = "titre:metaTitle\n" +
                     "auteur:metaAuthor\n" +
-                    "NULL:metaDate\n" +
+                    "wrongmetadatafilednoseparator\n" +
                     "---\n" +
                     "# MarkdownTitle";
             FileWriter writer = new FileWriter(input);
@@ -75,7 +78,7 @@ public class PageParserTest {
     public void exceptionWhenParsingMetadataInFileWithNoEndLine() {
         try {
             // Creates test file
-            File input = new File("./PageParser/input.md");
+            File input = new File("./PageParser/input3.md");
             String inputContent = "titre:metaTitle\n" +
                     "auteur:metaAuthor\n" +
                     "date:metaDate\n" +
@@ -92,36 +95,13 @@ public class PageParserTest {
     }
 
     @Test
-    public void contentShouldBeEmptyIfNoEndOfMetadataIsProvided() {
-        try {
-            // Creates test file
-            File input = new File("./PageParser/input.md");
-            String inputContent = "titre:metaTitle\n" +
-                    "auteur:metaAuthor\n" +
-                    "date:metaDate\n" +
-                    "# MarkdownTitle";
-            FileWriter writer = new FileWriter(input);
-            writer.write(inputContent);
-            writer.close();
-
-            // Extracts the markdown content
-            String content = PageParser.extractMarkdownContent(input);
-            input.delete();
-
-            assertEquals("", content);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Test
     public void markdownContentShouldBeParsedAndExtracted() {
         try {
             // Creates test file
-            File input = new File("./PageParser/input.md");
+            File input = new File("./PageParser/input4.md");
             String inputContent = "titre:metaTitle\n" +
                     "auteur:metaAuthor\n" +
-                    "date:metaDate\n" +
+                    "mymeta:metaContent\n" +
                     "---\n" +
                     "# MarkdownTitle";
             FileWriter writer = new FileWriter(input);
@@ -160,7 +140,6 @@ public class PageParserTest {
         File file = new File("./PageParser/testFile.txt");
         PageParser.extractMarkdownContent(file);
     }
-
 
     @AfterClass
     public static void cleanUp() throws IOException {
