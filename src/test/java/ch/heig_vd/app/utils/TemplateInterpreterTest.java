@@ -85,7 +85,7 @@ public class TemplateInterpreterTest {
         writer.write("<html lang=\"en\">\n" +
                 "<head>\n" +
                 "<meta charset=\"utf-8\">\n" +
-                "<title>{{site.title}} | {{page.title}}</title>\n" +
+                "<title>{{site:title}} | {{page:title}}</title>\n" +
                 "</head>\n" +
                 "<body>\n" +
                 "{{md content}}\n" +
@@ -114,7 +114,7 @@ public class TemplateInterpreterTest {
         writer.write("<html lang=\"en\">\n" +
                 "<head>\n" +
                 "<meta charset=\"utf-8\">\n" +
-                "<title>{{site_title}} | {{page_title}}</title>\n" +
+                "<title>{{site:title}} | {{page:title}}</title>\n" +
                 "</head>\n" +
                 "<body>\n" +
                 "{{md content}}\n" +
@@ -142,7 +142,7 @@ public class TemplateInterpreterTest {
         writer.write("<html lang=\"en\">\n" +
                 "<head>\n" +
                 "<meta charset=\"utf-8\">\n" +
-                "<title>{{site_title}} | {{page_title}}</title>\n" +
+                "<title>{{site:title}} | {{page:title}}</title>\n" +
                 "</head>\n" +
                 "<body>\n" +
                 "{{md content}}\n" +
@@ -172,7 +172,7 @@ public class TemplateInterpreterTest {
         writer.write("<html lang=\"en\">\n" +
                 "<head>\n" +
                 "<meta charset=\"utf-8\">\n" +
-                "<title>{{site_title}} | {{page_title}}</title>\n" +
+                "<title>{{site:title}} | {{page:title}}</title>\n" +
                 "</head>\n" +
                 "<body>\n" +
                 "{{md content}}\n" +
@@ -184,7 +184,7 @@ public class TemplateInterpreterTest {
         writer.write("<html lang=\"en\">\n" +
                 "<head>\n" +
                 "<meta charset=\"utf-8\">\n" +
-                "<title>{{site_title }} | {{page_title}}</title>\n" +
+                "<title>{{site:title }} | {{page:title}}</title>\n" +
                 "</head>\n" +
                 "<body>\n" +
                 "{{page_author}}\n" +

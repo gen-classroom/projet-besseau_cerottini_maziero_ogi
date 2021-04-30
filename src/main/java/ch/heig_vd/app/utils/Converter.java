@@ -24,21 +24,6 @@ public class Converter {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        // Extracts page title
-        Metadata titleMeta = null;
-        for (Metadata meta : configMeta) {
-            if (meta.getName().equals("title")) {
-                titleMeta = meta;
-                pageTitle = meta.getContent();
-            }
-        }
-
-        // Warns if title not found or removes the title from list
-        if (pageTitle.isEmpty())
-            System.err.println("Warning: No title metadata found in JSON config file");
-        else
-            configMeta.remove(titleMeta);
     }
 
     public void markdownToHTML(File mdFile, String ouputPath) {
@@ -51,7 +36,6 @@ public class Converter {
             throw new RuntimeException("File extension must be .md");
 
         // Output variables
-        StringBuilder htmlOutput = new StringBuilder();
         ArrayList<Metadata> mdMeta = new ArrayList<>();
         String mdContent = "";
 
@@ -92,10 +76,10 @@ public class Converter {
         // Parses the markdown
         Parser parser = Parser.builder().build();
         Node document = parser.parse(mdContent.toString());
-        HtmlRenderer renderer = HtmlRenderer.builder().build();
+        HtmlRenderer renderer = HtmlRenderer.builder().build();*/
 
         // Gets the output field name
-        fileName = FilenameUtils.getBaseName(fileName);*/
+        fileName = FilenameUtils.getBaseName(fileName);
 
         // Generates the output content with template
         String outputHtml = "";

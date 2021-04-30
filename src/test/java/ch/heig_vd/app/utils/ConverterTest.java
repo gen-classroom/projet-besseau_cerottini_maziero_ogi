@@ -1,10 +1,14 @@
 package ch.heig_vd.app.utils;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.io.*;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import static org.junit.Assert.*;
 
@@ -13,36 +17,68 @@ import static org.junit.Assert.*;
  */
 public class ConverterTest {
 
+    private static File jsonConfig = null;
+    private static File input = null;
+    private static final File templatePath = new File("./ConverterTest/template");
+
+    @BeforeClass
+    public static void setup() throws IOException {
+        File testTree = new File("./ConverterTest/template");
+        testTree.mkdirs();
+
+        // Creates a test json config file
+        jsonConfig = new File("./ConverterTest/conf.json");
+        BufferedWriter writer = new BufferedWriter(new FileWriter(jsonConfig));
+        writer.write("{\n" +
+                "\"title\":\"globalTitle\",\n" +
+                "\"b\":\"c\"\n" +
+                "}");
+        writer.flush();
+        writer.close();
+
+        // Creates test md file
+        input = new File("./ConverterTest/input.md");
+        writer = new BufferedWriter(new FileWriter(input));
+        String inputContent = "title:localTitle\n" +
+                "template:mytemplate\n" +
+                "author:authorName\n" +
+                "---\n" +
+                "# Mon titre\n" +
+                "## Mon sous-titre\n" +
+                "Le contenu de mon article.\n" +
+                "![Une image](./image.png)";
+        writer.write(inputContent);
+        writer.flush();
+        writer.close();
+
+        // Creates test template file
+        File template = new File("./ConverterTest/template/mytemplate.html");
+        writer = new BufferedWriter(new FileWriter(template));
+        String templateContent = "<html lang=\"en\">\n" +
+                "<head>\n" +
+                "<meta charset=\"utf-8\">\n" +
+                "<title>{{site:title}} | {{page:title}}</title>\n" +
+                "</head>\n" +
+                "<body>\n" +
+                "{{page:author}}\n" +
+                "{{md content}}\n" +
+                "</body>\n" +
+                "</html>";
+        writer.write(templateContent);
+        writer.flush();
+        writer.close();
+    }
+
     @Test
     public void mdFileShouldBeConvertedToHTMLFile() {
         try {
-            // Creates a test json config file
-            File jsonConfig = new File("./conf.json");
-            BufferedWriter jsonWriter = new BufferedWriter(new FileWriter(jsonConfig));
-            jsonWriter.write("{\n" +
-                    "\"title\":\"a\",\n" +
-                    "\"b\":\"c\"}");
-            jsonWriter.flush();
-            jsonWriter.close();
-
-            // Creates test md file
-            File input = new File("./input.md");
-            FileWriter writer = new FileWriter(input);
-            String inputContent = "titre:metaTitle\n" +
-                    "auteur:metaAuthor\n" +
-                    "date:metaDate\n" +
-                    "---\n" +
-                    "This is *Sparta*";
-            writer.write(inputContent);
-            writer.close();
-
             // Converts
-            Converter conv = new Converter(jsonConfig);
-            conv.markdownToHTML(input, "./");
+            Converter conv = new Converter(jsonConfig, templatePath);
+            conv.markdownToHTML(input, "./ConverterTest/");
 
             // Checks output
-            File ouput = new File("./input.html");
-            BufferedReader reader = new BufferedReader(new FileReader(ouput));
+            File outputFile = new File("./ConverterTest/input.html");
+            BufferedReader reader = new BufferedReader(new FileReader(outputFile));
 
             // Tests
             StringBuilder output = new StringBuilder();
@@ -53,22 +89,17 @@ public class ConverterTest {
             }
             reader.close();
 
-            // Deletes the files
-            input.delete();
-            ouput.delete();
-
             // Assert
-            String expectedOutput = "<!DOCTYPE html>\n" +
-                    "<html>\n" +
+            String expectedOutput = "<html lang=\"en\">\n" +
                     "<head>\n" +
-                    "<title>a</title>\n" +
-                    "<meta name=\"b\" content=\"c\">\n" +
-                    "<meta name=\"title\" content=\"metaTitle\">\n" +
-                    "<meta name=\"author\" content=\"metaAuthor\">\n" +
-                    "<meta name=\"date\" content=\"metaDate\">\n" +
+                    "<meta charset=\"utf-8\">\n" +
+                    "<title>globalTitle | localTitle</title>\n" +
                     "</head>\n" +
                     "<body>\n" +
-                    "<p>This is <em>Sparta</em></p>\n" +
+                    "authorName\n" +
+                    "<h1>Mon titre</h1>\n" +
+                    "<h2>Mon sous-titre</h2>\n" +
+                    "<p>Le contenu de mon article. <img src=\"./image.png\" alt=\"Une image\" /></p>\n" +
                     "</body>\n" +
                     "</html>\n";
 
@@ -84,74 +115,23 @@ public class ConverterTest {
 
     @Test(expected = RuntimeException.class)
     public void givenFileShouldNotBeDirectory() {
-        File jsonConfig = new File("./conf.json");
-        File dir = new File("./");
-        Converter conv = new Converter(jsonConfig);
-        conv.markdownToHTML(dir, "./");
+        Converter conv = new Converter(jsonConfig, templatePath);
+        conv.markdownToHTML(new File("./ConverterTest"), "./ConverterTest");
     }
 
     @Test(expected = RuntimeException.class)
     public void givenFileShouldHaveMarkdownExtension() {
-        File jsonConfig = new File("./conf.json");
-        File file = new File("./testFile.txt");
-        Converter conv = new Converter(jsonConfig);
+        File file = new File("./ConverterTest/testFile.txt");
+        Converter conv = new Converter(jsonConfig, templatePath);
         conv.markdownToHTML(file, "./");
     }
 
-    @Test
-    public void mdFileWithNoValidMetadataShouldBeRejected() {
-        try {
-            // Creates a test json config file
-            File jsonConfig = new File("./conf.json");
-            BufferedWriter jsonWriter = new BufferedWriter(new FileWriter(jsonConfig));
-            jsonWriter.write("{\n" +
-                    "\"title\":\"a\",\n" +
-                    "\"b\":\"c\"}");
-            jsonWriter.flush();
-            jsonWriter.close();
-
-            // Creates test md file
-            File input = new File("./input.md");
-            FileWriter writer = new FileWriter(input);
-            String inputContent = "titre:metaTitle\n" +
-                    "date:metaDate\n" +
-                    "---\n" +
-                    "This is *Sparta*";
-            writer.write(inputContent);
-            writer.close();
-
-            // Records console
-            ByteArrayOutputStream os = new ByteArrayOutputStream();
-            PrintStream ps = new PrintStream(os);
-            PrintStream sysOut = System.err;
-            System.setErr(ps);
-
-            // Converts
-            Converter conv = new Converter(jsonConfig);
-            conv.markdownToHTML(input, "./");
-
-            // Checks console
-            String expected = "File input.md could not be parsed and was not added to destination\n" +
-                    "Error : Metadata are incomplete" + System.lineSeparator();
-            String result = os.toString();
-            FilenameUtils.normalize(result);
-            FilenameUtils.normalize(expected);
-            System.err.flush();
-            System.setErr(sysOut);
-            assertEquals(expected, result);
-
-        } catch(IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     @AfterClass
-    public static void cleanUp() {
-        File file = new File("testFile.txt");
-        File jsonConfig = new File("./conf.json");
-        File input = new File("./input.md");
-        file.delete();
-        jsonConfig.delete();
-        input.delete();
+    public static void cleanUp() throws IOException {
+        Path path = Paths.get("./ConverterTest").normalize().toAbsolutePath();
+        if (!path.toFile().exists()) {
+            throw new IllegalArgumentException("Directory does not exists");
+        }
+        FileUtils.deleteDirectory(path.toFile());
     }
 }

@@ -16,7 +16,7 @@ import java.util.ArrayList;
 public class PageParserTest {
     @BeforeClass
     public static void setup() throws IOException {
-        File dir = new File("./PageParser");
+        File dir = new File("./PageParserTest");
         dir.mkdir();
     }
 
@@ -24,7 +24,7 @@ public class PageParserTest {
     public void metadataShouldBeParsedRetrieved() {
         try {
             // Creates test file
-            File input = new File("./PageParser/input1.md");
+            File input = new File("./PageParserTest/input1.md");
             String inputContent = "titre:metaTitle\n" +
                                   "myMetaName:metaContentText\n" +
                                   "date:metaDate\n" +
@@ -54,7 +54,7 @@ public class PageParserTest {
     public void exceptionWhenParsingWrongMetadataFields() {
         try {
             // Creates test file
-            File input = new File("./PageParser/input2.md");
+            File input = new File("./PageParserTest/input2.md");
             String inputContent = "titre:metaTitle\n" +
                     "auteur:metaAuthor\n" +
                     "wrongmetadatafilednoseparator\n" +
@@ -75,7 +75,7 @@ public class PageParserTest {
     public void exceptionWhenParsingMetadataInFileWithNoEndLine() {
         try {
             // Creates test file
-            File input = new File("./PageParser/input3.md");
+            File input = new File("./PageParserTest/input3.md");
             String inputContent = "titre:metaTitle\n" +
                     "auteur:metaAuthor\n" +
                     "date:metaDate\n" +
@@ -95,7 +95,7 @@ public class PageParserTest {
     public void markdownContentShouldBeParsedAndExtracted() {
         try {
             // Creates test file
-            File input = new File("./PageParser/input4.md");
+            File input = new File("./PageParserTest/input4.md");
             String inputContent = "titre:metaTitle\n" +
                     "auteur:metaAuthor\n" +
                     "mymeta:metaContent\n" +
@@ -108,7 +108,7 @@ public class PageParserTest {
             // Extracts the markdown content
             String content = PageParser.extractMarkdownContent(input);
 
-            assertEquals("# MarkdownTitle", content);
+            assertEquals("# MarkdownTitle" + System.lineSeparator(), content);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -116,31 +116,31 @@ public class PageParserTest {
 
     @Test(expected = RuntimeException.class)
     public void givenFileShouldNotBeDirectoryForMetaExtraction() {
-        File dir = new File("./PageParser");
+        File dir = new File("./PageParserTest");
         PageParser.extractMetadata(dir);
     }
 
     @Test(expected = RuntimeException.class)
     public void givenFileShouldHaveMarkdownExtensionForMetaExtraction() {
-        File file = new File("./PageParser/testFile.txt");
+        File file = new File("./PageParserTest/testFile.txt");
         PageParser.extractMetadata(file);
     }
 
     @Test(expected = RuntimeException.class)
     public void givenFileShouldNotBeDirectoryForMarkdownExtraction() {
-        File dir = new File("./PageParser");
+        File dir = new File("./PageParserTest");
         PageParser.extractMarkdownContent(dir);
     }
 
     @Test(expected = RuntimeException.class)
     public void givenFileShouldHaveMarkdownExtensionForMarkdownExtraction() {
-        File file = new File("./PageParser/testFile.txt");
+        File file = new File("./PageParserTest/testFile.txt");
         PageParser.extractMarkdownContent(file);
     }
 
     @AfterClass
     public static void cleanUp() throws IOException {
-        Path path = Paths.get("./PageParser").normalize().toAbsolutePath();
+        Path path = Paths.get("./PageParserTest").normalize().toAbsolutePath();
         if (!path.toFile().exists()) {
             throw new IllegalArgumentException("Directory does not exists");
         }

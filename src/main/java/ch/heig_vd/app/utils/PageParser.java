@@ -74,7 +74,7 @@ public class PageParser {
             String line = reader.readLine();
             while (line != null) {
                 // Stores the content line
-                if (beginRead) output.append(line);
+                if (beginRead) output.append(line + System.lineSeparator());
 
                 // Starts to read
                 if (line.equals("---")) beginRead = true;

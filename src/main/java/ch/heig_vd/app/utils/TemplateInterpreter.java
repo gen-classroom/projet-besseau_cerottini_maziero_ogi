@@ -45,11 +45,11 @@ public class TemplateInterpreter {
             if (metadata.getName().equals("template")){
                 template = handlebars.compile(metadata.getContent());
             }else{
-                hash.put("page_"+metadata.getName(), metadata.getContent());
+                hash.put("page:"+metadata.getName(), metadata.getContent());
             }
         }
         for (Metadata metadata: global) {
-            hash.put("site_"+metadata.getName(), metadata.getContent());
+            hash.put("site:"+metadata.getName(), metadata.getContent());
         }
         hash.put("content", content);
         if (template == null){
