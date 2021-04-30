@@ -5,6 +5,10 @@ import org.apache.commons.io.FilenameUtils;
 import java.io.*;
 import java.util.ArrayList;
 
+/**
+ * @author Marco Maziero
+ * @author Besseau Léonard
+ */
 public class PageParser {
     private static boolean isFileValid(File file) {
         // Checks file validity
@@ -88,6 +92,12 @@ public class PageParser {
         return output.toString();
     }
 
+    /**
+     * Extract content and metaData from file
+     * @param mdFile the file to use
+     * @param outputMetaData the array to store the metadata in
+     * @return the content of the file
+     */
     public static String extractAll(File mdFile, ArrayList<Metadata> outputMetaData){
         if (!isFileValid(mdFile))
             throw new RuntimeException("Invalid input file");
