@@ -2,9 +2,6 @@ package ch.heig_vd.app.utils;
 
 import com.github.jknack.handlebars.*;
 import com.github.jknack.handlebars.context.MapValueResolver;
-import com.github.jknack.handlebars.internal.text.Builder;
-import com.github.jknack.handlebars.io.ClassPathTemplateLoader;
-import com.github.jknack.handlebars.io.CompositeTemplateLoader;
 import com.github.jknack.handlebars.io.FileTemplateLoader;
 
 import java.io.File;
@@ -15,44 +12,68 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @author Besseau Léonard
+ * @author Marco Maziero
+ */
 public class TemplateInterpreter {
     private final Handlebars handlebars;
 
+    /**
+     * Create a template interpreter. Can insert content into template with tag specified by {{}}
+     * Expect template to be ending with .html.
+     * Can transform markdown into html if specified by {{md XXXXX}}
+     *
+     * @param templateDirectory the directory where all the templates are stored
+     * @throws IOException File does not exist or File is not a directory
+     */
     TemplateInterpreter(File templateDirectory) throws IOException {
-        if (!templateDirectory.exists()){
+        if (!templateDirectory.exists()) {
             throw new NoSuchFileException("Directory does not exist");
         }
-        if (!templateDirectory.isDirectory()){
+        if (!templateDirectory.isDirectory()) {
             throw new NotDirectoryException("template must be a directory");
         }
         FileTemplateLoader loader = new FileTemplateLoader(templateDirectory);
         loader.setSuffix(".html");
-        loader.setPrefix(templateDirectory.getPath());
         handlebars = new Handlebars(loader);
         handlebars.registerHelper("md", new MarkdownHelper());
         handlebars.setPrettyPrint(true);
-        // to throw when a value is missing
+
+        //Set handler when a value is missing
         handlebars.registerHelperMissing((context, options) -> {
-            throw new HandlebarsException("Missing helper: "
-                    + options.helperName + ". Helper Path: " + options.fn, null);
+            throw new HandlebarsException("Missing parameter: "
+                    + options.helperName + ". Parameter Path: " + options.fn, null);
         });
     }
 
+    /**
+     * Generates html valid content by inserting data into template
+     *
+     * @param global Site metadata
+     * @param page page metadata
+     * @param content the content of the page
+     * @return an html valid page
+     * @throws IOException Invalid template Access or missing element in data for template
+     */
     public String generate(ArrayList<Metadata> global, ArrayList<Metadata> page, String content) throws IOException {
+        if (global == null || page == null || content == null){
+            throw new IllegalArgumentException("Input should not be null");
+        }
         Template template = null;
         Map<String, Object> hash = new HashMap<>();
-        for (Metadata metadata: page) {
-            if (metadata.getName().equals("template")){
+        for (Metadata metadata : page) {
+            if (metadata.getName().equals("template")) {
                 template = handlebars.compile(metadata.getContent());
-            }else{
-                hash.put("page:"+metadata.getName(), metadata.getContent());
+            } else {
+                hash.put("page:" + metadata.getName(), metadata.getContent());
             }
         }
-        for (Metadata metadata: global) {
-            hash.put("site:"+metadata.getName(), metadata.getContent());
+        for (Metadata metadata : global) {
+            hash.put("site:" + metadata.getName(), metadata.getContent());
         }
         hash.put("content", content);
-        if (template == null){
+        if (template == null) {
             template = handlebars.compile("default");
         }
 
