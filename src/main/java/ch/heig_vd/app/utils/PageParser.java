@@ -4,7 +4,6 @@ import org.apache.commons.io.FilenameUtils;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.LinkedList;
 
 public class PageParser {
     private static boolean isFileValid(File file) {
@@ -74,7 +73,7 @@ public class PageParser {
             String line = reader.readLine();
             while (line != null) {
                 // Stores the content line
-                if (beginRead) output.append(line + System.lineSeparator());
+                if (beginRead) output.append(line).append(System.lineSeparator());
 
                 // Starts to read
                 if (line.equals("---")) beginRead = true;
@@ -86,6 +85,34 @@ public class PageParser {
         }
 
         // returns the extracted content
+        return output.toString();
+    }
+
+    public static String extractAll(File mdFile, ArrayList<Metadata> outputMetaData){
+        if (!isFileValid(mdFile))
+            throw new RuntimeException("Invalid input file");
+
+        StringBuilder output = new StringBuilder();
+        // Reads the file
+        String line;
+        try (BufferedReader reader = new BufferedReader(new FileReader(mdFile))) {
+            line = reader.readLine();
+
+            // Reads metaData
+            while (line != null && !line.equals("---")) {
+                outputMetaData.add(parseMetaLine(line));
+                line = reader.readLine();
+            }
+            // reads content
+            while (line != null) {
+                // Stores the content line
+                output.append(line).append(System.lineSeparator());
+
+                line = reader.readLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return output.toString();
     }
 }
