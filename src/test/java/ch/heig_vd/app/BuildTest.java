@@ -102,8 +102,13 @@ public class BuildTest {
 
         File buildDirectory = new File( path + "/build");
 
+        System.setErr(new PrintStream(new OutputStream() {
+            public void write(int b) {
+                //DO NOTHING
+            }
+        }));
         new CommandLine(new Main()).execute( "build", directoryTest.getPath());
-
+        System.setErr(original);
         ArrayList<String> list = new ArrayList<String>(Arrays.asList(Objects.requireNonNull(directoryTest.list())));
         ArrayList<String> listBuild = new ArrayList<String>(Arrays.asList(Objects.requireNonNull(buildDirectory.list())));
 
