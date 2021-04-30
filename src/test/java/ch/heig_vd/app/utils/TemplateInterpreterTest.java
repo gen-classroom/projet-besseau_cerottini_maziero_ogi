@@ -114,10 +114,10 @@ public class TemplateInterpreterTest {
         writer.write("<html lang=\"en\">\n" +
                 "<head>\n" +
                 "<meta charset=\"utf-8\">\n" +
-                "<title>{{ site.title }} | {{ page.title }}</title>\n" +
+                "<title>{{site_title}} | {{page_title}}</title>\n" +
                 "</head>\n" +
                 "<body>\n" +
-                "{{ content }}\n" +
+                "{{md content}}\n" +
                 "</body>\n" +
                 "</html>");
         writer.flush();
@@ -142,10 +142,10 @@ public class TemplateInterpreterTest {
         writer.write("<html lang=\"en\">\n" +
                 "<head>\n" +
                 "<meta charset=\"utf-8\">\n" +
-                "<title>{{ site.title }} | {{ page.title }}</title>\n" +
+                "<title>{{site_title}} | {{page_title}}</title>\n" +
                 "</head>\n" +
                 "<body>\n" +
-                "{{ content }}\n" +
+                "{{md content}}\n" +
                 "</body>\n" +
                 "</html>");
         writer.flush();
@@ -153,7 +153,6 @@ public class TemplateInterpreterTest {
         TemplateInterpreter templateInterpreter = new TemplateInterpreter(dir);
         ArrayList<Metadata> localMeta = new ArrayList<>();
         localMeta.add(new Metadata("author", "Website author"));
-        localMeta.add(new Metadata("template", "templateA"));
         localMeta.add(new Metadata("title", "test"));
         templateInterpreter.generate(globalMeta, localMeta, mdContent);
         // TODO check if correspond to template with data
@@ -173,10 +172,10 @@ public class TemplateInterpreterTest {
         writer.write("<html lang=\"en\">\n" +
                 "<head>\n" +
                 "<meta charset=\"utf-8\">\n" +
-                "<title>{{ site.title }} | {{ page.title }}</title>\n" +
+                "<title>{{site_title}} | {{page_title}}</title>\n" +
                 "</head>\n" +
                 "<body>\n" +
-                "{{ content }}\n" +
+                "{{md content}}\n" +
                 "</body>\n" +
                 "</html>");
         writer.flush();
@@ -185,11 +184,11 @@ public class TemplateInterpreterTest {
         writer.write("<html lang=\"en\">\n" +
                 "<head>\n" +
                 "<meta charset=\"utf-8\">\n" +
-                "<title>{{ site.title }} | {{ page.title }}</title>\n" +
+                "<title>{{site_title }} | {{page_title}}</title>\n" +
                 "</head>\n" +
                 "<body>\n" +
-                "{{ page.author }}\n" +
-                "{{ content }}\n" +
+                "{{page_author}}\n" +
+                "{{md content}}\n" +
                 "</body>\n" +
                 "</html>");
         writer.flush();
