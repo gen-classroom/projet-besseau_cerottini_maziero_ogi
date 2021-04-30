@@ -37,24 +37,24 @@ public class Converter {
 
         // Output variables
         ArrayList<Metadata> mdMeta = new ArrayList<>();
-        String mdContent = "";
+        String mdContent = PageParser.extractAll(mdFile, mdMeta);
 
         // Retrieves the metas inside md file
-        try {
-            mdMeta = PageParser.extractMetadata(mdFile);
-        } catch (RuntimeException e) {
-            System.err.println("File " +
-                    mdFile.getName() +
-                    " could not be parsed and was not added to destination\n" +
-                    "Error : " + e.getMessage());
-        }
-
-        // Extracts md content
-        try {
-            mdContent = PageParser.extractMarkdownContent(mdFile);
-        } catch (RuntimeException e) {
-            System.err.println("Content could not be parsed in file " + mdFile.getName());
-        }
+//        try {
+//            mdMeta = PageParser.extractMetadata(mdFile);
+//        } catch (RuntimeException e) {
+//            System.err.println("File " +
+//                    mdFile.getName() +
+//                    " could not be parsed and was not added to destination\n" +
+//                    "Error : " + e.getMessage());
+//        }
+//
+//        // Extracts md content
+//        try {
+//            mdContent = PageParser.extractMarkdownContent(mdFile);
+//        } catch (RuntimeException e) {
+//            System.err.println("Content could not be parsed in file " + mdFile.getName());
+//        }
 
         /* Inits html data
         htmlOutput.append("<!DOCTYPE html>\n");
