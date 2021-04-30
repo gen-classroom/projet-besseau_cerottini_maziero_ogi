@@ -19,7 +19,7 @@ public class TemplateInterpreter {
         handlebars.setPrettyPrint(true);
     }
 
-    public String generate(ArrayList<Metadata> global, ArrayList<Metadata> page, String content, String template){
+    public String generate(ArrayList<Metadata> global, ArrayList<Metadata> page, String content){
         String layout =
     }
 }
