@@ -27,29 +27,37 @@ public class TemplateInterpreter {
         }
         FileTemplateLoader loader = new FileTemplateLoader(templateDirectory);
         loader.setSuffix(".html");
-        handlebars = new Handlebars();
+        loader.setPrefix(templateDirectory.getPath());
+        handlebars = new Handlebars(loader);
         handlebars.registerHelper("md", new MarkdownHelper());
         handlebars.setPrettyPrint(true);
+        // to throw when a value is missing
+        handlebars.registerHelperMissing((context, options) -> {
+            throw new HandlebarsException("Missing helper: "
+                    + options.helperName + ". Helper Path: " + options.fn, null);
+        });
     }
 
     public String generate(ArrayList<Metadata> global, ArrayList<Metadata> page, String content) throws IOException {
-        Template a = null;
+        Template template = null;
         Map<String, Object> hash = new HashMap<>();
         for (Metadata metadata: page) {
             if (metadata.getName().equals("template")){
-                a = handlebars.compile(metadata.getContent());
+                template = handlebars.compile(metadata.getContent());
             }else{
-                hash.put(metadata.getName(), metadata.getContent());
+                hash.put("page."+metadata.getName(), metadata.getContent());
             }
         }
-        if (a == null){
-            a = handlebars.compile("default");
+        for (Metadata metadata: global) {
+            hash.put("site."+metadata.getName(), metadata.getContent());
+        }
+        hash.put("content", content);
+        if (template == null){
+            template = handlebars.compile("default");
         }
 
-
-
         Context context = Context.newBuilder(hash).resolver(MapValueResolver.INSTANCE).build();
-
-        return "TODO";
+        String result = template.apply(context);
+        return result;
     }
 }

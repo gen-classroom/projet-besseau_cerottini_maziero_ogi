@@ -36,7 +36,7 @@ public class TemplateInterpreterTest {
 
     @Test
     public void templateDirectoryMissingShouldThrows() throws IOException {
-        String path = "./templateInterpreter/missing";
+        String path = "./templateInterpreter/missing/";
         File dir = new File(path);
         Exception exception = assertThrows(NoSuchFileException.class, () -> {
             TemplateInterpreter templateInterpreter = new TemplateInterpreter(dir);
@@ -46,7 +46,7 @@ public class TemplateInterpreterTest {
 
     @Test
     public void templateDirectoryNotADirectoryShouldThrows() throws IOException {
-        String path = "./templateInterpreter/notAFile";
+        String path = "./templateInterpreter/notAFile/";
         File dir = new File(path);
         dir.mkdir();
         File file = new File(path + "template.html");
@@ -60,7 +60,7 @@ public class TemplateInterpreterTest {
     // test if directory is empty and wrong template is asked
     @Test
     public void templateNotFoundShouldThrows() throws IOException {
-        String path = "./templateInterpreter/notFound";
+        String path = "./templateInterpreter/notFound/";
         File dir = new File(path);
         dir.mkdir();
         File file = new File(path + "wrongtemplate.html");
@@ -76,7 +76,7 @@ public class TemplateInterpreterTest {
 
     @Test
     public void noMatchingMetaRequiredInTemplateShouldThrows() throws IOException {
-        String path = "./templateInterpreter/noMatch";
+        String path = "./templateInterpreter/noMatch/";
         File dir = new File(path);
         dir.mkdir();
         File file = new File(path + "templateA.html");
@@ -85,10 +85,10 @@ public class TemplateInterpreterTest {
         writer.write("<html lang=\"en\">\n" +
                 "<head>\n" +
                 "<meta charset=\"utf-8\">\n" +
-                "<title>{{ site.title }} | {{ page.title }}</title>\n" +
+                "<title>{{site.title}} | {{page.title}}</title>\n" +
                 "</head>\n" +
                 "<body>\n" +
-                "{{ content }}\n" +
+                "{{md content}}\n" +
                 "</body>\n" +
                 "</html>");
         writer.flush();
@@ -100,13 +100,12 @@ public class TemplateInterpreterTest {
         Exception exception = assertThrows(RuntimeException.class, () -> {
             templateInterpreter.generate(globalMeta, localMeta, mdContent);
         });
-
     }
 
     // Maybe check if a warning is displayed if any
     @Test
     public void tooManyMetaInFileShouldWork() throws IOException {
-        String path = "./templateInterpreter/noMatch";
+        String path = "./templateInterpreter/tooMany/";
         File dir = new File(path);
         dir.mkdir();
         File file = new File(path + "templateA.html");
@@ -134,7 +133,7 @@ public class TemplateInterpreterTest {
     // Should use default template file
     @Test
     public void shouldWorkWithNoTemplateInFileMetadata() throws IOException {
-        String path = "./templateInterpreter/noMatch";
+        String path = "./templateInterpreter/work_default/";
         File dir = new File(path);
         dir.mkdir();
         File file = new File(path + "default.html");
@@ -163,7 +162,7 @@ public class TemplateInterpreterTest {
     // Should use given template
     @Test
     public void shouldWorkWithTemplateGivenInFileMetadata() throws IOException {
-        String path = "./templateInterpreter/noMatch";
+        String path = "./templateInterpreter/work_template/";
         File dir = new File(path);
         dir.mkdir();
         File file = new File(path + "default.html");
