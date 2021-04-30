@@ -104,6 +104,9 @@ public class PageParser {
                 line = reader.readLine();
             }
             // reads content
+            if(line != null){
+                line = reader.readLine();
+            }
             while (line != null) {
                 // Stores the content line
                 output.append(line).append(System.lineSeparator());

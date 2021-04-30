@@ -114,6 +114,36 @@ public class PageParserTest {
         }
     }
 
+    @Test
+    public void markdownAndMetaShouldBeParsedAndExtracted() {
+        try {
+            // Creates test file
+            File input = new File("./PageParserTest/input4.md");
+            String inputContent = "titre:metaTitle\n" +
+                    "myMetaName:metaContentText\n" +
+                    "date:metaDate\n"+
+                    "---\n" +
+                    "# MarkdownTitle";
+            FileWriter writer = new FileWriter(input);
+            writer.write(inputContent);
+            writer.close();
+
+
+            ArrayList<Metadata> meta = new ArrayList<>();
+            String content = PageParser.extractAll(input, meta);
+
+            assertEquals("titre", meta.get(0).getName());
+            assertEquals("myMetaName", meta.get(1).getName());
+            assertEquals("date", meta.get(2).getName());
+            assertEquals("metaTitle", meta.get(0).getContent());
+            assertEquals("metaContentText", meta.get(1).getContent());
+            assertEquals("metaDate", meta.get(2).getContent());
+            assertEquals("# MarkdownTitle" + System.lineSeparator(), content);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Test(expected = RuntimeException.class)
     public void givenFileShouldNotBeDirectoryForMetaExtraction() {
         File dir = new File("./PageParserTest");
