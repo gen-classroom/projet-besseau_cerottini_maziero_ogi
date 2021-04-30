@@ -187,7 +187,7 @@ public class TemplateInterpreterTest {
                 "<title>{{site:title }} | {{page:title}}</title>\n" +
                 "</head>\n" +
                 "<body>\n" +
-                "{{page_author}}\n" +
+                "{{page:author}}\n" +
                 "{{md content}}\n" +
                 "</body>\n" +
                 "</html>");
