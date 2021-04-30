@@ -45,9 +45,6 @@ public class PageParserTest {
             assertEquals("metaContentText", meta.get(1).getContent());
             assertEquals("metaDate", meta.get(2).getContent());
 
-            // Deletes test file
-            //input.delete();
-
         } catch (IOException e) {
             e.printStackTrace();
         }

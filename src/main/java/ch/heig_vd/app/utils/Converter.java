@@ -10,10 +10,12 @@ import org.commonmark.renderer.html.HtmlRenderer;
 
 public class Converter {
     // Atributes
+    private final File templateFolder;
     private final ArrayList<Metadata> configMeta;
     private String pageTitle;
 
-    public Converter(File jsonMetadata) {
+    public Converter(File jsonMetadata, File templateDirectory) {
+        templateFolder = templateDirectory;
         configMeta = new ArrayList<>();
 
         // Parses the json config metadata
@@ -70,7 +72,7 @@ public class Converter {
             System.err.println("Content could not be parsed in file " + mdFile.getName());
         }
 
-        // Inits html data
+        /* Inits html data
         htmlOutput.append("<!DOCTYPE html>\n");
         htmlOutput.append("<html>\n");
         htmlOutput.append("<head>\n");
@@ -93,26 +95,27 @@ public class Converter {
         HtmlRenderer renderer = HtmlRenderer.builder().build();
 
         // Gets the output field name
-        fileName = FilenameUtils.getBaseName(fileName);
+        fileName = FilenameUtils.getBaseName(fileName);*/
+
+        // Generates the output content with template
+        String outputHtml = "";
+        try {
+            TemplateInterpreter interpreter = new TemplateInterpreter(templateFolder);
+            outputHtml = interpreter.generate(configMeta, mdMeta, mdContent);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         // Creates and writes in the output
         try {
             File output = new File(ouputPath +"/"+ fileName + ".html");
             FileWriter outWriter = new FileWriter(output);
 
-            // Appends content to html
-            htmlOutput.append(renderer.render(document));
-            htmlOutput.append("</body>\n").append("</html>");
-
             // Writes to final html file
-            outWriter.write(htmlOutput.toString());
+            outWriter.write(outputHtml);
             outWriter.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    private String generateHtmlMeta(Metadata meta) {
-        return "<meta name=\"" + meta.getName() + "\" content=\"" + meta.getContent() + "\">";
     }
 }

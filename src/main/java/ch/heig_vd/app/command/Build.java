@@ -30,7 +30,8 @@ public class Build implements Runnable {
         if (!configFile.exists()){
             throw new RuntimeException("Config file does not exist");
         }
-        converter = new Converter(configFile);
+        File templateFolder = new File(path + "/template");
+        converter = new Converter(configFile, templateFolder);
         try {
             explore(filesDirectory, buildDirectory);
         } catch (IOException e) {
@@ -41,13 +42,16 @@ public class Build implements Runnable {
     //Get all the files and directories
     void explore(File filesDirectory, File buildDirectory) throws IOException {
 
+        Path path = Paths.get(filePath).normalize().toAbsolutePath();
+        File templateFolder = new File(path + "/template");
+
         File[] listOfFiles = filesDirectory.listFiles();
 
         if (listOfFiles != null) {
             for (File file : listOfFiles) {
                 String fileName = file.getName();
                 if (fileName.contains(".md")) {//MD files become HTML files
-                    converter.markdownToHTML(file, buildDirectory.toString());
+                    converter.markdownToHTML(buildDirectory.toString());
                 } else if (!fileName.contains("config") && !file.isDirectory()) {
                     File newDirectory = new File(buildDirectory + "/" + fileName);
                     FileUtils.copyFile(file, newDirectory);
