@@ -34,7 +34,7 @@ public class TemplateInterpreterTest {
         dir.mkdir();
     }
 
-    @Test(expected = NoSuchFileException.class)
+    @Test
     public void templateDirectoryMissingShouldThrows() throws IOException {
         String path = "./templateInterpreter/missing";
         File dir = new File(path);
@@ -44,7 +44,7 @@ public class TemplateInterpreterTest {
 
     }
 
-    @Test(expected = NotDirectoryException.class)
+    @Test
     public void templateDirectoryNotADirectoryShouldThrows() throws IOException {
         String path = "./templateInterpreter/notAFile";
         File dir = new File(path);
@@ -58,7 +58,7 @@ public class TemplateInterpreterTest {
 
 
     // test if directory is empty and wrong template is asked
-    @Test(expected = NoSuchFileException.class)
+    @Test
     public void templateNotFoundShouldThrows() throws IOException {
         String path = "./templateInterpreter/notFound";
         File dir = new File(path);
@@ -69,12 +69,12 @@ public class TemplateInterpreterTest {
         ArrayList<Metadata> localMeta = new ArrayList<>();
         localMeta.add(new Metadata("author", "Website author"));
         localMeta.add(new Metadata("template", "templateA"));
-        Exception exception = assertThrows(NoSuchFileException.class, () -> {
+        Exception exception = assertThrows(FileNotFoundException.class, () -> {
             templateInterpreter.generate(globalMeta, localMeta, mdContent);
         });
     }
 
-    @Test(expected = RuntimeException.class)
+    @Test
     public void noMatchingMetaRequiredInTemplateShouldThrows() throws IOException {
         String path = "./templateInterpreter/noMatch";
         File dir = new File(path);
@@ -92,6 +92,7 @@ public class TemplateInterpreterTest {
                 "</body>\n" +
                 "</html>");
         writer.flush();
+        writer.close();
         TemplateInterpreter templateInterpreter = new TemplateInterpreter(dir);
         ArrayList<Metadata> localMeta = new ArrayList<>();
         localMeta.add(new Metadata("author", "Website author"));
@@ -121,6 +122,7 @@ public class TemplateInterpreterTest {
                 "</body>\n" +
                 "</html>");
         writer.flush();
+        writer.close();
         TemplateInterpreter templateInterpreter = new TemplateInterpreter(dir);
         ArrayList<Metadata> localMeta = new ArrayList<>();
         localMeta.add(new Metadata("author", "Website author"));
@@ -148,6 +150,7 @@ public class TemplateInterpreterTest {
                 "</body>\n" +
                 "</html>");
         writer.flush();
+        writer.close();
         TemplateInterpreter templateInterpreter = new TemplateInterpreter(dir);
         ArrayList<Metadata> localMeta = new ArrayList<>();
         localMeta.add(new Metadata("author", "Website author"));
@@ -191,6 +194,7 @@ public class TemplateInterpreterTest {
                 "</body>\n" +
                 "</html>");
         writer.flush();
+        writer.close();
         TemplateInterpreter templateInterpreter = new TemplateInterpreter(dir);
         ArrayList<Metadata> localMeta = new ArrayList<>();
         localMeta.add(new Metadata("author", "Website author"));
