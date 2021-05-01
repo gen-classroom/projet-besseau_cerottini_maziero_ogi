@@ -45,7 +45,7 @@ public class Converter {
         fileName = FilenameUtils.getBaseName(fileName);
 
         // Generates the output content with template
-        String outputHtml = "";
+        String outputHtml;
         try {
             outputHtml = interpreter.generate(configMeta, mdMeta, mdContent);
         } catch (IOException e) {
@@ -55,7 +55,7 @@ public class Converter {
 
         // Creates and writes in the output
         File output = new File(ouputPath +"/"+ fileName + ".html");
-        try(FileWriter outWriter = new FileWriter(output);) {
+        try(FileWriter outWriter = new FileWriter(output)) {
             outWriter.write(outputHtml);
         } catch (IOException e) {
             e.printStackTrace();

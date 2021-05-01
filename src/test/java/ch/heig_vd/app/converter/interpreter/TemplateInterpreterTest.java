@@ -151,7 +151,7 @@ public class TemplateInterpreterTest {
         localMeta.add(new Metadata("title", "test"));
 
         String res = templateInterpreter.generate(globalMeta, localMeta, mdContent);
-        
+
         assertEquals(res, "<html lang=\"en\">\n" +
                 "<head>\n" +
                 "<meta charset=\"utf-8\">\n" +
