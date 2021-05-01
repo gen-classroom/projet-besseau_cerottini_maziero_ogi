@@ -1,4 +1,4 @@
-# GEN Project | Command line static website ch.heig_vd.app.generator
+# GEN Project | Command line static website generator
 
 **Authors**
 
