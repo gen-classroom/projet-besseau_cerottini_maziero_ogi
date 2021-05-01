@@ -7,6 +7,7 @@ import com.github.jknack.handlebars.context.MapValueResolver;
 import com.github.jknack.handlebars.io.FileTemplateLoader;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.NotDirectoryException;
@@ -66,7 +67,12 @@ public class TemplateInterpreter {
         Map<String, Object> hash = new HashMap<>();
         for (Metadata metadata : page) {
             if (metadata.getName().equals("template")) {
-                template = handlebars.compile(metadata.getContent());
+                try {
+                    template = handlebars.compile(metadata.getContent());
+                }catch (FileNotFoundException e){
+                    throw new FileNotFoundException("Template file "+metadata.getContent()+" not found.");
+                }
+
             } else {
                 hash.put("page:" + metadata.getName(), metadata.getContent());
             }

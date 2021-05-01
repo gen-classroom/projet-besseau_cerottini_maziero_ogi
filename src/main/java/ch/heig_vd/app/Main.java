@@ -33,7 +33,8 @@ public class Main implements Callable<Integer> {
                 .commands(CommandLine.Help.Ansi.Style.fg_blue)    // combine multiple styles
                 .options(CommandLine.Help.Ansi.Style.fg_yellow)                // yellow foreground color
                 .parameters(CommandLine.Help.Ansi.Style.fg_green)
-                .optionParams(CommandLine.Help.Ansi.Style.italic).build();
+                .optionParams(CommandLine.Help.Ansi.Style.italic)
+                .errors(CommandLine.Help.Ansi.Style.fg_red).build();
 
         // Parses and executes the options
         CommandLine commandLine = new CommandLine(new Main()).setColorScheme(colorScheme).setParameterExceptionHandler(new ShortErrorMessageHandler())
@@ -44,9 +45,6 @@ public class Main implements Callable<Integer> {
                 commandLine.printVersionHelp(System.out);
                 exit(commandLine.getCommandSpec().exitCodeOnSuccess());
             }
-
-            // Executes the subcommands
-
             exit(commandLine.execute(args));
         } catch (CommandLine.ParameterException ex) {
             commandLine.getErr().println(ex.getMessage());
@@ -54,17 +52,15 @@ public class Main implements Callable<Integer> {
                 ex.getCommandLine().usage(commandLine.getErr());
             }
             exit(commandLine.getCommandSpec().exitCodeOnInvalidInput());
-// exception occurred in business logic
         } catch (Exception ex) {
             ex.printStackTrace(commandLine.getErr());
             exit(commandLine.getCommandSpec().exitCodeOnExecutionException());
         }
         exit(commandLine.getCommandSpec().exitCodeOnSuccess());
-
     }
 
     @Override
-    public Integer call() throws Exception {
+    public Integer call() {
         CommandLine.usage(this, System.out, colorScheme);
         return 0;
     }
