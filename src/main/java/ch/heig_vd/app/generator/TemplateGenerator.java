@@ -10,7 +10,6 @@ public class TemplateGenerator {
 
     public static String generateIndex() throws IOException {
         return "title:localTitle\n" +
-                "template:mytemplate\n" +
                 "author:authorName\n" +
                 "---\n" +
                 "#My too classy site !\n"+
