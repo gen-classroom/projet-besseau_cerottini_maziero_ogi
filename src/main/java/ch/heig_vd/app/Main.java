@@ -6,6 +6,7 @@ import ch.heig_vd.app.errorHandler.ShortErrorMessageHandler;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 
+import java.util.Properties;
 import java.util.concurrent.Callable;
 
 import static java.lang.System.exit;
@@ -21,6 +22,7 @@ import static java.lang.System.exit;
 @Command(name = "statique",
         description = "A brand new static site generator.",
         version = {"Statique @|yellow v0.0.1|@"},
+        versionProvider = Main.PropertiesVersionProvider.class,
         descriptionHeading = "%n@|bold,underline Description|@:%n",
         parameterListHeading = "%n@|bold,underline Parameters|@:%n",
         optionListHeading = "%n@|bold,underline Options|@:%n",
@@ -37,7 +39,7 @@ public class Main implements Callable<Integer> {
 
     public static void main(String... args) {
         colorScheme = new CommandLine.Help.ColorScheme.Builder()
-                .commands(CommandLine.Help.Ansi.Style.fg_blue)    // combine multiple styles
+                .commands(CommandLine.Help.Ansi.Style.fg_blue)// combine multiple styles
                 .options(CommandLine.Help.Ansi.Style.fg_yellow)                // yellow foreground color
                 .parameters(CommandLine.Help.Ansi.Style.fg_green)
                 .optionParams(CommandLine.Help.Ansi.Style.italic)
@@ -70,6 +72,18 @@ public class Main implements Callable<Integer> {
     public Integer call() {
         CommandLine.usage(this, System.out, colorScheme);
         return 0;
+    }
+
+
+
+    static class PropertiesVersionProvider implements CommandLine.IVersionProvider {
+        public String[] getVersion() throws Exception {
+            Properties properties = new Properties();
+            properties.load(this.getClass().getClassLoader().getResourceAsStream("version.txt"));
+            return new String[] {
+                    "Statique" + " v" + properties.getProperty("Version"),
+            };
+        }
     }
 
 }
