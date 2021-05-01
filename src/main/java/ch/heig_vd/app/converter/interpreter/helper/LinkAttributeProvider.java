@@ -6,6 +6,9 @@ import org.commonmark.renderer.html.AttributeProvider;
 
 import java.util.Map;
 
+/**
+ * @author Besseau Léonard
+ */
 public class LinkAttributeProvider implements AttributeProvider {
     @Override
     public void setAttributes(Node node, String tagName, Map<String, String> attributes) {

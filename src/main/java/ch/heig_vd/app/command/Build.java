@@ -47,8 +47,6 @@ public class Build implements Runnable {
     //Get all the files and directories
     void explore(File filesDirectory, File buildDirectory) throws IOException {
 
-        Path path = Paths.get(filePath).normalize().toAbsolutePath();
-
         File[] listOfFiles = filesDirectory.listFiles();
 
         if (listOfFiles != null) {

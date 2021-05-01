@@ -2,7 +2,6 @@ package ch.heig_vd.app.converter.parser;
 
 import static org.junit.Assert.*;
 
-import ch.heig_vd.app.converter.parser.PageParser;
 import ch.heig_vd.app.converter.utils.Metadata;
 import org.apache.commons.io.FileUtils;
 import org.junit.AfterClass;
@@ -16,7 +15,7 @@ import java.util.ArrayList;
 
 public class PageParserTest {
     @BeforeClass
-    public static void setup() throws IOException {
+    public static void setup() {
         File dir = new File("./PageParserTest");
         dir.mkdir();
     }

@@ -2,6 +2,10 @@ package ch.heig_vd.app.converter.utils;
 
 import java.util.Objects;
 
+/**
+ * @author Marco Maziero
+ * @author Besseau Léonard
+ */
 public class Metadata {
     private final String name;
     private final String content;

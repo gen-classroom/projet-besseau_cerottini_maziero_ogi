@@ -24,6 +24,7 @@ public class Clean implements Runnable {
             FileUtils.deleteDirectory(path.toFile());
         } catch (IOException e) {
             e.printStackTrace();
+            throw new RuntimeException("An error occurred while deleting the file. "+e.getMessage());
         }
     }
 }

@@ -11,6 +11,13 @@ import java.util.concurrent.Callable;
 import static java.lang.System.exit;
 
 // Main command info
+
+/**
+ * @author Besseau Léonard
+ * @author Marco Maziero
+ * @author Cerottini Alexandra
+ * @author Ogi Nicolas
+ */
 @Command(name = "statique",
         description = "A brand new static site generator.",
         version = {"Statique @|yellow v0.0.1|@"},

@@ -8,6 +8,10 @@ import ch.heig_vd.app.converter.parser.PageParser;
 import ch.heig_vd.app.converter.utils.Metadata;
 import org.apache.commons.io.FilenameUtils;
 
+/**
+ * @author Marco Maziero
+ * @author Besseau Léonard
+ */
 public class Converter {
     private final ArrayList<Metadata> configMeta;
     TemplateInterpreter interpreter;
