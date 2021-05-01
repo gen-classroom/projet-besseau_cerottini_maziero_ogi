@@ -81,7 +81,7 @@ public class Main implements Callable<Integer> {
             Properties properties = new Properties();
             properties.load(this.getClass().getClassLoader().getResourceAsStream("version.txt"));
             return new String[] {
-                    "Statique" + " v" + properties.getProperty("Version"),
+                    "Statique " + "v@|yellow " + properties.getProperty("Version")+" |@",
             };
         }
     }
