@@ -18,7 +18,7 @@ public class Build implements Runnable {
     @CommandLine.Parameters(description = "Path to site to build. (Must contain a config.json file)")
     String filePath;
     Converter converter;
-
+    
     public void run() {
         Path path = Paths.get(filePath).normalize().toAbsolutePath();
         File filesDirectory = new File(path.toString()); //get all directory from there

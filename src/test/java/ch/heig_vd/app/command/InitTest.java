@@ -24,7 +24,7 @@ public class InitTest {
 
     @Test
     public void initShouldCreateDirectories() {
-        File dir = new File("test_folder/mon/site/");
+        File dir = new File("test_folder/mon/site/template");
         assertTrue(dir.exists());
     }
 
@@ -38,6 +38,12 @@ public class InitTest {
     public void initShouldCreateMd() {
         File mdFile = new File("test_folder/mon/site/index.md");
         assertTrue(mdFile.exists());
+    }
+
+    @Test
+    public void initShouldCreateHTML() {
+        File htmlFile = new File("test_folder/mon/site/template/default.html");
+        assertTrue(htmlFile.exists());
     }
 
     @AfterClass
