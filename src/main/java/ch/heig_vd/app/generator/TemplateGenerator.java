@@ -9,18 +9,24 @@ import java.util.Date;
 public class TemplateGenerator {
 
     public static String generateIndex() throws IOException {
-        return "# My too classy site !\nAuthor : a huge bg\nDate : " + new SimpleDateFormat("dd.MM.yyyy").format(new Date());
+        return "title:localTitle\n" +
+                "template:mytemplate\n" +
+                "author:authorName\n" +
+                "---\n" +
+                "#My too classy site !\n"+
+                "Author : a huge bg\n"+
+                "Date:" + new SimpleDateFormat(" dd.MM.yyyy ").format(new Date());
     }
 
     public static String generateTemplate() {
 
-        return  "<html lang=\"en\">\n" +
+        return "<html lang=\"en\">\n" +
                 "<head>\n" +
                 "      <meta charset=\"utf-8\">\n" +
-                "      <title>{{ GLOBAL.titre }} | {{ PAGE.titre }}</title>\n" +
+                "      <title>{{site:titre}} | {{page:titre}}</title>\n" +
                 "</head>\n" +
                 "<body>\n" +
-                "      {{ content }}\n" +
+                "      {{md content}}\n" +
                 "</body>\n" +
                 "</html>";
     }
