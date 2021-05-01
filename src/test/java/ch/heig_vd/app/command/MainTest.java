@@ -1,5 +1,6 @@
-package ch.heig_vd.app;
+package ch.heig_vd.app.command;
 
+import ch.heig_vd.app.Main;
 import picocli.CommandLine;
 import org.junit.Test;
 

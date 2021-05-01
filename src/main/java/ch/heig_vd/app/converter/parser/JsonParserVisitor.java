@@ -1,4 +1,4 @@
-package ch.heig_vd.app.utils;
+package ch.heig_vd.app.converter.parser;
 
 public interface JsonParserVisitor {
     /**

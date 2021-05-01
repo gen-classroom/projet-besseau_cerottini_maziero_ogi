@@ -1,7 +1,11 @@
-package ch.heig_vd.app.utils;
+package ch.heig_vd.app.converter;
 import java.io.*;
 import java.util.ArrayList;
 
+import ch.heig_vd.app.converter.interpreter.TemplateInterpreter;
+import ch.heig_vd.app.converter.parser.JsonParser;
+import ch.heig_vd.app.converter.parser.PageParser;
+import ch.heig_vd.app.converter.utils.Metadata;
 import org.apache.commons.io.FilenameUtils;
 
 public class Converter {

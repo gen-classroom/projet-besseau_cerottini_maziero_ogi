@@ -1,5 +1,6 @@
-package ch.heig_vd.app.utils;
+package ch.heig_vd.app.converter.interpreter;
 
+import ch.heig_vd.app.converter.utils.Metadata;
 import org.apache.commons.io.FileUtils;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;

@@ -1,4 +1,4 @@
-package ch.heig_vd.app.utils;
+package ch.heig_vd.app.converter.interpreter.helper;
 
 import com.github.jknack.handlebars.Handlebars;
 import com.github.jknack.handlebars.Helper;
@@ -7,14 +7,10 @@ import org.commonmark.node.Node;
 import org.commonmark.parser.Parser;
 import org.commonmark.renderer.html.HtmlRenderer;
 
-import java.io.IOException;
-
 public class MarkdownHelper implements Helper<Object> {
-    public static final Helper<Object> INSTANCE = new MarkdownHelper();
 
     @Override
-    public Object apply(final Object context, final Options options)
-            throws IOException {
+    public Object apply(final Object context, final Options options) {
         if (options.isFalsy(context)) {
             return "";
         }

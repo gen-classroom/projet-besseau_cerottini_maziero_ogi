@@ -1,5 +1,6 @@
-package ch.heig_vd.app.utils;
+package ch.heig_vd.app.converter.parser;
 
+import ch.heig_vd.app.converter.utils.Metadata;
 import org.apache.commons.io.FilenameUtils;
 
 import java.io.*;

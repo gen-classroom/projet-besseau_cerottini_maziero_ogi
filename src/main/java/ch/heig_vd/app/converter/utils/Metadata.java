@@ -1,4 +1,4 @@
-package ch.heig_vd.app.utils;
+package ch.heig_vd.app.converter.utils;
 
 import java.util.Objects;
 

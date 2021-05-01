@@ -1,6 +1,6 @@
 package ch.heig_vd.app.command;
 
-import ch.heig_vd.app.utils.Converter;
+import ch.heig_vd.app.converter.Converter;
 import picocli.CommandLine;
 
 import java.io.File;

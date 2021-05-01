@@ -1,5 +1,7 @@
-package ch.heig_vd.app.utils;
+package ch.heig_vd.app.converter.interpreter;
 
+import ch.heig_vd.app.converter.utils.Metadata;
+import ch.heig_vd.app.converter.interpreter.helper.MarkdownHelper;
 import com.github.jknack.handlebars.*;
 import com.github.jknack.handlebars.context.MapValueResolver;
 import com.github.jknack.handlebars.io.FileTemplateLoader;
@@ -27,7 +29,7 @@ public class TemplateInterpreter {
      * @param templateDirectory the directory where all the templates are stored
      * @throws IOException File does not exist or File is not a directory
      */
-    TemplateInterpreter(File templateDirectory) throws IOException {
+    public TemplateInterpreter(File templateDirectory) throws IOException {
         if (!templateDirectory.exists()) {
             throw new NoSuchFileException("Directory does not exist");
         }

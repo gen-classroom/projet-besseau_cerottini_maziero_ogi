@@ -1,4 +1,4 @@
-package ch.heig_vd.app.utils;
+package ch.heig_vd.app.converter.parser;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.databind.JsonNode;

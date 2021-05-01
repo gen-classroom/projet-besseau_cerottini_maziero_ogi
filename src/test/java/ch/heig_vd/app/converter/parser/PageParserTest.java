@@ -1,12 +1,13 @@
-package ch.heig_vd.app.utils;
+package ch.heig_vd.app.converter.parser;
 
 import static org.junit.Assert.*;
 
+import ch.heig_vd.app.converter.parser.PageParser;
+import ch.heig_vd.app.converter.utils.Metadata;
 import org.apache.commons.io.FileUtils;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.jupiter.api.AfterAll;
 
 import java.io.*;
 import java.nio.file.Path;

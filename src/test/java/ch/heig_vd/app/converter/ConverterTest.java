@@ -1,7 +1,6 @@
-package ch.heig_vd.app.utils;
+package ch.heig_vd.app.converter;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.FilenameUtils;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;

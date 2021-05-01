@@ -1,4 +1,4 @@
-package ch.heig_vd.app.utils;
+package ch.heig_vd.app.converter.interpreter.helper;
 
 import org.commonmark.node.Link;
 import org.commonmark.node.Node;
