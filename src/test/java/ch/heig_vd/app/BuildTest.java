@@ -102,6 +102,21 @@ public class BuildTest {
         directoryTest.mkdirs();
         createConfig(path);
 
+        File template = new File(directoryTest.getPath() + "/template");
+        template.mkdirs();
+        File file1 = new File(path + "/template/default.html");
+        PrintWriter writer1 = new PrintWriter(new BufferedWriter(new FileWriter(file1)));
+        writer1.write("<html lang=\"en\">\n" +
+                "<head>\n" +
+                "<meta charset=\"utf-8\">\n" +
+                "<title></title>\n" +
+                "</head>\n" +
+                "<body>\n" +
+                "{{md content}}\n" +
+                "</body>\n" +
+                "</html>");
+        writer1.flush();
+        writer1.close();
         File newDirectory = new File(directoryTest.getPath() + "/dossier");
         newDirectory.mkdirs();
         File image = new File(newDirectory.getPath() + "/image.png");
@@ -130,7 +145,7 @@ public class BuildTest {
         ArrayList<String> listBuild = new ArrayList<String>(Arrays.asList(Objects.requireNonNull(buildDirectory.list())));
 
         for (String file : list) {
-            if(file.equals("config.json") || file.equals("build")){
+            if(file.equals("config.json") || file.equals("build") || file.equals("template")){
                 assertFalse(listBuild.contains(file));
             }else{
                 if (file.substring(file.length() - 3).equals(".md")){

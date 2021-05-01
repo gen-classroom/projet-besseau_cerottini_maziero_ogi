@@ -20,7 +20,6 @@ public class Build implements Runnable {
     Converter converter;
 
     public void run() {
-
         Path path = Paths.get(filePath).normalize().toAbsolutePath();
         File filesDirectory = new File(path.toString()); //get all directory from there
         if(!filesDirectory.exists()){
@@ -49,7 +48,6 @@ public class Build implements Runnable {
     void explore(File filesDirectory, File buildDirectory) throws IOException {
 
         Path path = Paths.get(filePath).normalize().toAbsolutePath();
-        File templateFolder = new File(path + "/template");
 
         File[] listOfFiles = filesDirectory.listFiles();
 
@@ -61,7 +59,7 @@ public class Build implements Runnable {
                 } else if (!fileName.contains("config") && !file.isDirectory()) {
                     File newDirectory = new File(buildDirectory + "/" + fileName);
                     FileUtils.copyFile(file, newDirectory);
-                } else if (file.isDirectory() && !fileName.contains("build")) {
+                } else if (file.isDirectory() && !fileName.contains("build") && !fileName.contains("template")) {
                     File newDirectory = new File(buildDirectory + "/" + fileName); //build new directory
                     newDirectory.mkdir();
                     explore(file, newDirectory);
