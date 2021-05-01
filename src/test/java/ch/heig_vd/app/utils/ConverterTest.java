@@ -99,7 +99,8 @@ public class ConverterTest {
                     "authorName\n" +
                     "<h1>Mon titre</h1>\n" +
                     "<h2>Mon sous-titre</h2>\n" +
-                    "<p>Le contenu de mon article. <img src=\"./image.png\" alt=\"Une image\" /></p>\n" +
+                    "<p>Le contenu de mon article.\n"+
+                    "<img src=\"./image.png\" alt=\"Une image\" /></p>\n\n" +
                     "</body>\n" +
                     "</html>\n";
 
