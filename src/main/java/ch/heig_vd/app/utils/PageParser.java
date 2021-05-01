@@ -94,19 +94,19 @@ public class PageParser {
 
     /**
      * Extract content and metaData from file
-     * @param mdFile the file to use
+     * @param file the file to use
      * @param outputMetaData the array to store the metadata in
      * @return the content of the file
      */
-    public static String extractAll(File mdFile, ArrayList<Metadata> outputMetaData){
-        if (!isFileValid(mdFile)) {
+    public static String extractAll(File file, ArrayList<Metadata> outputMetaData){
+        if (!isFileValid(file)) {
             throw new RuntimeException("Invalid input file");
         }
 
         StringBuilder output = new StringBuilder();
         // Reads the file
         String line;
-        try (BufferedReader reader = new BufferedReader(new FileReader(mdFile))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             line = reader.readLine();
 
             // Reads metaData
@@ -128,6 +128,7 @@ public class PageParser {
 
         } catch (IOException e) {
             e.printStackTrace();
+            throw new RuntimeException("Error occurred while reading file "+file+". "+e.getMessage());
         }
         return output.toString();
     }
