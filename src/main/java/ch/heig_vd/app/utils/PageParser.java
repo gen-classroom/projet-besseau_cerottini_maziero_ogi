@@ -99,8 +99,9 @@ public class PageParser {
      * @return the content of the file
      */
     public static String extractAll(File mdFile, ArrayList<Metadata> outputMetaData){
-        if (!isFileValid(mdFile))
+        if (!isFileValid(mdFile)) {
             throw new RuntimeException("Invalid input file");
+        }
 
         StringBuilder output = new StringBuilder();
         // Reads the file
@@ -113,16 +114,18 @@ public class PageParser {
                 outputMetaData.add(parseMetaLine(line));
                 line = reader.readLine();
             }
-            // reads content
+            // Needed to avoid adding the separator into the content
             if(line != null){
                 line = reader.readLine();
-            }
-            while (line != null) {
-                // Stores the content line
-                output.append(line).append(System.lineSeparator());
+                // reads content
+                while (line != null) {
+                    // Stores the content line
+                    output.append(line).append(System.lineSeparator());
 
-                line = reader.readLine();
+                    line = reader.readLine();
+                }
             }
+
         } catch (IOException e) {
             e.printStackTrace();
         }
