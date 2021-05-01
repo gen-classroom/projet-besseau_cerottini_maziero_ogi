@@ -23,7 +23,7 @@ public class TemplateGenerator {
         return "<html lang=\"en\">\n" +
                 "<head>\n" +
                 "      <meta charset=\"utf-8\">\n" +
-                "      <title>{{site:titre}} | {{page:titre}}</title>\n" +
+                "      <title>{{site:title}} | {{page:title}}</title>\n" +
                 "</head>\n" +
                 "<body>\n" +
                 "      {{md content}}\n" +
