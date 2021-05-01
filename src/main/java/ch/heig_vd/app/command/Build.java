@@ -22,14 +22,19 @@ public class Build implements Runnable {
     public void run() {
 
         Path path = Paths.get(filePath).normalize().toAbsolutePath();
-
-        File buildDirectory = new File(path + "/build"); //build new directory
-        buildDirectory.mkdir();
         File filesDirectory = new File(path.toString()); //get all directory from there
+        if(!filesDirectory.exists()){
+            throw new RuntimeException("Directory does not exist");
+        }
+
+
         File configFile = new File(path+"/config.json");
         if (!configFile.exists()){
             throw new RuntimeException("Config file does not exist");
         }
+        File buildDirectory = new File(path + "/build"); //build new directory
+        buildDirectory.mkdir();
+
         File templateFolder = new File(path + "/template");
         converter = new Converter(configFile, templateFolder);
         try {

@@ -48,6 +48,22 @@ public class BuildTest {
     }
 
     @Test
+    public void nonExistentDirectoryShouldThrow() throws IOException {
+        String path = directoryPath+"/doesNotExist";
+        File directoryTest = new File(path);
+
+        File buildDirectory = new File(path+"/build"); //build new directory
+
+        System.setErr(new PrintStream(new OutputStream() {
+            public void write(int b) {
+                //DO NOTHING
+            }
+        }));
+        assertEquals(2,new CommandLine(new Main()).execute( "build", path));
+        System.setErr(original);
+    }
+
+    @Test
     public void configNotCopied() throws IOException {
         String path = directoryPath+"/configTest";
         File directoryTest = new File(path);
@@ -58,6 +74,7 @@ public class BuildTest {
         new CommandLine(new Main()).execute( "build", path);
 
         String[] listOfFiles = buildDirectory.list();
+        assert listOfFiles != null;
         assertEquals(listOfFiles.length, 0);
     }
 
@@ -136,7 +153,7 @@ public class BuildTest {
     }
 
     @Test
-    public void buildShoulThrowWhenNoConfigIsPresent() throws IOException {
+    public void buildShouldThrowWhenNoConfigIsPresent() throws IOException {
         String path = directoryPath+"/noConfigTest";
         File directoryTest = new File(path);
         directoryTest.mkdirs();
