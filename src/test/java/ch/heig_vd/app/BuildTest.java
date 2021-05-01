@@ -139,8 +139,8 @@ public class BuildTest {
 
 
         assertEquals(0, new CommandLine(new Main()).execute("build", directoryTest.getPath()));
-        ArrayList<String> list = new ArrayList<String>(Arrays.asList(Objects.requireNonNull(directoryTest.list())));
-        ArrayList<String> listBuild = new ArrayList<String>(Arrays.asList(Objects.requireNonNull(buildDirectory.list())));
+        ArrayList<String> list = new ArrayList<>(Arrays.asList(Objects.requireNonNull(directoryTest.list())));
+        ArrayList<String> listBuild = new ArrayList<>(Arrays.asList(Objects.requireNonNull(buildDirectory.list())));
 
         for (String file : list) {
             if (file.equals("config.json") || file.equals("build") || file.equals("template")) {
@@ -157,8 +157,8 @@ public class BuildTest {
 
         File buildDirectory2 = new File(buildDirectory.getPath() + "/dossier");
         File directoryTest2 = new File(directoryTest.getPath() + "/dossier");
-        ArrayList<String> list2 = new ArrayList<String>(Arrays.asList(Objects.requireNonNull(directoryTest2.list())));
-        ArrayList<String> listBuild2 = new ArrayList<String>(Arrays.asList(Objects.requireNonNull(buildDirectory2.list())));
+        ArrayList<String> list2 = new ArrayList<>(Arrays.asList(Objects.requireNonNull(directoryTest2.list())));
+        ArrayList<String> listBuild2 = new ArrayList<>(Arrays.asList(Objects.requireNonNull(buildDirectory2.list())));
 
         for (String file : list2) {
             assertTrue(listBuild2.contains(file));
@@ -166,11 +166,10 @@ public class BuildTest {
     }
 
     @Test
-    public void buildShouldThrowWhenNoConfigIsPresent() throws IOException {
+    public void buildShouldThrowWhenNoConfigIsPresent() {
         String path = directoryPath + "/noConfigTest";
         File directoryTest = new File(path);
         directoryTest.mkdirs();
-        File buildDirectory = new File(path + "/build"); //build new directory
         // Suppress warning
         System.setErr(new PrintStream(new OutputStream() {
             public void write(int b) {
@@ -189,8 +188,5 @@ public class BuildTest {
             throw new IllegalArgumentException("Directory does not exists");
         }
         FileUtils.deleteDirectory(path.toFile());
-
     }
-
-
 }
