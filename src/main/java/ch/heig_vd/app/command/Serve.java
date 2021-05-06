@@ -1,5 +1,6 @@
 package ch.heig_vd.app.command;
 
+import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
@@ -45,6 +46,9 @@ public class Serve implements Runnable{
     static class MyHandler implements HttpHandler {
         @Override
         public void handle(HttpExchange t) throws IOException {
+
+            Headers h = t.getResponseHeaders();
+            h.set("Content-Type","text/html");
 
             String line;
             String resp = "";
