@@ -65,8 +65,12 @@ public class Serve implements Runnable{
                 File newFile;
                 if (uri.equals(pathTest) || uri.equals(pathTest + "/"))
                     newFile = new File(Paths.get(pathTest).normalize().toAbsolutePath() + "/build/index.html");
-                else
-                    newFile = new File(Paths.get(uri).normalize().toAbsolutePath().toString());
+                else {
+                    if(!uri.endsWith(".html")){
+                        throw new IOException("not html file");
+                    }
+                        newFile = new File(Paths.get(uri).normalize().toAbsolutePath().toString());
+                }
 
                 System.out.println("*****lecture du fichier*****");
                 System.out.println("nom du fichier: " + newFile.getName());
