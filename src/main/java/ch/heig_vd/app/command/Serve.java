@@ -47,40 +47,45 @@ public class Serve implements Runnable{
         @Override
         public void handle(HttpExchange t) throws IOException {
 
-            Headers h = t.getResponseHeaders();
-            h.set("Content-Type","text/html");
+            t.getResponseHeaders().set("Content-Type","text/html");
 
             String line;
-            String resp = "";
+            StringBuilder resp = new StringBuilder();
 
             //check if filepath start with '/'
+            // TODO : Redundant code
             String pathTest = filePath;
             if (filePath.startsWith("/")) {
-                pathTest= pathTest.substring(1);
+                pathTest = pathTest.substring(1);
             }
 
-            Path path = Paths.get(pathTest).normalize().toAbsolutePath();
+            String uri = t.getRequestURI().toString().substring(1);
+
             try {
-                File newFile = new File(path + "/build/index.html");
+                File newFile;
+                if (uri.equals(pathTest) || uri.equals(pathTest + "/"))
+                    newFile = new File(Paths.get(pathTest).normalize().toAbsolutePath() + "/build/index.html");
+                else
+                    newFile = new File(Paths.get(uri).normalize().toAbsolutePath().toString());
+
                 System.out.println("*****lecture du fichier*****");
                 System.out.println("nom du fichier: " + newFile.getName());
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(newFile)));
 
                 while ((line = bufferedReader.readLine()) != null) {
                     System.out.println(line);
-                    resp += line;
+                    resp.append(line);
                 }
                 bufferedReader.close();
             } catch (IOException e) {
                 e.printStackTrace();
+                t.sendResponseHeaders(404, resp.length());
             }
 
             t.sendResponseHeaders(200, resp.length());
             OutputStream os = t.getResponseBody();
-            os.write(resp.getBytes(StandardCharsets.UTF_8));
+            os.write(resp.toString().getBytes(StandardCharsets.UTF_8));
             os.close();
-
         }
     }
-
 }
