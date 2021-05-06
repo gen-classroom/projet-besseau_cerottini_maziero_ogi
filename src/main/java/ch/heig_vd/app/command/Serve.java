@@ -1,6 +1,5 @@
 package ch.heig_vd.app.command;
 
-import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
@@ -8,7 +7,7 @@ import picocli.CommandLine;
 
 import java.io.*;
 import java.net.InetSocketAddress;
-import java.nio.file.Files;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -16,12 +15,15 @@ import java.nio.file.Paths;
         description = "Serve a static site")
 public class Serve implements Runnable{
     @CommandLine.Parameters(description = "Path of site to serve.")
-    static String filePath;
+    private static String filePath;
+    private static final int PORT = 8080;
+
     public void run() {
 
         try {
-            HttpServer httpServer = HttpServer.create(new InetSocketAddress("localhost", 8080), 0);
+            HttpServer httpServer = HttpServer.create(new InetSocketAddress("localhost", PORT), 0);
 
+            //check if filepath start with '/'
             String path = filePath;
             if (!filePath.startsWith("/")) {
                 StringBuilder sb = new StringBuilder(filePath);
@@ -30,8 +32,9 @@ public class Serve implements Runnable{
             }
 
             httpServer.createContext(path, new MyHandler());
-            httpServer.start();
+            httpServer.start(); //to start server
             while(true);
+            //httpServer.stop(0); //to stop the server
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -45,8 +48,14 @@ public class Serve implements Runnable{
 
             String line;
             String resp = "";
-            Path path = Paths.get(filePath).normalize().toAbsolutePath();
 
+            //check if filepath start with '/'
+            String pathTest = filePath;
+            if (filePath.startsWith("/")) {
+                pathTest= pathTest.substring(1);
+            }
+
+            Path path = Paths.get(pathTest).normalize().toAbsolutePath();
             try {
                 File newFile = new File(path + "/build/index.html");
                 System.out.println("*****lecture du fichier*****");
@@ -64,7 +73,7 @@ public class Serve implements Runnable{
 
             t.sendResponseHeaders(200, resp.length());
             OutputStream os = t.getResponseBody();
-            os.write(resp.getBytes());
+            os.write(resp.getBytes(StandardCharsets.UTF_8));
             os.close();
 
         }
