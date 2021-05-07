@@ -77,6 +77,8 @@ public class Serve implements Runnable {
                     return "image/svg+xml";
                 case "gif":
                     return "image/gif";
+                case "mp3":
+                    return "audio/mp3";
                 default:
                     return "text/html";
             }
