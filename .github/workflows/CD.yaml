@@ -6,7 +6,7 @@ on:
 jobs:
   tagged-release:
     runs-on: ubuntu-latest
-    name: Run unit tests
+    name: Create release
     steps:
       - uses: actions/checkout@v2
       - name: Set up JDK 11
