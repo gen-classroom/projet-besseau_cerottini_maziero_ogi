@@ -1,5 +1,6 @@
-package ch.heig_vd.app;
+package ch.heig_vd.app.command;
 
+import ch.heig_vd.app.Main;
 import org.apache.commons.io.FileUtils;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;

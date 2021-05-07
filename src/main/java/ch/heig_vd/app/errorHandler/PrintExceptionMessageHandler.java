@@ -2,6 +2,9 @@ package ch.heig_vd.app.errorHandler;
 
 import picocli.CommandLine;
 
+/**
+ * @author Besseau Léonard
+ */
 public class PrintExceptionMessageHandler implements CommandLine.IExecutionExceptionHandler {
     public int handleExecutionException(Exception ex,
                                         CommandLine cmd,
