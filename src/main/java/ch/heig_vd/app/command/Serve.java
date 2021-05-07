@@ -10,7 +10,6 @@ import picocli.CommandLine;
 import java.io.*;
 import java.net.InetSocketAddress;
 import java.net.URI;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -23,7 +22,6 @@ public class Serve implements Runnable {
     private static final int PORT = 8080;
 
     public void run() {
-
         try {
             Path path = Paths.get(filePath, "/build").normalize().toAbsolutePath();
             if (!path.toFile().exists()) {
