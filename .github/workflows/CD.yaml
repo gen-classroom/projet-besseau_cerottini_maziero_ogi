@@ -1,0 +1,26 @@
+name: Continuous delivery workflow
+on: 
+  push:
+    tags: v[0-9]+.[0-9]+-[0.9]+
+    branches: master
+
+jobs:
+  tagged-release:
+    runs-on: ubuntu-latest
+    name: Run unit tests
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK 11
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+      - name: Install the dependencies
+        working-directory: .
+        run: mvn clean install
+      - uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          prerelease: false
+          files: 
+            statique.jar
+      
