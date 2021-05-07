@@ -8,13 +8,15 @@ import picocli.CommandLine;
 
 import java.io.*;
 import java.net.InetSocketAddress;
+import java.net.URI;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
 @CommandLine.Command(name = "serve",
         description = "Serve a static site")
-public class Serve implements Runnable{
+public class Serve implements Runnable {
     @CommandLine.Parameters(description = "Path of site to serve.")
     private static String filePath;
     private static final int PORT = 8080;
@@ -25,16 +27,14 @@ public class Serve implements Runnable{
             HttpServer httpServer = HttpServer.create(new InetSocketAddress("localhost", PORT), 0);
 
             //check if filepath start with '/'
-            String path = filePath;
-            if (!filePath.startsWith("/")) {
-                StringBuilder sb = new StringBuilder(filePath);
-                sb.insert(0, "/");
-                path = sb.toString();
+            Path path = Paths.get(filePath, "/build").normalize().toAbsolutePath();
+            if (!path.toFile().exists()) {
+                throw new IllegalArgumentException("Directory does not exists");
             }
-
-            httpServer.createContext(path, new MyHandler());
+            filePath = path.toString();
+            httpServer.createContext("/", new MyHandler());
             httpServer.start(); //to start server
-            while(true);
+            while (true) ;
             //httpServer.stop(0); //to stop the server
 
         } catch (IOException e) {
@@ -44,52 +44,28 @@ public class Serve implements Runnable{
     }
 
     static class MyHandler implements HttpHandler {
-        @Override
-        public void handle(HttpExchange t) throws IOException {
+        public void handle(HttpExchange ex) throws IOException {
+            URI uri = ex.getRequestURI();
+            String name = new File(uri.getPath()).getName();
+            File path = new File(filePath, name);
 
-            t.getResponseHeaders().set("Content-Type","text/html");
+            Headers h = ex.getResponseHeaders();
+            // Could be more clever about the content type based on the filename here.
+            h.add("Content-Type", "text/html");
 
-            String line;
-            StringBuilder resp = new StringBuilder();
+            OutputStream out = ex.getResponseBody();
 
-            //check if filepath start with '/'
-            // TODO : Redundant code
-            String pathTest = filePath;
-            if (filePath.startsWith("/")) {
-                pathTest = pathTest.substring(1);
+            if (path.exists()) {
+                ex.sendResponseHeaders(200, path.length());
+                out.write(Files.readAllBytes(path.toPath()));
+            } else {
+                System.err.println("File not found: " + path.getAbsolutePath());
+
+                ex.sendResponseHeaders(404, 0);
+                out.write("404 File not found.".getBytes());
             }
 
-            String uri = t.getRequestURI().toString().substring(1);
-
-            try {
-                File newFile;
-                if (uri.equals(pathTest) || uri.equals(pathTest + "/"))
-                    newFile = new File(Paths.get(pathTest).normalize().toAbsolutePath() + "/build/index.html");
-                else {
-                    if(!uri.endsWith(".html")){
-                        throw new IOException("not html file");
-                    }
-                        newFile = new File(Paths.get(uri).normalize().toAbsolutePath().toString());
-                }
-
-                System.out.println("*****lecture du fichier*****");
-                System.out.println("nom du fichier: " + newFile.getName());
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(newFile)));
-
-                while ((line = bufferedReader.readLine()) != null) {
-                    System.out.println(line);
-                    resp.append(line);
-                }
-                bufferedReader.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-                t.sendResponseHeaders(404, resp.length());
-            }
-
-            t.sendResponseHeaders(200, resp.length());
-            OutputStream os = t.getResponseBody();
-            os.write(resp.toString().getBytes(StandardCharsets.UTF_8));
-            os.close();
+            out.close();
         }
     }
 }
