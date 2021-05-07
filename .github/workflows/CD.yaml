@@ -23,5 +23,5 @@ jobs:
           prerelease: false
           automatic_release_tag: "latest"
           files: 
-            statique.jar
+            target/statique.jar
       
