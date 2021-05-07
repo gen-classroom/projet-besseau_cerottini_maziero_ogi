@@ -1,6 +1,7 @@
-package ch.heig_vd.app;
+package ch.heig_vd.app.command;
 
 
+import ch.heig_vd.app.Main;
 import org.apache.commons.io.FileUtils;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -15,6 +16,8 @@ import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import static org.junit.Assert.assertEquals;
+
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ServeTest {
@@ -28,7 +31,9 @@ public class ServeTest {
         File directoryTest = new File(directoryPath);
         directoryTest.mkdirs();
 
-        server = new Thread(() -> new CommandLine(new Main()).execute( "serve", "test_folder/mon/site"));
+        server = new Thread(() -> {
+            assertEquals(0, new CommandLine(new Main()).execute( "serve", "test_folder/mon/site"));
+        });
         server.start();
 
         // Waits for server to start
