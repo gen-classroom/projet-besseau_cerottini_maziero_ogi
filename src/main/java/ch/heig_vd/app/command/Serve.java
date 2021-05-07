@@ -4,6 +4,7 @@ import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
+import org.apache.commons.io.FilenameUtils;
 import picocli.CommandLine;
 
 import java.io.*;
@@ -24,14 +25,13 @@ public class Serve implements Runnable {
     public void run() {
 
         try {
-            HttpServer httpServer = HttpServer.create(new InetSocketAddress("localhost", PORT), 0);
-
-            //check if filepath start with '/'
             Path path = Paths.get(filePath, "/build").normalize().toAbsolutePath();
             if (!path.toFile().exists()) {
                 throw new IllegalArgumentException("Directory does not exists");
             }
             filePath = path.toString();
+
+            HttpServer httpServer = HttpServer.create(new InetSocketAddress("localhost", PORT), 0);
             httpServer.createContext("/", new MyHandler());
             httpServer.start(); //to start server
             while (true) ;
@@ -40,32 +40,46 @@ public class Serve implements Runnable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println("All good, executing Serve");
     }
 
     static class MyHandler implements HttpHandler {
         public void handle(HttpExchange ex) throws IOException {
             URI uri = ex.getRequestURI();
             String name = new File(uri.getPath()).getName();
-            File path = new File(filePath, name);
-
+            System.out.println(uri.getPath());
+            File path = new File(filePath, uri.getPath());
+            System.out.println("Asking "+name);
             Headers h = ex.getResponseHeaders();
-            // Could be more clever about the content type based on the filename here.
-            h.add("Content-Type", "text/html");
 
-            OutputStream out = ex.getResponseBody();
+            h.add("Content-Type", getContentType(FilenameUtils.getExtension(name)));
 
-            if (path.exists()) {
-                ex.sendResponseHeaders(200, path.length());
-                out.write(Files.readAllBytes(path.toPath()));
-            } else {
-                System.err.println("File not found: " + path.getAbsolutePath());
-
-                ex.sendResponseHeaders(404, 0);
-                out.write("404 File not found.".getBytes());
+            try(OutputStream out = ex.getResponseBody()) {
+                if (path.exists()) {
+                    ex.sendResponseHeaders(200, path.length());
+                    out.write(Files.readAllBytes(path.toPath()));
+                } else {
+                    System.err.println("File not found: " + path.getAbsolutePath());
+                    ex.sendResponseHeaders(404, 0);
+                    out.write("404 File not found.".getBytes());
+                }
+            }catch (IOException e){
+                System.err.println("An error occurred while serving a file. "+e);
             }
+        }
 
-            out.close();
+        private String getContentType(String extension){
+            switch (extension){
+                case "png":
+                    return "image/png";
+                case "jpg":
+                    return "image/jpg";
+                case "svg":
+                    return "image/svg+xml";
+                case "gif":
+                    return "image/gif";
+                default:
+                    return "text/html";
+            }
         }
     }
 }
