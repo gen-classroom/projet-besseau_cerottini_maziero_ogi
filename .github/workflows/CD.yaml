@@ -17,11 +17,15 @@ jobs:
       - name: Install the dependencies
         working-directory: .
         run: mvn clean install
+      - name: Set output
+        id: vars
+        run: echo ::set-output name=tag::${GITHUB_REF#refs/*/}
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           prerelease: false
-          automatic_release_tag: "latest"
+          automatic_release_tag: ${{ steps.vars.outputs.tag }}
           files: 
             target/statique.jar
+          
       
