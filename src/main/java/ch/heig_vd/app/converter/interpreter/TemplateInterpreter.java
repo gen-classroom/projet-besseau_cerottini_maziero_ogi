@@ -2,7 +2,10 @@ package ch.heig_vd.app.converter.interpreter;
 
 import ch.heig_vd.app.converter.utils.Metadata;
 import ch.heig_vd.app.converter.interpreter.helper.MarkdownHelper;
-import com.github.jknack.handlebars.*;
+import com.github.jknack.handlebars.Context;
+import com.github.jknack.handlebars.Handlebars;
+import com.github.jknack.handlebars.HandlebarsException;
+import com.github.jknack.handlebars.Template;
 import com.github.jknack.handlebars.context.MapValueResolver;
 import com.github.jknack.handlebars.io.FileTemplateLoader;
 
