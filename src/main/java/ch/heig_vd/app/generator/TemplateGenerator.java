@@ -12,7 +12,7 @@ public class TemplateGenerator {
         return "title:localTitle\n" +
                 "author:authorName\n" +
                 "---\n" +
-                "#My too classy site !\n"+
+                "# My too classy site !\n"+
                 "Author : a huge bg\n"+
                 "Date:" + new SimpleDateFormat(" dd.MM.yyyy ").format(new Date());
     }
