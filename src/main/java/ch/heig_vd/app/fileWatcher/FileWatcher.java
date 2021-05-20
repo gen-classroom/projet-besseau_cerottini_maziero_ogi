@@ -17,7 +17,7 @@ public class FileWatcher {
     }
 
 
-    public void events() throws InterruptedException {
+    public void events(FileWatcherVisitor v) throws InterruptedException {
 
 
         // wait for key to be signalled
@@ -42,7 +42,7 @@ public class FileWatcher {
 
                 // print out event
                 System.out.format("%s: %s\n", event.kind().name(), child);
-
+                v.visit(event.kind().name(), child);
                 // if directory is created, and watching recursively, then register it and its sub-directories
                 if (kind == StandardWatchEventKinds.ENTRY_CREATE) {
                     try {
