@@ -72,7 +72,7 @@ public class FileWatcher {
     private void registerDirectory(Path dir) throws IOException {
         WatchKey key = dir.register(watchService, StandardWatchEventKinds.ENTRY_MODIFY,
                 StandardWatchEventKinds.ENTRY_DELETE,
-                StandardWatchEventKinds.ENTRY_MODIFY);
+                StandardWatchEventKinds.ENTRY_CREATE);
         keys.put(key, dir);
     }
 
