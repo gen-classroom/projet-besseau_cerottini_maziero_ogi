@@ -40,8 +40,6 @@ public class FileWatcher {
                 Path name = ((WatchEvent<Path>) event).context();
                 Path child = dir.resolve(name);
 
-                // print out event
-                System.out.format("%s: %s\n", event.kind().name(), child);
                 v.visit(event.kind().name(), child);
                 // if directory is created, and watching recursively, then register it and its sub-directories
                 if (kind == StandardWatchEventKinds.ENTRY_CREATE) {
