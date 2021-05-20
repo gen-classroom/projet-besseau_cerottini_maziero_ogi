@@ -81,7 +81,9 @@ public class FileWatcher {
         Files.walkFileTree(start, new SimpleFileVisitor<Path>() {
             @Override
             public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
-                registerDirectory(dir);
+                if (!attrs.isDirectory() || !dir.endsWith("build")){
+                    registerDirectory(dir);
+                }
                 return FileVisitResult.CONTINUE;
             }
         });
