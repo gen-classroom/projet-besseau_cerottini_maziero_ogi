@@ -1,6 +1,6 @@
 package ch.heig_vd.app.command;
 
-import ch.heig_vd.app.utils.Converter;
+import ch.heig_vd.app.converter.Converter;
 import picocli.CommandLine;
 
 import java.io.File;
@@ -18,23 +18,29 @@ public class Build implements Runnable {
     @CommandLine.Parameters(description = "Path to site to build. (Must contain a config.json file)")
     String filePath;
     Converter converter;
-
+    
     public void run() {
-
         Path path = Paths.get(filePath).normalize().toAbsolutePath();
-
-        File buildDirectory = new File(path + "/build"); //build new directory
-        buildDirectory.mkdir();
         File filesDirectory = new File(path.toString()); //get all directory from there
+        if(!filesDirectory.exists()){
+            throw new RuntimeException("Directory does not exist");
+        }
+
         File configFile = new File(path+"/config.json");
         if (!configFile.exists()){
             throw new RuntimeException("Config file does not exist");
         }
-        converter = new Converter(configFile);
+
+        File buildDirectory = new File(path + "/build"); //build new directory
+        buildDirectory.mkdir();
+        File templateFolder = new File(path + "/template");
+        converter = new Converter(configFile, templateFolder);
+
         try {
             explore(filesDirectory, buildDirectory);
         } catch (IOException e) {
             e.printStackTrace();
+            throw new RuntimeException("An error occured during the build phase. "+e.getMessage());
         }
     }
 
@@ -51,7 +57,7 @@ public class Build implements Runnable {
                 } else if (!fileName.contains("config") && !file.isDirectory()) {
                     File newDirectory = new File(buildDirectory + "/" + fileName);
                     FileUtils.copyFile(file, newDirectory);
-                } else if (file.isDirectory() && !fileName.contains("build")) {
+                } else if (file.isDirectory() && !fileName.contains("build") && !fileName.contains("template")) {
                     File newDirectory = new File(buildDirectory + "/" + fileName); //build new directory
                     newDirectory.mkdir();
                     explore(file, newDirectory);

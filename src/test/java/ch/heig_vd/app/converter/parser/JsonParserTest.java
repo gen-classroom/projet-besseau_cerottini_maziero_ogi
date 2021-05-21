@@ -1,14 +1,13 @@
-package ch.heig_vd.app.utils;
+package ch.heig_vd.app.converter.parser;
 
-import ch.heig_vd.app.Main;
+import ch.heig_vd.app.converter.parser.JsonParser;
+import ch.heig_vd.app.converter.parser.JsonParserVisitor;
+import ch.heig_vd.app.converter.utils.Metadata;
 import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.io.JsonEOFException;
 import org.apache.commons.io.FileUtils;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import picocli.CommandLine;
 
 import java.io.*;
 import java.nio.file.Path;

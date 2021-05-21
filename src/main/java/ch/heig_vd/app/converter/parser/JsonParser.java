@@ -1,4 +1,4 @@
-package ch.heig_vd.app.utils;
+package ch.heig_vd.app.converter.parser;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -26,7 +26,7 @@ public class JsonParser {
         Iterator<Map.Entry<String,JsonNode>> fieldsIterator = rootNode.fields();
         while (fieldsIterator.hasNext()) {
             Map.Entry<String,JsonNode> field = fieldsIterator.next();
-            visitor.visit(field.getKey().toString(), field.getValue().asText());
+            visitor.visit(field.getKey(), field.getValue().asText());
         }
     }
 }
