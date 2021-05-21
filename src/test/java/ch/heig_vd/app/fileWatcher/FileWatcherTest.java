@@ -32,4 +32,14 @@ public class FileWatcherTest {
 //        });
 //        assertEquals(stringBuilder.toString(), "");
 //    }
+
+    public static void main(String[] args) throws IOException, InterruptedException {
+        FileWatcher watcher = new FileWatcher(Path.of("./test"));
+        watcher.events(new FileWatcherVisitor() {
+            @Override
+            public void visit(String name, Path path) {
+                System.out.format("%s: %s\n", name, path);
+            }
+        });
+    }
 }
