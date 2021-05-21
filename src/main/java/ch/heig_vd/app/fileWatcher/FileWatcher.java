@@ -7,12 +7,22 @@ import java.nio.file.attribute.BasicFileAttributes;
 public class FileWatcher {
     private final WatchService watchService;
 
+    /**
+     * Creates a file watcher to watch for change on a directory and subdirectory (except subDirectoryBuild)
+     * @param path The path to watch
+     * @throws IOException
+     */
     public FileWatcher(Path path) throws IOException {
         watchService = FileSystems.getDefault().newWatchService();
         walkAndRegisterDirectories(path);
     }
 
-
+    /**
+     * Event loop for the fileWatcher
+     *
+     * @param v The file visitor.
+     * @throws InterruptedException
+     */
     public void events(FileWatcherVisitor v) throws InterruptedException {
         // wait for key to be signalled
         WatchKey key;
@@ -37,27 +47,34 @@ public class FileWatcher {
                 // if directory is created, and watching recursively, then register it and its sub-directories
                 if (kind == StandardWatchEventKinds.ENTRY_CREATE) {
                     try {
-                        System.out.println("Adding "+child);
                         if (Files.isDirectory(child)) {
                             walkAndRegisterDirectories(child);
                         }
                     } catch (IOException x) {
-                        // do something useful
+                        System.err.println("Could not register file "+child+". "+x.getMessage());
                     }
                 }
             }
-
             key.reset();
         }
-
     }
 
+    /**
+     * Enable Watch on a directory
+     * @param dir The path of the directory to watch
+     * @throws IOException If an I/O error occurs
+     */
     private void registerDirectory(Path dir) throws IOException {
         dir.register(watchService, StandardWatchEventKinds.ENTRY_MODIFY,
                 StandardWatchEventKinds.ENTRY_DELETE,
                 StandardWatchEventKinds.ENTRY_CREATE);
     }
 
+    /**
+     * Recursively add files and directories
+     * @param start The starting path
+     * @throws IOException if an I/O error is thrown while registering the files
+     */
     private void walkAndRegisterDirectories(final Path start) throws IOException {
         // register directory and sub-directories
         Files.walkFileTree(start, new SimpleFileVisitor<>() {
