@@ -47,7 +47,6 @@ public class FileWatcher {
                 }
             }
 
-            // reset key and remove from set if directory no longer accessible
             key.reset();
         }
 
