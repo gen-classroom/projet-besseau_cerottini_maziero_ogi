@@ -6,15 +6,42 @@ import java.nio.file.attribute.BasicFileAttributes;
 
 public class FileWatcher {
     private final WatchService watchService;
+    private final Thread thread;
 
     /**
      * Creates a file watcher to watch for change on a directory and subdirectory (except subDirectoryBuild)
+     *
      * @param path The path to watch
      * @throws IOException
      */
-    public FileWatcher(Path path) throws IOException {
+    public FileWatcher(Path path, FileWatcherVisitor v) throws IOException {
         watchService = FileSystems.getDefault().newWatchService();
         walkAndRegisterDirectories(path);
+        thread = new Thread(() -> {
+            try {
+                eventLoop(v);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+        thread.start();
+    }
+
+
+    public void stop() {
+        thread.interrupt();
+    }
+
+    /**
+     * Enable Watch on a directory
+     *
+     * @param dir The path of the directory to watch
+     * @throws IOException If an I/O error occurs
+     */
+    private void registerDirectory(Path dir) throws IOException {
+        dir.register(watchService, StandardWatchEventKinds.ENTRY_MODIFY,
+                StandardWatchEventKinds.ENTRY_DELETE,
+                StandardWatchEventKinds.ENTRY_CREATE);
     }
 
     /**
@@ -23,12 +50,11 @@ public class FileWatcher {
      * @param v The file visitor.
      * @throws InterruptedException
      */
-    public void events(FileWatcherVisitor v) throws InterruptedException {
-        // wait for key to be signalled
+    private void eventLoop(FileWatcherVisitor v) throws InterruptedException {
         WatchKey key;
         while ((key = watchService.take()) != null) {
-
-            Path dir = (Path)key.watchable();
+            watchService.poll();
+            Path dir = (Path) key.watchable();
             if (dir == null) {
                 System.err.println("WatchKey not recognized!!");
                 continue;
@@ -51,7 +77,7 @@ public class FileWatcher {
                             walkAndRegisterDirectories(child);
                         }
                     } catch (IOException x) {
-                        System.err.println("Could not register file "+child+". "+x.getMessage());
+                        System.err.println("Could not register file " + child + ". " + x.getMessage());
                     }
                 }
             }
@@ -60,18 +86,8 @@ public class FileWatcher {
     }
 
     /**
-     * Enable Watch on a directory
-     * @param dir The path of the directory to watch
-     * @throws IOException If an I/O error occurs
-     */
-    private void registerDirectory(Path dir) throws IOException {
-        dir.register(watchService, StandardWatchEventKinds.ENTRY_MODIFY,
-                StandardWatchEventKinds.ENTRY_DELETE,
-                StandardWatchEventKinds.ENTRY_CREATE);
-    }
-
-    /**
      * Recursively add files and directories
+     *
      * @param start The starting path
      * @throws IOException if an I/O error is thrown while registering the files
      */

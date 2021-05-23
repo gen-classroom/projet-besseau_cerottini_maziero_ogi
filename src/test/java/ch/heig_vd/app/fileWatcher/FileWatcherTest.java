@@ -1,12 +1,7 @@
 package ch.heig_vd.app.fileWatcher;
 
-import org.junit.Test;
-
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
-
-import static org.junit.Assert.assertEquals;
 
 public class FileWatcherTest {
 
@@ -34,12 +29,6 @@ public class FileWatcherTest {
 //    }
 
     public static void main(String[] args) throws IOException, InterruptedException {
-        FileWatcher watcher = new FileWatcher(Path.of("./test"));
-        watcher.events(new FileWatcherVisitor() {
-            @Override
-            public void visit(String name, Path path) {
-                System.out.format("%s: %s\n", name, path);
-            }
-        });
+        FileWatcher watcher = new FileWatcher(Path.of("./test"), (name, path) -> System.out.format("%s: %s\n", name, path));
     }
 }
