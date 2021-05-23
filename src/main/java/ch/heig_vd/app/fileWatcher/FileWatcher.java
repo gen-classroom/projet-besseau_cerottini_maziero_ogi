@@ -28,6 +28,9 @@ public class FileWatcher {
     }
 
 
+    /**
+     * Disable the fileWatcher
+     */
     public void stop() {
         try {
             watchService.close();
