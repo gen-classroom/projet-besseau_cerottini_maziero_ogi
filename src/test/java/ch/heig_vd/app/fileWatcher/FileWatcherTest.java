@@ -1,66 +1,34 @@
 package ch.heig_vd.app.fileWatcher;
 
-import org.apache.commons.io.FileUtils;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class FileWatcherTest {
-    private static final String path = "./testFileWatcher1";
 
-    @BeforeAll
-    public static void setup() {
-        File directoryTest = new File(path);
-        directoryTest.mkdirs();
-    }
+//    @Test
+//    public void fileWatcherShouldDetectChangesInFolder() throws IOException, InterruptedException {
+//        String path = "./testFileWatcher1";
+//        File dir = new File(path);
+//        dir.mkdir();
+//        FileWatcher watcher = new FileWatcher(Path.of(path));
+//        new File(path + "/a").createNewFile();
+//        File b = new File(path + "/b");
+//        b.createNewFile();
+//        StringBuilder stringBuilder = new StringBuilder();
+//        watcher.events(new FileWatcherVisitor() {
+//            @Override
+//            public void visit(String name, Path path) {
+//                // print out event
+//                stringBuilder.append(name);
+//                stringBuilder.append(" ");
+//                stringBuilder.append(path);
+//                System.out.format("%s: %s\n", name, path);
+//            }
+//        });
+//        assertEquals(stringBuilder.toString(), "");
+//    }
 
-    @Test
-    public void fileWatcherShouldDetectChangesInFolder() throws IOException {
-        StringBuilder stringBuilder = new StringBuilder();
-        FileWatcher watcher = new FileWatcher(Path.of(path), (name, path1) -> {
-            // print out event
-            stringBuilder.append(name);
-            stringBuilder.append(" ");
-            stringBuilder.append(path1);
-            stringBuilder.append("\n");
-            System.out.format("%s: %s\n", name, path1);
-        });
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        new File(path + "/a").createNewFile();
-        File b = new File(path + "/b");
-        b.createNewFile();
-        b.delete();
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        watcher.stop();
-        assertEquals( "ENTRY_CREATE ./testFileWatcher1/a\n" +
-                "ENTRY_CREATE ./testFileWatcher1/b\n" +
-                "ENTRY_DELETE ./testFileWatcher1/b\n", stringBuilder.toString());
-    }
-
-    @AfterAll
-    public static void cleanAll() throws IOException {
-        Path path1 = Paths.get(path).normalize().toAbsolutePath();
-        if (!path1.toFile().exists()) {
-            throw new IllegalArgumentException("Directory does not exists");
-        }
-        FileUtils.deleteDirectory(path1.toFile());
-
+    public static void main(String[] args) throws IOException, InterruptedException {
+        FileWatcher watcher = new FileWatcher(Path.of("./test"), (name, path) -> System.out.format("%s: %s\n", name, path));
     }
 }
