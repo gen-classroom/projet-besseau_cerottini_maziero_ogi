@@ -1,14 +1,15 @@
 package ch.heig_vd.app.command;
 
 import ch.heig_vd.app.converter.Converter;
+import ch.heig_vd.app.fileWatcher.FileWatcher;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import picocli.CommandLine;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-
-import org.apache.commons.io.FileUtils;
 
 
 @CommandLine.Command(name = "build",
@@ -17,17 +18,19 @@ import org.apache.commons.io.FileUtils;
 public class Build implements Runnable {
     @CommandLine.Parameters(description = "Path to site to build. (Must contain a config.json file)")
     String filePath;
+    @CommandLine.Option(names = {"-w", "--watcher"}, paramLabel = "Watcher", description = "Enable file watcher to automate")
+    boolean watcher;
     Converter converter;
-    
+
     public void run() {
         Path path = Paths.get(filePath).normalize().toAbsolutePath();
         File filesDirectory = new File(path.toString()); //get all directory from there
-        if(!filesDirectory.exists()){
+        if (!filesDirectory.exists()) {
             throw new RuntimeException("Directory does not exist");
         }
 
-        File configFile = new File(path+"/config.json");
-        if (!configFile.exists()){
+        File configFile = new File(path + "/config.json");
+        if (!configFile.exists()) {
             throw new RuntimeException("Config file does not exist");
         }
 
@@ -40,7 +43,26 @@ public class Build implements Runnable {
             explore(filesDirectory, buildDirectory);
         } catch (IOException e) {
             e.printStackTrace();
-            throw new RuntimeException("An error occured during the build phase. "+e.getMessage());
+            throw new RuntimeException("An error occurred during the build phase. " + e.getMessage());
+        }
+
+        if (watcher) {
+            try {
+                new FileWatcher(path, (name, path1) -> {
+                    if (FilenameUtils.getExtension(name).equals("md")) {
+                        converter.markdownToHTML(path1.toFile(), buildDirectory.toString());
+                    } else {
+                        try {
+                            explore(filesDirectory, buildDirectory);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            throw new RuntimeException("An error occurred during the build phase. " + e.getMessage());
+                        }
+                    }
+                });
+            } catch (IOException e) {
+                System.err.println("File watcher error\n" + e.getMessage());
+            }
         }
     }
 
