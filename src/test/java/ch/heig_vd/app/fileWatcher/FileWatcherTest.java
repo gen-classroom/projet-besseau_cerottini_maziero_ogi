@@ -47,9 +47,10 @@ public class FileWatcherTest {
             e.printStackTrace();
         }
         watcher.stop();
-        assertEquals( "ENTRY_CREATE ./testFileWatcher1/a\n" +
-                "ENTRY_CREATE ./testFileWatcher1/b\n" +
-                "ENTRY_DELETE ./testFileWatcher1/b\n", stringBuilder.toString());
+        assertEquals( "ENTRY_CREATE .\\testFileWatcher1\\a\n" +
+                "ENTRY_CREATE .\\testFileWatcher1\\b\n" +
+                "ENTRY_MODIFY .\\testFileWatcher1\\b\n" +
+                "ENTRY_DELETE .\\testFileWatcher1\\b\n", stringBuilder.toString());
     }
 
     @AfterAll
