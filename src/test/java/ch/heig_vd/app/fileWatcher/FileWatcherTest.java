@@ -47,10 +47,10 @@ public class FileWatcherTest {
             e.printStackTrace();
         }
         watcher.stop();
-        assertEquals( "ENTRY_CREATE .\\testFileWatcher1\\a\n" +
-                "ENTRY_CREATE .\\testFileWatcher1\\b\n" +
-                "ENTRY_MODIFY .\\testFileWatcher1\\b\n" +
-                "ENTRY_DELETE .\\testFileWatcher1\\b\n", stringBuilder.toString());
+        assertEquals( "ENTRY_CREATE ." + File.separator + "testFileWatcher1" + File.separator + "a\n" +
+                "ENTRY_CREATE ." + File.separator + "testFileWatcher1" + File.separator + "b\n" +
+                "ENTRY_MODIFY ." + File.separator + "testFileWatcher1" + File.separator + "b\n" +
+                "ENTRY_DELETE ." + File.separator + "testFileWatcher1" + File.separator + "b\n", stringBuilder.toString());
     }
 
     @AfterAll

@@ -71,15 +71,13 @@ public class BuildTest {
     @Test
     public void nonExistentDirectoryShouldThrow() throws IOException {
         String path = directoryPath + "/doesNotExist";
-        PrintStream ps = new PrintStream(new OutputStream() {
+        System.setErr(new PrintStream(new OutputStream() {
             public void write(int b) {
                 //DO NOTHING
             }
-        });
-        System.setErr(ps);
+        }));
         assertEquals(2, new CommandLine(new Main()).execute("build", path));
         System.setErr(original);
-        ps.close();
     }
 
     @Test
