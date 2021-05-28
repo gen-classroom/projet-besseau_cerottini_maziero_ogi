@@ -2,9 +2,9 @@ package ch.heig_vd.app.command;
 
 import ch.heig_vd.app.Main;
 import org.apache.commons.io.FileUtils;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import picocli.CommandLine;
 
 import java.io.*;
@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 public class BuildTest {
@@ -22,7 +22,7 @@ public class BuildTest {
     static String directoryPath = root + "/mon/site";
     static PrintStream original = System.err;
 
-    @BeforeClass
+    @BeforeAll
     public static void setup() {
         File directoryTest = new File(directoryPath);
         directoryTest.mkdirs();
@@ -186,14 +186,13 @@ public class BuildTest {
 
         File buildDirectory = new File(path + "/build");
 
-
         assertEquals(0, new CommandLine(new Main()).execute("build", directoryTest.getPath(), "-w"));
         writer = new FileWriter(input);
         String inputContent2 = "titre:metaTitle\n" +
                 "auteur:metaAuthor\n" +
                 "date:metaDate\n" +
                 "---\n" +
-                "This is *Sparta*\n"+
+                "This is *Sparta*\n" +
                 "This is a new line";
         writer.write(inputContent2);
         writer.close();
@@ -203,9 +202,9 @@ public class BuildTest {
             e.printStackTrace();
         }
         ArrayList<String> output = new ArrayList<>();
-        try(BufferedReader reader = new BufferedReader(new FileReader(buildDirectory+"/input.html"))){
+        try (BufferedReader reader = new BufferedReader(new FileReader(buildDirectory + "/input.html"))) {
             String line;
-            while ((line = reader.readLine()) != null){
+            while ((line = reader.readLine()) != null) {
                 output.add(line);
             }
         }
@@ -228,7 +227,7 @@ public class BuildTest {
         System.setErr(original);
     }
 
-    @AfterClass
+    @AfterAll
     public static void cleanAll() throws IOException {
         System.setErr(original);
         Path path = Paths.get(root).normalize().toAbsolutePath();
