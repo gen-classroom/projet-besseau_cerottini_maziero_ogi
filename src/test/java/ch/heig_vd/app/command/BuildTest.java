@@ -210,19 +210,15 @@ public class BuildTest {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        ArrayList<String> output = new ArrayList<>();
         try(BufferedReader reader = new BufferedReader(new FileReader(buildDirectory+"/input.html"))){
-            String line = reader.readLine();
-            line = reader.readLine();
-            line = reader.readLine();
-            line = reader.readLine();
-            line = reader.readLine();
-            line = reader.readLine();
-            line = reader.readLine();
-            assertEquals(line, "<p>This is <em>Sparta</em>");
-            line = reader.readLine();
-            assertEquals(line, "This is a new line</p>");
+            String line;
+            while ((line = reader.readLine()) != null){
+                output.add(line);
+            }
         }
-
+        assertTrue(output.contains("<p>This is <em>Sparta</em>"));
+        assertTrue(output.contains("This is a new line</p>"));
     }
 
     @Test

@@ -28,7 +28,6 @@ public class FileWatcherTest {
         FileWatcher watcher = new FileWatcher(Path.of(path), (name, path1) -> {
             // print out event
             output.add(name+" "+path1);
-            System.out.format("%s: %s\n", name, path1);
         });
         try {
             Thread.sleep(100);

@@ -49,8 +49,10 @@ public class Build implements Runnable {
         if (watcher) {
             try {
                 new FileWatcher(path, (name, path1) -> {
-                    if (FilenameUtils.getExtension(name).equals("md")) {
-                        converter.markdownToHTML(path1.toFile(), buildDirectory.toString());
+                    if (FilenameUtils.getExtension(path1.toString()).equals("md")) {
+                        if(!name.equals("ENTRY_DELETE")){
+                            converter.markdownToHTML(path1.toFile(), buildDirectory.toString());
+                        }
                     } else {
                         try {
                             explore(filesDirectory, buildDirectory);
