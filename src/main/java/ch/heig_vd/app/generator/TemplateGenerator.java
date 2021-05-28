@@ -1,7 +1,6 @@
 package ch.heig_vd.app.generator;
 
 
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -15,8 +14,8 @@ public class TemplateGenerator {
         return "title:localTitle\n" +
                 "author:authorName\n" +
                 "---\n" +
-                "# My too classy site !\n"+
-                "Author : a huge bg\n"+
+                "# My too classy site !\n" +
+                "Author : a huge bg\n" +
                 "Date:" + new SimpleDateFormat(" dd.MM.yyyy ").format(new Date());
     }
 
