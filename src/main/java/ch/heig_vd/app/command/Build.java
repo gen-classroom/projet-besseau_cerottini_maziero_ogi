@@ -1,6 +1,7 @@
 package ch.heig_vd.app.command;
 
 import ch.heig_vd.app.converter.Converter;
+import org.openjdk.jmh.annotations.Benchmark;
 import picocli.CommandLine;
 
 import java.io.File;
@@ -18,7 +19,7 @@ public class Build implements Runnable {
     @CommandLine.Parameters(description = "Path to site to build. (Must contain a config.json file)")
     String filePath;
     Converter converter;
-    
+
     public void run() {
         Path path = Paths.get(filePath).normalize().toAbsolutePath();
         File filesDirectory = new File(path.toString()); //get all directory from there
@@ -34,13 +35,17 @@ public class Build implements Runnable {
         File buildDirectory = new File(path + "/build"); //build new directory
         buildDirectory.mkdir();
         File templateFolder = new File(path + "/template");
+        build(filesDirectory, configFile, buildDirectory, templateFolder);
+    }
+
+    public void build(File filesDirectory, File configFile, File buildDirectory, File templateFolder) {
         converter = new Converter(configFile, templateFolder);
 
         try {
             explore(filesDirectory, buildDirectory);
         } catch (IOException e) {
             e.printStackTrace();
-            throw new RuntimeException("An error occured during the build phase. "+e.getMessage());
+            throw new RuntimeException("An error occurred during the build phase. "+e.getMessage());
         }
     }
 
