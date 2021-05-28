@@ -35,5 +35,8 @@ public class Serve implements Runnable {
         if (watcher) {
             new Build().enableFileWatcher(Paths.get(site).toAbsolutePath());
         }
+        while(true){
+            Thread.yield();
+        }
     }
 }

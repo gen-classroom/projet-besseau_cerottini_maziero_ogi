@@ -59,6 +59,9 @@ public class Build implements Runnable {
 
         if (watcher) {
             enableFileWatcher(path);
+            while(true){
+                Thread.yield();
+            }
         }
     }
 

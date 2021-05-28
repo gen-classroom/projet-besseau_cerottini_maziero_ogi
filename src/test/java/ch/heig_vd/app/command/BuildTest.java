@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -186,7 +187,11 @@ public class BuildTest {
 
         File buildDirectory = new File(path + "/build");
 
-        assertEquals(0, new CommandLine(new Main()).execute("build", directoryTest.getPath(), "-w"));
+        Thread thread = new Thread(() -> {
+            assertEquals(0, new CommandLine(new Main()).execute("build", directoryTest.getPath(), "-w"));
+        });
+        thread.start();
+
         writer = new FileWriter(input);
         String inputContent2 = "titre:metaTitle\n" +
                 "auteur:metaAuthor\n" +
@@ -215,6 +220,7 @@ public class BuildTest {
                 t.interrupt();
             }
         }
+        thread.interrupt();
     }
 
     @Test
