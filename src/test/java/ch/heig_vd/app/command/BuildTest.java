@@ -220,6 +220,7 @@ public class BuildTest {
                 t.interrupt();
             }
         }
+
         thread.interrupt();
     }
 
