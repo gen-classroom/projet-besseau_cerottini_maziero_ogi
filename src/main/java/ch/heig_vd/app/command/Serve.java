@@ -1,7 +1,10 @@
 package ch.heig_vd.app.command;
 
+import ch.heig_vd.app.fileWatcher.FileWatcher;
+import org.apache.commons.io.FilenameUtils;
 import picocli.CommandLine;
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -14,6 +17,8 @@ import io.javalin.http.staticfiles.Location;
 public class Serve implements Runnable {
     @CommandLine.Parameters(description = "Path of site to serve.")
     private static String site;
+    @CommandLine.Option(names = {"-w", "--watcher"}, paramLabel = "Watcher", description = "Enable file watcher to automate")
+    boolean watcher;
 
     private static final int PORT = 8080;
 
@@ -23,6 +28,8 @@ public class Serve implements Runnable {
         Javalin.create(config ->
                 config.addStaticFiles(Paths.get(site).resolve("build").toAbsolutePath().toString(), Location.EXTERNAL)).start(PORT);
 
-        while(true);
+        if (watcher) {
+            new Build().enableFileWatcher(Paths.get(site).toAbsolutePath());
+        }
     }
 }

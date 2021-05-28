@@ -20,7 +20,7 @@ public class Build implements Runnable {
     String filePath;
     @CommandLine.Option(names = {"-w", "--watcher"}, paramLabel = "Watcher", description = "Enable file watcher to automate")
     boolean watcher;
-    Converter converter;
+    private Converter converter;
 
     public void run() {
         Path path = Paths.get(filePath).normalize().toAbsolutePath();
@@ -47,24 +47,29 @@ public class Build implements Runnable {
         }
 
         if (watcher) {
-            try {
-                new FileWatcher(path, (name, path1) -> {
-                    if (FilenameUtils.getExtension(path1.toString()).equals("md")) {
-                        if(!name.equals("ENTRY_DELETE")){
-                            converter.markdownToHTML(path1.toFile(), buildDirectory.toString());
-                        }
-                    } else {
-                        try {
-                            explore(filesDirectory, buildDirectory);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                            throw new RuntimeException("An error occurred during the build phase. " + e.getMessage());
-                        }
+            enableFileWatcher(path);
+        }
+    }
+
+    public void enableFileWatcher(Path path){
+        try {
+            String buildDirectory = path + "/build";
+            new FileWatcher(path, (name, path1) -> {
+                if (FilenameUtils.getExtension(path1.toString()).equals("md")) {
+                    if(!name.equals("ENTRY_DELETE")){
+                        converter.markdownToHTML(path1.toFile(), buildDirectory);
                     }
-                });
-            } catch (IOException e) {
-                System.err.println("File watcher error\n" + e.getMessage());
-            }
+                } else {
+                    try {
+                        explore(path.toFile(), new File(buildDirectory));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        throw new RuntimeException("An error occurred during the build phase. " + e.getMessage());
+                    }
+                }
+            });
+        } catch (IOException e) {
+            System.err.println("File watcher error\n" + e.getMessage());
         }
     }
 
