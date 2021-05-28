@@ -2,9 +2,9 @@ package ch.heig_vd.app.command;
 
 import ch.heig_vd.app.Main;
 import org.apache.commons.io.FileUtils;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import picocli.CommandLine;
 
 import java.io.*;
@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 public class BuildTest {
@@ -22,7 +22,7 @@ public class BuildTest {
     static String directoryPath = root + "/mon/site";
     static PrintStream original = System.err;
 
-    @BeforeClass
+    @BeforeAll
     public static void setup() {
         File directoryTest = new File(directoryPath);
         directoryTest.mkdirs();
@@ -168,18 +168,11 @@ public class BuildTest {
 
     @Test
     public void checkFileWatcherReloadsFile() throws IOException {
-        String path = directoryPath + "/testCopy";
+        String path = directoryPath + "/testFileWatcher";
         File directoryTest = new File(path);
         directoryTest.mkdirs();
         createConfig(path);
         createTemplateDirectory(path);
-
-        File newDirectory = new File(directoryTest.getPath() + "/dossier");
-        newDirectory.mkdirs();
-        File image = new File(newDirectory.getPath() + "/image.png");
-        image.createNewFile();
-        File image2 = new File(newDirectory.getPath() + "/image2.png");
-        image2.createNewFile();
 
         File input = new File(directoryTest.getPath() + "/input.md");
         FileWriter writer = new FileWriter(input);
@@ -193,36 +186,35 @@ public class BuildTest {
 
         File buildDirectory = new File(path + "/build");
 
-
         assertEquals(0, new CommandLine(new Main()).execute("build", directoryTest.getPath(), "-w"));
-        File buildImage = new File(buildDirectory+"/image2.png");
         writer = new FileWriter(input);
         String inputContent2 = "titre:metaTitle\n" +
                 "auteur:metaAuthor\n" +
                 "date:metaDate\n" +
                 "---\n" +
-                "This is *Sparta*\n"+
+                "This is *Sparta*\n" +
                 "This is a new line";
         writer.write(inputContent2);
         writer.close();
         try {
-            Thread.sleep(100);
+            Thread.sleep(600);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        try(BufferedReader reader = new BufferedReader(new FileReader(buildDirectory+"/input.html"))){
-            String line = reader.readLine();
-            line = reader.readLine();
-            line = reader.readLine();
-            line = reader.readLine();
-            line = reader.readLine();
-            line = reader.readLine();
-            line = reader.readLine();
-            assertEquals(line, "<p>This is <em>Sparta</em>");
-            line = reader.readLine();
-            assertEquals(line, "This is a new line</p>");
+        ArrayList<String> output = new ArrayList<>();
+        try (BufferedReader reader = new BufferedReader(new FileReader(buildDirectory + "/input.html"))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                output.add(line);
+            }
         }
-
+        assertTrue(output.contains("<p>This is <em>Sparta</em>"));
+        assertTrue(output.contains("This is a new line</p>"));
+        for(Thread t : Thread.getAllStackTraces().keySet()){
+            if(t.getName().equals("FileWatcher")){
+                t.interrupt();
+            }
+        }
     }
 
     @Test
@@ -240,7 +232,7 @@ public class BuildTest {
         System.setErr(original);
     }
 
-    @AfterClass
+    @AfterAll
     public static void cleanAll() throws IOException {
         System.setErr(original);
         Path path = Paths.get(root).normalize().toAbsolutePath();

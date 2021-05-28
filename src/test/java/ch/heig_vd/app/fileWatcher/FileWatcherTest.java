@@ -9,8 +9,9 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class FileWatcherTest {
     private static final String path = "./testFileWatcher1";
@@ -23,14 +24,10 @@ public class FileWatcherTest {
 
     @Test
     public void fileWatcherShouldDetectChangesInFolder() throws IOException {
-        StringBuilder stringBuilder = new StringBuilder();
+        ArrayList<String> output = new ArrayList<>();
         FileWatcher watcher = new FileWatcher(Path.of(path), (name, path1) -> {
             // print out event
-            stringBuilder.append(name);
-            stringBuilder.append(" ");
-            stringBuilder.append(path1);
-            stringBuilder.append("\n");
-            System.out.format("%s: %s\n", name, path1);
+            output.add(name+" "+path1);
         });
         try {
             Thread.sleep(100);
@@ -47,9 +44,9 @@ public class FileWatcherTest {
             e.printStackTrace();
         }
         watcher.stop();
-        assertEquals( "ENTRY_CREATE ./testFileWatcher1/a\n" +
-                "ENTRY_CREATE ./testFileWatcher1/b\n" +
-                "ENTRY_DELETE ./testFileWatcher1/b\n", stringBuilder.toString());
+        assertTrue(output.contains("ENTRY_CREATE ." + File.separator + "testFileWatcher1" + File.separator + "a"));
+        assertTrue(output.contains("ENTRY_CREATE ." + File.separator + "testFileWatcher1" + File.separator + "b"));
+        assertTrue(output.contains("ENTRY_DELETE ." + File.separator + "testFileWatcher1" + File.separator + "b"));
     }
 
     @AfterAll
