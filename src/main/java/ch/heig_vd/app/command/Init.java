@@ -3,14 +3,20 @@ package ch.heig_vd.app.command;
 import ch.heig_vd.app.generator.ConfigGenerator;
 import ch.heig_vd.app.generator.TemplateGenerator;
 import picocli.CommandLine;
-import java.io.FileWriter;
+
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
 
-// Class defining the init command used to create the website folders as well as an example of config.json and index.md file
+/**
+ * Command to setup a basic repository for a static site that include a configuration file in JSON and an index in Markdown
+ *
+ * @author Cerottini Alexandra
+ * @author Ogi Nicolas
+ */
 @CommandLine.Command(name = "init",
         description = "Initialize a static site directory",
         exitCodeOnExecutionException = 2)
@@ -19,6 +25,9 @@ public class Init implements Runnable {
     @CommandLine.Parameters(description = "Path to site to init.")
     String filePath; // Picocli puts the argument after init into this variable
 
+    /**
+     * Method used to run the command init and setup a basic repository for the site
+     */
     public void run() {
 
         // Normalize the path to remove any "//" or ".." inserted by mistake

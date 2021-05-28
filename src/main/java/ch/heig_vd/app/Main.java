@@ -1,6 +1,9 @@
 package ch.heig_vd.app;
 
-import ch.heig_vd.app.command.*;
+import ch.heig_vd.app.command.Build;
+import ch.heig_vd.app.command.Clean;
+import ch.heig_vd.app.command.Init;
+import ch.heig_vd.app.command.Serve;
 import ch.heig_vd.app.errorHandler.PrintExceptionMessageHandler;
 import ch.heig_vd.app.errorHandler.ShortErrorMessageHandler;
 import picocli.CommandLine;
@@ -11,9 +14,10 @@ import java.util.concurrent.Callable;
 
 import static java.lang.System.exit;
 
-// Main command info
 
 /**
+ * Main command info
+ *
  * @author Besseau Léonard
  * @author Marco Maziero
  * @author Cerottini Alexandra
@@ -37,6 +41,11 @@ public class Main implements Callable<Integer> {
     boolean showVersion;
     private static CommandLine.Help.ColorScheme colorScheme;
 
+    /**
+     * Setup options for the command line, specifies formatting and enables error handler
+     *
+     * @param args the command to use
+     */
     public static void main(String... args) {
         colorScheme = new CommandLine.Help.ColorScheme.Builder()
                 .commands(CommandLine.Help.Ansi.Style.fg_blue)// combine multiple styles
@@ -68,20 +77,26 @@ public class Main implements Callable<Integer> {
         exit(commandLine.getCommandSpec().exitCodeOnSuccess());
     }
 
+    /**
+     * Main callback function
+     *
+     * @return 0
+     */
     @Override
     public Integer call() {
         CommandLine.usage(this, System.out, colorScheme);
         return 0;
     }
 
-
-
+    /**
+     * Provides the program current version
+     */
     static class PropertiesVersionProvider implements CommandLine.IVersionProvider {
         public String[] getVersion() throws Exception {
             Properties properties = new Properties();
             properties.load(this.getClass().getClassLoader().getResourceAsStream("version.txt"));
-            return new String[] {
-                    "Statique " + "v@|yellow " + properties.getProperty("Version")+" |@",
+            return new String[]{
+                    "Statique " + "v@|yellow " + properties.getProperty("Version") + " |@",
             };
         }
     }
