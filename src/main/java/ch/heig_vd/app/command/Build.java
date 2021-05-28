@@ -49,8 +49,10 @@ public class Build implements Runnable {
         if (watcher) {
             try {
                 new FileWatcher(path, (name, path1) -> {
-                    if (FilenameUtils.getExtension(name).equals("md")) {
-                        converter.markdownToHTML(path1.toFile(), buildDirectory.toString());
+                    if (FilenameUtils.getExtension(path1.toString()).equals("md")) {
+                        if(!name.equals("ENTRY_DELETE")){
+                            converter.markdownToHTML(path1.toFile(), buildDirectory.toString());
+                        }
                     } else {
                         try {
                             explore(filesDirectory, buildDirectory);
@@ -74,15 +76,17 @@ public class Build implements Runnable {
         if (listOfFiles != null) {
             for (File file : listOfFiles) {
                 String fileName = file.getName();
-                if (fileName.contains(".md")) {//MD files become HTML files
-                    converter.markdownToHTML(file, buildDirectory.toString());
-                } else if (!fileName.contains("config") && !file.isDirectory()) {
-                    File newDirectory = new File(buildDirectory + "/" + fileName);
-                    FileUtils.copyFile(file, newDirectory);
-                } else if (file.isDirectory() && !fileName.contains("build") && !fileName.contains("template")) {
-                    File newDirectory = new File(buildDirectory + "/" + fileName); //build new directory
-                    newDirectory.mkdir();
-                    explore(file, newDirectory);
+                if (file.exists()){
+                    if (fileName.contains(".md")) {//MD files become HTML files
+                        converter.markdownToHTML(file, buildDirectory.toString());
+                    } else if (!fileName.contains("config") && !file.isDirectory()) {
+                        File newDirectory = new File(buildDirectory + "/" + fileName);
+                        FileUtils.copyFile(file, newDirectory);
+                    } else if (file.isDirectory() && !fileName.contains("build") && !fileName.contains("template")) {
+                        File newDirectory = new File(buildDirectory + "/" + fileName); //build new directory
+                        newDirectory.mkdir();
+                        explore(file, newDirectory);
+                    }
                 }
             }
         }
