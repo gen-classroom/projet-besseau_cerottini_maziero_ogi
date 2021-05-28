@@ -19,6 +19,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * Handles template management and file conversion
+ *
  * @author Besseau Léonard
  * @author Marco Maziero
  */

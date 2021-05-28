@@ -5,10 +5,19 @@ import picocli.CommandLine;
 import java.io.PrintWriter;
 
 /**
+ *
+ * Display a short error message to the end user
+ *
  * @author Besseau Léonard
  */
 public class ShortErrorMessageHandler implements CommandLine.IParameterExceptionHandler {
 
+    /**
+     * Display a short message for an exception
+     * @param ex the exception to handle
+     * @param args the argument of the command line
+     * @return the exit code
+     */
     public int handleParseException(CommandLine.ParameterException ex, String[] args) {
         CommandLine cmd = ex.getCommandLine();
         PrintWriter err = cmd.getErr();
