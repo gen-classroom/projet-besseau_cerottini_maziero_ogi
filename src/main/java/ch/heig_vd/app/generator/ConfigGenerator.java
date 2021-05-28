@@ -15,7 +15,7 @@ public class ConfigGenerator {
     /**
      * Method used to generate the JSON file
      * @return Structure of the JSON object in String
-     * @throws IOException when String is returned
+     * @throws IOException if an IO Exception occurs
      */
     public static String generateJsonMeta() throws IOException {
 
