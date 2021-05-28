@@ -5,7 +5,10 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-
+/**
+ * @author Cerottini Alexandra
+ * @author Ogi Nicolas
+ */
 public class TemplateGenerator {
 
     public static String generateIndex() throws IOException {
