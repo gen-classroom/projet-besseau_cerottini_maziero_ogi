@@ -11,11 +11,12 @@ import java.util.Map;
 
 /**
  * This class allows to parse Json
+ *
  * @author Besseau Leonard
  */
 public class JsonParser {
     public static void parse(File f, JsonParserVisitor visitor) throws IOException {
-        if (f.isDirectory()){
+        if (f.isDirectory()) {
             throw new IllegalArgumentException("File must not be a directory");
         }
         JsonFactory factory = new JsonFactory();
@@ -23,9 +24,9 @@ public class JsonParser {
         ObjectMapper mapper = new ObjectMapper(factory);
         JsonNode rootNode = mapper.readTree(f);
 
-        Iterator<Map.Entry<String,JsonNode>> fieldsIterator = rootNode.fields();
+        Iterator<Map.Entry<String, JsonNode>> fieldsIterator = rootNode.fields();
         while (fieldsIterator.hasNext()) {
-            Map.Entry<String,JsonNode> field = fieldsIterator.next();
+            Map.Entry<String, JsonNode> field = fieldsIterator.next();
             visitor.visit(field.getKey(), field.getValue().asText());
         }
     }

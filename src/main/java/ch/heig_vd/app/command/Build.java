@@ -11,7 +11,14 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-
+/**
+ * Command to compile the source into html file for the static site.
+ * Arguments must contain path and optionally a an option to enable the file watcher
+ *
+ * @author Maziero Marco
+ * @author Besseau Léonard
+ * @author Cerottini Alexandra
+ */
 @CommandLine.Command(name = "build",
         exitCodeOnExecutionException = 2,
         description = "Build a static site")
@@ -22,6 +29,10 @@ public class Build implements Runnable {
     boolean watcher;
     private Converter converter;
 
+    /**
+     * Main entry point for the build command.
+     * The folder given needs to exists and must contain a config.json file and a template folder.
+     */
     public void run() {
         Path path = Paths.get(filePath).normalize().toAbsolutePath();
         File filesDirectory = new File(path.toString()); //get all directory from there
@@ -51,12 +62,18 @@ public class Build implements Runnable {
         }
     }
 
-    public void enableFileWatcher(Path path){
+    /**
+     * Enable the file watcher on a path.
+     * If the modified file is a .md file only this file will be reconverted. Otherwise all files will be reconverted.
+     *
+     * @param path The path to watch
+     */
+    public void enableFileWatcher(Path path) {
         try {
             String buildDirectory = path + "/build";
             new FileWatcher(path, (name, path1) -> {
                 if (FilenameUtils.getExtension(path1.toString()).equals("md")) {
-                    if(!name.equals("ENTRY_DELETE")){
+                    if (!name.equals("ENTRY_DELETE")) {
                         converter.markdownToHTML(path1.toFile(), buildDirectory);
                     }
                 } else {
@@ -73,7 +90,14 @@ public class Build implements Runnable {
         }
     }
 
-    //Get all the files and directories
+    /**
+     * Recursively explore all folders in a given directory to convert the file.
+     * Does not convert file if the folder is named *build* or *template*
+     *
+     * @param filesDirectory The folder to explore or the file to convert.
+     * @param buildDirectory The build directory to place the newly created file.
+     * @throws IOException If an IO exception occurs while converting the file.
+     */
     void explore(File filesDirectory, File buildDirectory) throws IOException {
 
         File[] listOfFiles = filesDirectory.listFiles();
@@ -81,7 +105,7 @@ public class Build implements Runnable {
         if (listOfFiles != null) {
             for (File file : listOfFiles) {
                 String fileName = file.getName();
-                if (file.exists()){
+                if (file.exists()) {
                     if (fileName.contains(".md")) {//MD files become HTML files
                         converter.markdownToHTML(file, buildDirectory.toString());
                     } else if (!fileName.contains("config") && !file.isDirectory()) {

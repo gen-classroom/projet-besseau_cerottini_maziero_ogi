@@ -1,6 +1,9 @@
 package ch.heig_vd.app;
 
-import ch.heig_vd.app.command.*;
+import ch.heig_vd.app.command.Build;
+import ch.heig_vd.app.command.Clean;
+import ch.heig_vd.app.command.Init;
+import ch.heig_vd.app.command.Serve;
 import ch.heig_vd.app.errorHandler.PrintExceptionMessageHandler;
 import ch.heig_vd.app.errorHandler.ShortErrorMessageHandler;
 import picocli.CommandLine;
@@ -80,8 +83,8 @@ public class Main implements Callable<Integer> {
         public String[] getVersion() throws Exception {
             Properties properties = new Properties();
             properties.load(this.getClass().getClassLoader().getResourceAsStream("version.txt"));
-            return new String[] {
-                    "Statique " + "v@|yellow " + properties.getProperty("Version")+" |@",
+            return new String[]{
+                    "Statique " + "v@|yellow " + properties.getProperty("Version") + " |@",
             };
         }
     }

@@ -3,6 +3,9 @@ package ch.heig_vd.app.errorHandler;
 import picocli.CommandLine;
 
 /**
+ *
+ * Display a nice error message to the end user
+ *
  * @author Besseau Léonard
  */
 public class PrintExceptionMessageHandler implements CommandLine.IExecutionExceptionHandler {

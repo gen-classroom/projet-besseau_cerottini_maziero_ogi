@@ -8,6 +8,9 @@ import org.commonmark.parser.Parser;
 import org.commonmark.renderer.html.HtmlRenderer;
 
 /**
+ *
+ * Custom Markdown Helper to transform markdown into html with handlebars
+ *
  * @author Besseau Léonard
  * @author Marco Maziero
  */

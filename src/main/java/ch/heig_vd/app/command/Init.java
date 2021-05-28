@@ -3,8 +3,9 @@ package ch.heig_vd.app.command;
 import ch.heig_vd.app.generator.ConfigGenerator;
 import ch.heig_vd.app.generator.TemplateGenerator;
 import picocli.CommandLine;
-import java.io.FileWriter;
+
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;

@@ -5,6 +5,9 @@ import picocli.CommandLine;
 import java.io.PrintWriter;
 
 /**
+ *
+ * Display a short error message to the end user
+ *
  * @author Besseau Léonard
  */
 public class ShortErrorMessageHandler implements CommandLine.IParameterExceptionHandler {
