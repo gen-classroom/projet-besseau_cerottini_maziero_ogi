@@ -6,10 +6,10 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.IOException;
 
 /**
+ * Class used to generate a basic JSON configuration file
+ *
  * @author Cerottini Alexandra
  * @author Ogi Nicolas
- *
- * Class used to generate a basic JSON configuration file
  */
 public class ConfigGenerator {
 

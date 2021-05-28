@@ -10,7 +10,12 @@ import java.util.Date;
  */
 public class TemplateGenerator {
 
-    public static String generateIndex() throws IOException {
+    /**
+     * Generate an index example
+     *
+     * @return a string containing the index example
+     */
+    public static String generateIndex() {
         return "title:localTitle\n" +
                 "author:authorName\n" +
                 "---\n" +
@@ -19,6 +24,11 @@ public class TemplateGenerator {
                 "Date:" + new SimpleDateFormat(" dd.MM.yyyy ").format(new Date());
     }
 
+    /**
+     * Generate a template
+     *
+     * @return a string containing a basic template
+     */
     public static String generateTemplate() {
 
         return "<html lang=\"en\">\n" +
