@@ -23,6 +23,9 @@ public class Serve implements Runnable {
 
     private static final int PORT = 8080;
 
+    /**
+     * Method used to run the command serve and execute a small HTTP server to visualize files in the build folder
+     */
     public void run() {
 
         // Serve the site
