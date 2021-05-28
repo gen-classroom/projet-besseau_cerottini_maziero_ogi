@@ -1,5 +1,6 @@
 package ch.heig_vd.app.command;
 
+import ch.heig_vd.app.command.utils.ExitHandler;
 import ch.heig_vd.app.converter.Converter;
 import ch.heig_vd.app.fileWatcher.FileWatcher;
 import org.apache.commons.io.FileUtils;
@@ -59,9 +60,7 @@ public class Build implements Runnable {
 
         if (watcher) {
             enableFileWatcher(path);
-            while(true){
-                Thread.yield();
-            }
+            ExitHandler.awaitSignal(watcher);
         }
     }
 
