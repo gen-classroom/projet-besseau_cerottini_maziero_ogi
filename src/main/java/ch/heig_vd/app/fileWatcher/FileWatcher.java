@@ -84,6 +84,9 @@ public class FileWatcher {
             }
         }catch (ClosedWatchServiceException e){
             System.out.println("File watcher stopped");
+        }catch (InterruptedException e){
+            stop();
+            System.out.println("File watcher interrupted and closed gracefully");
         }
 
     }

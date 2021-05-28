@@ -1,10 +1,15 @@
 package ch.heig_vd.app.command;
 
+import ch.heig_vd.app.command.utils.ExitHandler;
 import io.javalin.Javalin;
 import io.javalin.http.staticfiles.Location;
 import picocli.CommandLine;
 
 import java.nio.file.Paths;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 
 /**
@@ -35,5 +40,7 @@ public class Serve implements Runnable {
         if (watcher) {
             new Build().enableFileWatcher(Paths.get(site).toAbsolutePath());
         }
+
+        ExitHandler.awaitSignal(watcher);
     }
 }
