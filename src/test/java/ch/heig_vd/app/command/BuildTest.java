@@ -210,6 +210,11 @@ public class BuildTest {
         }
         assertTrue(output.contains("<p>This is <em>Sparta</em>"));
         assertTrue(output.contains("This is a new line</p>"));
+        for(Thread t : Thread.getAllStackTraces().keySet()){
+            if(t.getName().equals("FileWatcher")){
+                t.interrupt();
+            }
+        }
     }
 
     @Test

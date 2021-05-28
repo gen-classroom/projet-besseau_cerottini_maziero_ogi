@@ -23,7 +23,9 @@ public class FileWatcher {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+
         });
+        thread.setName("FileWatcher");
         thread.start();
     }
 
