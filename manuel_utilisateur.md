@@ -20,11 +20,11 @@ Pour initialiser le site statique, utilisez la commande `java -jar <release>.jar
 
 ### Build
 
-Pour compiler le site statique, utilisez la commande `java -jar <release>.jar build <dossier>`. Cette commande va créer un dossier `build` dans le dosser `<dossier>` contenant un fichier `index.html`.
+Pour compiler le site statique, utilisez la commande `java -jar <release>.jar build <dossier>`. Cette commande va créer un dossier `build` dans le dosser `<dossier>` contenant un fichier `index.html` ainsi que les fichier `.md` transformé en `.html`.
 
 ### Serve
 
-Pour visualiser le résultat de la compilation dans un navigateur web, utilisez la commande `java -jar <release>.jar serve <dossier>`. 
+Pour visualiser le résultat de la compilation dans un navigateur web, utilisez la commande `java -jar <release>.jar serve <dossier>`. Il suffit de taper `localhost:8080` sur un navigateur web pour visualiser le résultat. La page par défaut sera le `index.html`. Pour naviguer dans les autres fichier `.html`, il faut préciser leur chemin dans l'URL.
 
 ### Clean
 
@@ -178,11 +178,15 @@ Nous allons dans un troisième temps compiler notre site statique avec la comman
 
 Nous allons ensuite visualiser notre site statique avec la commande `java -jar <release>.jar serve mon/site`.
 
-//PHOTO
+![](images/serve.png)
 
 En allant sur un navigateur web et en tapant `localhost:8080`, nous sommes capables de visualiser le résultat.
 
-//PHOTO
+<img src="images/site1.png" alt="image-20210529011156553" style="zoom:67%;" />
+
+<img src="images/site2.png" alt="image-20210529011238919" style="zoom:67%;" />
+
+<img src="images/site3.png" alt="image-20210529011322179" style="zoom:67%;" />
 
 Pour terminer, nous allons nettoyer notre site statique avec la commande `java -jar <release>.jar clean mon/site`.
 
@@ -190,7 +194,4 @@ Pour terminer, nous allons nettoyer notre site statique avec la commande `java -
 
 
 
-Vous pouvez retrouver les différents dossiers utilisés pour l'exemple ici. //METTRE LIEN
-
-
-
+Vous pouvez retrouver les différents dossiers utilisés pour l'exemple [ici](https://github.com/gen-classroom/projet-besseau_cerottini_maziero_ogi/tree/master/exemple).
