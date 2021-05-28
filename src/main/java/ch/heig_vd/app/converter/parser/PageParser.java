@@ -7,10 +7,18 @@ import java.io.*;
 import java.util.ArrayList;
 
 /**
+ * Used to parse a markdown file into metadata
+ *
  * @author Marco Maziero
  * @author Besseau Léonard
  */
 public class PageParser {
+
+    /**
+     * Checks if a given file is a valid markdown file
+     * @param file The file to validate
+     * @return Boolean tru if the file is valid
+     */
     private static boolean isFileValid(File file) {
         // Checks file validity
         if (file.isDirectory())
@@ -20,6 +28,11 @@ public class PageParser {
         return FilenameUtils.getExtension(filename).equals("md");
     }
 
+    /**
+     * Parses given text line into a Metadata object
+     * @param line The line to parse
+     * @return The new Metadata object
+     */
     private static Metadata parseMetaLine(String line) {
         String[] tokens = line.split(":");
         if (tokens.length < 2) throw new RuntimeException("Incorrect " + line +  " metadata line\nCheck end of metadata separator \"---\"");

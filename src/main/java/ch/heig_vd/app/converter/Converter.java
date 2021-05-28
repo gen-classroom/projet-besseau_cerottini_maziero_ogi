@@ -9,6 +9,7 @@ import ch.heig_vd.app.converter.utils.Metadata;
 import org.apache.commons.io.FilenameUtils;
 
 /**
+ * Converts a markdown file into a html output file (uses the parser classes)
  * @author Marco Maziero
  * @author Besseau Léonard
  */
@@ -16,6 +17,11 @@ public class Converter {
     private final ArrayList<Metadata> configMeta;
     TemplateInterpreter interpreter;
 
+    /**
+     * Initlizes the converter with a given json metadata file and a templates directory
+     * @param jsonMetadata The json metadata to apply to each converted file
+     * @param templateDirectory The directory containing all the templates used to convert the files
+     */
     public Converter(File jsonMetadata, File templateDirectory) {
         configMeta = new ArrayList<>();
         try {
@@ -32,6 +38,12 @@ public class Converter {
         }
     }
 
+    /**
+     * Converts a given markdown file into an html output file
+     * Injects the json metadata and uses a template to create the html output
+     * @param mdFile The markdown file to convert
+     * @param ouputPath The ouput path of the new html file
+     */
     public void markdownToHTML(File mdFile, String ouputPath) {
         // Checks file validity
         if (mdFile.isDirectory())

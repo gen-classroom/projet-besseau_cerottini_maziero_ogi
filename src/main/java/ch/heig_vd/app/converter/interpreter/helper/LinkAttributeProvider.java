@@ -12,6 +12,13 @@ import java.util.Map;
  * @author Besseau Léonard
  */
 public class LinkAttributeProvider implements AttributeProvider {
+
+    /**
+     * Modify a markdown node
+     * @param node, The node to modify
+     * @param tagName The name of the node
+     * @param attributes The attributes of the node
+     */
     @Override
     public void setAttributes(Node node, String tagName, Map<String, String> attributes) {
         if (node instanceof Link) {

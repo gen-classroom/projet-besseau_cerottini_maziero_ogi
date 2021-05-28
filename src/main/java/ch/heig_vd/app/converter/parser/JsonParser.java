@@ -15,6 +15,14 @@ import java.util.Map;
  * @author Besseau Leonard
  */
 public class JsonParser {
+
+    /**
+     * Parse a JSON file and given the content to a visitor for further use
+     *
+     * @param f       The file to parse
+     * @param visitor The visitor to use. (Get the key and the value of each entry)
+     * @throws IOException If an IO exception occurs while parsing
+     */
     public static void parse(File f, JsonParserVisitor visitor) throws IOException {
         if (f.isDirectory()) {
             throw new IllegalArgumentException("File must not be a directory");
