@@ -60,6 +60,7 @@ public class Build implements Runnable {
 
         if (watcher) {
             enableFileWatcher(path);
+            System.out.println("File watcher enabled");
             ExitHandler.awaitSignal(watcher);
         }
     }
