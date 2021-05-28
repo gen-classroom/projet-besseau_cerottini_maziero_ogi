@@ -14,7 +14,7 @@ Pour afficher la version actuelle du générateur de site statique, utilisez la 
 
 ### Init
 
-
+Pour initialiser le site statique, utilisez la commande `java -jar <release>.jar statique init <dossier>`. Cette commande permet de créer ou enrichir le dossier mentionné. Si le dossier doit être créé, un fichier `index.md`, un fichier `config.json` ainsi qu'un dossier `template` contenant un fichier `default.html` seront créés.
 
 ### Build
 
@@ -35,6 +35,12 @@ Voici un exemple pratique pour vous permettre de mieux comprendre l'utilisation 
 Nous allons premièrement commencer par afficher la version du générateur de site statique avec la commande `java -jar <release>.jar statique -v`.
 
 ![](images/version.png)
+
+
+
+Nous allons ensuite initialiser notre site statique avec la commande `java -jar <release>.jar statique init mon/site`.
+
+![](images/init.png)
 
 
 
