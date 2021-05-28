@@ -168,18 +168,11 @@ public class BuildTest {
 
     @Test
     public void checkFileWatcherReloadsFile() throws IOException {
-        String path = directoryPath + "/testCopy";
+        String path = directoryPath + "/testFileWatcher";
         File directoryTest = new File(path);
         directoryTest.mkdirs();
         createConfig(path);
         createTemplateDirectory(path);
-
-        File newDirectory = new File(directoryTest.getPath() + "/dossier");
-        newDirectory.mkdirs();
-        File image = new File(newDirectory.getPath() + "/image.png");
-        image.createNewFile();
-        File image2 = new File(newDirectory.getPath() + "/image2.png");
-        image2.createNewFile();
 
         File input = new File(directoryTest.getPath() + "/input.md");
         FileWriter writer = new FileWriter(input);
@@ -195,7 +188,6 @@ public class BuildTest {
 
 
         assertEquals(0, new CommandLine(new Main()).execute("build", directoryTest.getPath(), "-w"));
-        File buildImage = new File(buildDirectory+"/image2.png");
         writer = new FileWriter(input);
         String inputContent2 = "titre:metaTitle\n" +
                 "auteur:metaAuthor\n" +
@@ -206,7 +198,7 @@ public class BuildTest {
         writer.write(inputContent2);
         writer.close();
         try {
-            Thread.sleep(100);
+            Thread.sleep(600);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

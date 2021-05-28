@@ -76,15 +76,17 @@ public class Build implements Runnable {
         if (listOfFiles != null) {
             for (File file : listOfFiles) {
                 String fileName = file.getName();
-                if (fileName.contains(".md")) {//MD files become HTML files
-                    converter.markdownToHTML(file, buildDirectory.toString());
-                } else if (!fileName.contains("config") && !file.isDirectory()) {
-                    File newDirectory = new File(buildDirectory + "/" + fileName);
-                    FileUtils.copyFile(file, newDirectory);
-                } else if (file.isDirectory() && !fileName.contains("build") && !fileName.contains("template")) {
-                    File newDirectory = new File(buildDirectory + "/" + fileName); //build new directory
-                    newDirectory.mkdir();
-                    explore(file, newDirectory);
+                if (file.exists()){
+                    if (fileName.contains(".md")) {//MD files become HTML files
+                        converter.markdownToHTML(file, buildDirectory.toString());
+                    } else if (!fileName.contains("config") && !file.isDirectory()) {
+                        File newDirectory = new File(buildDirectory + "/" + fileName);
+                        FileUtils.copyFile(file, newDirectory);
+                    } else if (file.isDirectory() && !fileName.contains("build") && !fileName.contains("template")) {
+                        File newDirectory = new File(buildDirectory + "/" + fileName); //build new directory
+                        newDirectory.mkdir();
+                        explore(file, newDirectory);
+                    }
                 }
             }
         }
