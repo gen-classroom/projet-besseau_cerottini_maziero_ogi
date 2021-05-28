@@ -93,7 +93,7 @@ public class TemplateInterpreterTest {
         localMeta.add(new Metadata("author", "Website author"));
         localMeta.add(new Metadata("template", "templateA"));
         Exception exception = assertThrows(RuntimeException.class, () -> templateInterpreter.generate(globalMeta, localMeta, mdContent));
-        assertEquals(exception.getMessage(), "Missing parameter: page:title. Parameter Path: ./templateInterpreter/noMatch/templateA.html:4:26");
+        assertEquals(exception.getMessage(), "Missing parameter: page:title. Parameter Path: ." + File.separator + "templateInterpreter" + File.separator + "noMatch/templateA.html:4:26");
     }
 
     // Maybe check if a warning is displayed if any

@@ -167,6 +167,53 @@ public class BuildTest {
     }
 
     @Test
+    public void checkFileWatcherReloadsFile() throws IOException {
+        String path = directoryPath + "/testFileWatcher";
+        File directoryTest = new File(path);
+        directoryTest.mkdirs();
+        createConfig(path);
+        createTemplateDirectory(path);
+
+        File input = new File(directoryTest.getPath() + "/input.md");
+        FileWriter writer = new FileWriter(input);
+        String inputContent = "titre:metaTitle\n" +
+                "auteur:metaAuthor\n" +
+                "date:metaDate\n" +
+                "---\n" +
+                "This is *Sparta*";
+        writer.write(inputContent);
+        writer.close();
+
+        File buildDirectory = new File(path + "/build");
+
+
+        assertEquals(0, new CommandLine(new Main()).execute("build", directoryTest.getPath(), "-w"));
+        writer = new FileWriter(input);
+        String inputContent2 = "titre:metaTitle\n" +
+                "auteur:metaAuthor\n" +
+                "date:metaDate\n" +
+                "---\n" +
+                "This is *Sparta*\n"+
+                "This is a new line";
+        writer.write(inputContent2);
+        writer.close();
+        try {
+            Thread.sleep(600);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        ArrayList<String> output = new ArrayList<>();
+        try(BufferedReader reader = new BufferedReader(new FileReader(buildDirectory+"/input.html"))){
+            String line;
+            while ((line = reader.readLine()) != null){
+                output.add(line);
+            }
+        }
+        assertTrue(output.contains("<p>This is <em>Sparta</em>"));
+        assertTrue(output.contains("This is a new line</p>"));
+    }
+
+    @Test
     public void buildShouldThrowWhenNoConfigIsPresent() {
         String path = directoryPath + "/noConfigTest";
         File directoryTest = new File(path);
