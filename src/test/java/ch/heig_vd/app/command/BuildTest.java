@@ -167,6 +167,65 @@ public class BuildTest {
     }
 
     @Test
+    public void checkFileWatcherReloadsFile() throws IOException {
+        String path = directoryPath + "/testCopy";
+        File directoryTest = new File(path);
+        directoryTest.mkdirs();
+        createConfig(path);
+        createTemplateDirectory(path);
+
+        File newDirectory = new File(directoryTest.getPath() + "/dossier");
+        newDirectory.mkdirs();
+        File image = new File(newDirectory.getPath() + "/image.png");
+        image.createNewFile();
+        File image2 = new File(newDirectory.getPath() + "/image2.png");
+        image2.createNewFile();
+
+        File input = new File(directoryTest.getPath() + "/input.md");
+        FileWriter writer = new FileWriter(input);
+        String inputContent = "titre:metaTitle\n" +
+                "auteur:metaAuthor\n" +
+                "date:metaDate\n" +
+                "---\n" +
+                "This is *Sparta*";
+        writer.write(inputContent);
+        writer.close();
+
+        File buildDirectory = new File(path + "/build");
+
+
+        assertEquals(0, new CommandLine(new Main()).execute("build", directoryTest.getPath(), "-w"));
+        File buildImage = new File(buildDirectory+"/image2.png");
+        writer = new FileWriter(input);
+        String inputContent2 = "titre:metaTitle\n" +
+                "auteur:metaAuthor\n" +
+                "date:metaDate\n" +
+                "---\n" +
+                "This is *Sparta*\n"+
+                "This is a new line";
+        writer.write(inputContent2);
+        writer.close();
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        try(BufferedReader reader = new BufferedReader(new FileReader(buildDirectory+"/input.html"))){
+            String line = reader.readLine();
+            line = reader.readLine();
+            line = reader.readLine();
+            line = reader.readLine();
+            line = reader.readLine();
+            line = reader.readLine();
+            line = reader.readLine();
+            assertEquals(line, "<p>This is <em>Sparta</em>");
+            line = reader.readLine();
+            assertEquals(line, "This is a new line</p>");
+        }
+
+    }
+
+    @Test
     public void buildShouldThrowWhenNoConfigIsPresent() {
         String path = directoryPath + "/noConfigTest";
         File directoryTest = new File(path);
