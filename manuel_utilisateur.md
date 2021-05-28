@@ -6,25 +6,61 @@ Téléchargez la dernière release (le `.jar`) disponible sur le [git](https://g
 
 ![](images/Usage.png)
 
+
+
 ## Commandes
 
 ### Version
 
-Pour afficher la version actuelle du générateur de site statique, utilisez la commande `java -jar <release>.jar statique -v`.
+Pour afficher la version actuelle du générateur de site statique, utilisez la commande `java -jar <release>.jar -v`.
 
 ### Init
 
-Pour initialiser le site statique, utilisez la commande `java -jar <release>.jar statique init <dossier>`. Cette commande permet de créer ou enrichir le dossier mentionné. Si le dossier doit être créé, un fichier `index.md`, un fichier `config.json` ainsi qu'un dossier `template` contenant un fichier `default.html` seront créés.
+Pour initialiser le site statique, utilisez la commande `java -jar <release>.jar init <dossier>`. Cette commande permet de créer ou enrichir le dossier mentionné. Un fichier `index.md`, un fichier `config.json` ainsi qu'un dossier `template` contenant un fichier `default.html` seront créés.
 
 ### Build
 
-
+Pour compiler le site statique, utilisez la commande `java -jar <release>.jar build <dossier>`. Cette commande va créer un dossier `build` dans le dosser `<dossier>` contenant un fichier `index.html`.
 
 ### Serve
 
-
+Pour visualiser le résultat de la compilation dans un navigateur web, utilisez la commande `java -jar <release>.jar serve <dossier>`. 
 
 ### Clean
+
+Pour nettoyer le site statique, utilisez la commande `java -jar <release>.jar clean <dossier>`. Cette commande supprimera le dossier `build` dans le dossier `<dossier>`.
+
+
+
+## Ajout du contenu utilisateur
+
+### Dossiers réservés
+
+`build` et `template` sont des dossiers spéciaux. Tous les fichiers en format MarkDown inclut seront ignorés. Le dossier `build ` est utilisé comme sortie pour la conversion des fichier MarkDown et le dossier `template` est utilisé pour stocker le modèle pour le site.
+
+### Utilisation du template
+
+L'utilisation de [handlerbars](https://handlebarsjs.com/) est recommendé pour décrire un modèle de page.
+
+Un modèle par défaut est automatiquement appliqué à tous les fichiers pour lesquels aucun modèle n'est spécifié. Le modèle par défaut est situé dans le dossier `template/default.html`.
+
+### Insérer du contenu dans un template
+
+Pour spécifier où insérer du contenu dans le template, il faut utiliser `{{INSERT}}`.
+
+À l'intérieur des accolades, vous pouvez spécifier les propriétés à afficher.
+
+Par exemple, si vous voulez accéder à vos méta-données globales (définies dans `config.json`), vous pouvez utiliser `{{site:member}}` où member est la propriété à laquelle vous voulez accéder. Sinon, si vous voulez accéder aux méta-données de votre fichier, vous pouvez utiliser `{{page:member}}`. Enfin, pour afficher le contenu de votre page, utilisez `{{md content}}`.
+
+### Lien sur un autre fichier
+
+Le générateur de statique supporte les liens vers d'autres fichiers. De plus, les liens vers d'autres fichiers md seront transformés en liens vers des fichiers html. Par exemple :
+
+`[Une autre page](./test/page.md)` sera transformé en `<a href="./test/page.html">Une autre page</a>`.
+
+### Limitations
+
+Il ne doit pas y avoir d'espace entre les accolades. Par exemple : `{{ site.content }}` ne fonctionnera pas.
 
 
 
@@ -32,57 +68,129 @@ Pour initialiser le site statique, utilisez la commande `java -jar <release>.jar
 
 Voici un exemple pratique pour vous permettre de mieux comprendre l'utilisation du générateur de site statique.
 
-Nous allons premièrement commencer par afficher la version du générateur de site statique avec la commande `java -jar <release>.jar statique -v`.
+Nous allons premièrement commencer par afficher la version du générateur de site statique avec la commande `java -jar <release>.jar -v`.
 
 ![](images/version.png)
 
-
-
-Nous allons ensuite initialiser notre site statique avec la commande `java -jar <release>.jar statique init mon/site`.
+Nous allons dans un second temps initialiser notre site statique avec la commande `java -jar <release>.jar init mon/site`.
 
 ![](images/init.png)
 
+Nous allons maintenant ajouter trois templates dans notre dossier `template` (en plus du `default.html`) déjà existant.
+
+`index.html`:
+
+```html
+<html lang="en">
+<head>
+      <meta charset="utf-8">
+      <title>{{site:title}} | {{page:title}}</title>
+</head>
+<body>
+      
+      Author: {{page:author}}
+      {{md content}}
+      {{> menu}}
+</body>
+</html>
+```
+
+`menu.html`:
+
+```html
+<ul>
+    <li> <a href="index.html"> home </a> </li>
+    <li> <a href="content/page.html"> page </a> </li>
+</ul>
+```
+
+`noMeta.html`:
+
+```html
+<html lang="en">
+<head>
+      <meta charset="utf-8">
+      <title>HELP ME</title>
+</head>
+<body>
+      {{md content}}
+</body>
+</html>
+```
+
+Nous allons également ajouter un dossier `content` à `mon/site`. Nous y créons deux fichiers MarkDown.
+
+`page.md`:
+
+```markdown
+title:ChessClub
+author:Thub
+---
+# Hello there
+Date: 08.05.2021 
+___
+
+![WIDE](../images/putin.gif)
+
+Sadly No music
+```
+
+`noMeta.md`:
+
+```markdown
+template:noMeta
+---
+# No metaData
+Actually it has a metaData to specify the template to use but otherwise it only has global meta-data accesible.
+```
+
+Nous modifions l'`index.md`.
+
+```markdown
+title:MysuperbExamble
+author:Guy
+template:index
+---
+# My superb example
+Date: 08.05.2021 
+___
+Welcome to my example. 
+
+[You can follow this link to see another page](content/page.md)
+
+[Or another one](content/noMeta.md)
+
+This is an image:
+
+![usage](images/Usage.png)
+
+Have fun
+___
+```
+
+Nous créons un dossier `images` dans lequel nous ajoutons nos deux images `Usage.png` et `putin.gif`.
 
 
 
+Nous allons dans un troisième temps compiler notre site statique avec la commande `java -jar <release>.jar build mon/site`.
 
-l'utilisateur peut saisir du contenu en markdown qui sera compilé en html.
+![](images/build.png)
 
-Les pages créées contiennent des métadonnées et du contenu (format des pages)
+Nous allons ensuite visualiser notre site statique avec la commande `java -jar <release>.jar serve mon/site`.
 
-on peut voir la version
+//PHOTO
 
-on peut initialiser le site --> statique init /mon/site peut créer ou enrichir le dossier /mon/site avec un fichier de conf config.yaml qui contient des infos générales liées au site (titre, description, domaine) et un fichier markdown index.md contenant une page d’accueil avec des métadonnées et du contenu. Le fichier config.yaml contient les données de configuration du site
+En allant sur un navigateur web et en tapant `localhost:8080`, nous sommes capables de visualiser le résultat.
 
-le html correspondant à mes fichiers markdown soit injecté dans des pages html plus complètes à l'aide d'un template. Dans le site statique y'aura un template qui sera utilisé lors de l'exécution de la commande build pour générer les pages html.
+//PHOTO
 
-On peut compiler le site --> statique build /mon/site crée un dossier /mon/site/build contenant un fichier HTML correspondant au contenu de chaque page du site statique. Les fichiers de conf sont pas ajouté au dossier build.
+Pour terminer, nous allons nettoyer notre site statique avec la commande `java -jar <release>.jar clean mon/site`.
 
-On peut nettoyer le site -->statique clean /mon/site pour nettoyer le site statique. Elle supprime le dossier /mon/site/build
-
-On a la release du générateur de site statique téléchargeable sur git avec les instructions d'installation.
-
-On peut visualiser le résultat de la compilation du site Internet dans un navigateur web -> statique serve /mon/site
+![](images/clean.png)
 
 
 
-buil et serve regénère à la volée (automatiquement) les changements qui sont effectués sur le système de fichier.
+Vous pouvez retrouver les différents dossiers utilisés pour l'exemple ici. //METTRE LIEN
 
 
-
-
-
-statique init chemin ...
-
-
-
-on pourrait faire direct un build si on a deja nos dossier. Le init crée une base
-
-
-
-clean pour enlever le folder build dans le path
-
-
-
-serve pour lancer un serveur permettant de voir le site statique.
 
