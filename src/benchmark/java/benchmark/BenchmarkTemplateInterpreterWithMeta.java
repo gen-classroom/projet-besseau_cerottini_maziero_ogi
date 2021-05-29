@@ -31,6 +31,8 @@ public class BenchmarkTemplateInterpreterWithMeta {
         interpreter = new TemplateInterpreter(templateFolder);
         String a = new String(Files.readAllBytes(Paths.get(rootFolder + "/inputNoMeta")));
         input = a.repeat(Math.max(0, size - 1));
+        global = new ArrayList<>();
+        local = new ArrayList<>();
         global.add(new Metadata("title", "a"));
         global.add(new Metadata("a", "a"));
         global.add(new Metadata("b", "a"));
