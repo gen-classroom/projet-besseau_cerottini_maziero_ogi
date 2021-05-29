@@ -10,6 +10,4 @@ public class Benchmark {
         Options options = new OptionsBuilder().forks(1).warmupIterations(2).measurementIterations(4).build();
         new Runner(options).run();
     }
-
-
 }
