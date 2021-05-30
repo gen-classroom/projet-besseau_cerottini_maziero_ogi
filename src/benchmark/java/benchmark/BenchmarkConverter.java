@@ -1,5 +1,6 @@
 package benchmark;
 
+import ch.heig_vd.app.converter.Converter;
 import ch.heig_vd.app.converter.interpreter.TemplateInterpreter;
 import ch.heig_vd.app.converter.utils.Metadata;
 import org.openjdk.jmh.annotations.Benchmark;
@@ -13,27 +14,25 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 
 @State(Scope.Benchmark)
-public class BenchmarkTemplateInterpreter {
+public class BenchmarkConverter {
     String rootFolder = "./benchmark";
     String path = rootFolder + "/example";
-    TemplateInterpreter interpreter;
-
-    @Param({"1", "2", "4", "8"})
-    private int size;
-    ArrayList<Metadata> empty;
-    String input;
+    Converter converter;
+    File inputFile;
+    File outputFolder;
 
     @Setup
     public void setup() throws IOException {
         File templateFolder = new File(path + "/template");
-        interpreter = new TemplateInterpreter(templateFolder);
-        String a = new String(Files.readAllBytes(Paths.get(rootFolder + "/inputTemplate")));
-        input = a.repeat(size);
-        empty = new ArrayList<>();
+        inputFile = new File(rootFolder + "/inputConverter.md");
+        outputFolder = new File(rootFolder + "/outputConverter");
+        outputFolder.mkdir();
+        converter = new Converter(new File(path + "/config.json"), templateFolder);
+
     }
 
     @Benchmark
-    public void run(Blackhole blackhole) throws IOException {
-        blackhole.consume(interpreter.generate( empty, empty, input));
+    public void run(Blackhole blackhole) {
+        converter.markdownToHTML(inputFile,rootFolder + "/outputConverter");
     }
 }

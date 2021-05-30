@@ -12,7 +12,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
-@BenchmarkMode(Mode.AverageTime)
 @State(Scope.Benchmark)
 public class BenchmarkTemplateInterpreterWithMeta {
     String rootFolder = "./benchmark";
@@ -29,8 +28,8 @@ public class BenchmarkTemplateInterpreterWithMeta {
     public void setup() throws IOException {
         File templateFolder = new File(path + "/template");
         interpreter = new TemplateInterpreter(templateFolder);
-        String a = new String(Files.readAllBytes(Paths.get(rootFolder + "/inputNoMeta")));
-        input = a.repeat(Math.max(0, size - 1));
+        String a = new String(Files.readAllBytes(Paths.get(rootFolder + "/inputTemplate")));
+        input = a.repeat(size);
         global = new ArrayList<>();
         local = new ArrayList<>();
         global.add(new Metadata("title", "a"));
