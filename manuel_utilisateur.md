@@ -36,7 +36,7 @@ Pour nettoyer le site statique, utilisez la commande `java -jar <release>.jar cl
 
 ### Dossiers réservés
 
-`build` et `template` sont des dossiers spéciaux. Tous les fichiers en format MarkDown inclut seront ignorés. Le dossier `build ` est utilisé comme sortie pour la conversion des fichier MarkDown et le dossier `template` est utilisé pour stocker le modèle pour le site.
+`build` et `template` sont des dossiers spéciaux. Tous les fichiers en format Markdown incluts seront ignorés. Le dossier `build ` est utilisé comme sortie pour la conversion des fichiers Markdown et le dossier `template` est utilisé pour stocker le modèle pour le site.
 
 ### Utilisation du template
 
@@ -61,6 +61,36 @@ Le générateur de statique supporte les liens vers d'autres fichiers. De plus, 
 ### Limitations
 
 Il ne doit pas y avoir d'espace entre les accolades. Par exemple : `{{ site.content }}` ne fonctionnera pas.
+
+### Fichier Markdown
+
+Dans les fichiers Markdown, il faut obligatoirement séparer les metadatas du contenu avec les caractères `---` même si le fichier ne contient aucune metadata.
+
+Quelques exemples:
+
+Fichier correcte:
+
+```
+template:noMeta
+---
+# No metaData
+Actually it has a metaData to specify the template to use but otherwise it only has global meta-data accesible.
+```
+
+Fichier incorrecte:
+
+```
+# No metaData
+Actually it has a metaData to specify the template to use but otherwise it only has global meta-data accesible.
+```
+
+Fichier correcte:
+
+```
+---
+# No metaData
+Actually it has a metaData to specify the template to use but otherwise it only has global meta-data accesible.
+```
 
 
 
@@ -118,7 +148,7 @@ Nous allons maintenant ajouter trois templates dans notre dossier `template` (en
 </html>
 ```
 
-Nous allons également ajouter un dossier `content` à `mon/site`. Nous y créons deux fichiers MarkDown.
+Nous allons également ajouter un dossier `content` à `mon/site`. Nous y créons deux fichiers Markdown.
 
 `page.md`:
 
@@ -195,3 +225,4 @@ Pour terminer, nous allons nettoyer notre site statique avec la commande `java -
 
 
 Vous pouvez retrouver les différents dossiers utilisés pour l'exemple [ici](https://github.com/gen-classroom/projet-besseau_cerottini_maziero_ogi/tree/master/exemple).
+
