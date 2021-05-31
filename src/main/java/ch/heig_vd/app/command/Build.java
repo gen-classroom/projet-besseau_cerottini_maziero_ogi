@@ -2,6 +2,7 @@ package ch.heig_vd.app.command;
 
 import ch.heig_vd.app.command.utils.ExitHandler;
 import ch.heig_vd.app.converter.Converter;
+import org.openjdk.jmh.annotations.Benchmark;
 import ch.heig_vd.app.fileWatcher.FileWatcher;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -26,9 +27,11 @@ import java.nio.file.Paths;
 public class Build implements Runnable {
     @CommandLine.Parameters(description = "Path to site to build. (Must contain a config.json file)")
     String filePath;
+    private Converter converter;
+
     @CommandLine.Option(names = {"-w", "--watcher"}, paramLabel = "Watcher", description = "Enable file watcher to automate")
     boolean watcher;
-    private Converter converter;
+
 
     /**
      * Main entry point for the build command.
@@ -65,6 +68,7 @@ public class Build implements Runnable {
         }
     }
 
+
     /**
      * Enable the file watcher on a path.
      * If the modified file is a .md file only this file will be reconverted. Otherwise all files will be reconverted.
@@ -90,6 +94,7 @@ public class Build implements Runnable {
             });
         } catch (IOException e) {
             System.err.println("File watcher error\n" + e.getMessage());
+            throw new RuntimeException("An error occurred during the build phase. "+e.getMessage());
         }
     }
 
