@@ -162,8 +162,11 @@ public class BuildTest {
         ArrayList<String> list2 = new ArrayList<>(Arrays.asList(Objects.requireNonNull(directoryTest2.list())));
         ArrayList<String> listBuild2 = new ArrayList<>(Arrays.asList(Objects.requireNonNull(buildDirectory2.list())));
 
-        for (String file : list2) {
-            assertTrue(listBuild2.contains(file));
+
+        for (String file: listBuild2){
+            if (!file.startsWith(".")){
+                assertTrue(list2.contains(file));
+            }
         }
     }
 
