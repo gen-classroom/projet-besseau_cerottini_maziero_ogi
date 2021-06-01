@@ -6,7 +6,7 @@
 
     <groupId>ch.heig-vd.app</groupId>
     <artifactId>statique</artifactId>
-    <version>0.0.2</version>
+    <version>0.0.3</version>
     <packaging>jar</packaging>
     <name>statique</name>
     <!-- FIXME change it to the project's website -->
