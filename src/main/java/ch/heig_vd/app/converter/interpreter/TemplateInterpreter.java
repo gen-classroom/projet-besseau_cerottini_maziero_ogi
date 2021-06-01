@@ -92,7 +92,7 @@ public class TemplateInterpreter {
 
         Context context = Context.newBuilder(hash).resolver(MapValueResolver.INSTANCE).build();
         String result = template.apply(context);
-        context.destroy(); // not sure if useful
+     //   context.destroy(); // not sure if useful
         return result;
     }
 }

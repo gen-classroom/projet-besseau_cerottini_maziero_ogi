@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 
 /**
  * Command to compile the source into html file for the static site.
@@ -76,14 +77,24 @@ public class Build implements Runnable {
      * @param path The path to watch
      */
     public void enableFileWatcher(Path path) {
+        if(converter == null){
+            File configFile = new File(path + "/config.json");
+            if (!configFile.exists()) {
+                throw new RuntimeException("Config file does not exist");
+            }
+            File templateFolder = new File(path + "/template");
+            converter = new Converter(configFile, templateFolder);
+        }
         try {
             String buildDirectory = path + "/build";
             new FileWatcher(path, (name, path1) -> {
+                String extension = FilenameUtils.getExtension(path1.toString());
+                File file = path1.toFile();
                 if (FilenameUtils.getExtension(path1.toString()).equals("md")) {
                     if (!name.equals("ENTRY_DELETE")) {
                         converter.markdownToHTML(path1.toFile(), buildDirectory);
                     }
-                } else {
+                } else if(!file.getName().startsWith(".")){
                     try {
                         explore(path.toFile(), new File(buildDirectory));
                     } catch (IOException e) {
@@ -109,23 +120,27 @@ public class Build implements Runnable {
     void explore(File filesDirectory, File buildDirectory) throws IOException {
 
         File[] listOfFiles = filesDirectory.listFiles();
-
-        if (listOfFiles != null) {
-            for (File file : listOfFiles) {
-                String fileName = file.getName();
-                if (file.exists()) {
-                    if (fileName.contains(".md")) {//MD files become HTML files
-                        converter.markdownToHTML(file, buildDirectory.toString());
-                    } else if (!fileName.contains("config") && !file.isDirectory()) {
-                        File newDirectory = new File(buildDirectory + "/" + fileName);
-                        FileUtils.copyFile(file, newDirectory);
-                    } else if (file.isDirectory() && !fileName.contains("build") && !fileName.contains("template")) {
-                        File newDirectory = new File(buildDirectory + "/" + fileName); //build new directory
-                        newDirectory.mkdir();
-                        explore(file, newDirectory);
+        try{
+            if (listOfFiles != null) {
+                for (File file : listOfFiles) {
+                    String fileName = file.getName();
+                    if (file.exists()) {
+                        if (fileName.contains(".md")) {//MD files become HTML files
+                            converter.markdownToHTML(file, buildDirectory.toString());
+                        } else if (!fileName.contains("config") && !file.isDirectory() && fileName.startsWith(".")) {
+                            File newDirectory = new File(buildDirectory + "/" + fileName);
+                            FileUtils.copyFile(file, newDirectory);
+                        } else if (file.isDirectory() && !fileName.contains("build") && !fileName.contains("template")) {
+                            File newDirectory = new File(buildDirectory + "/" + fileName); //build new directory
+                            newDirectory.mkdir();
+                            explore(file, newDirectory);
+                        }
                     }
                 }
             }
+        }catch (NullPointerException e){
+            System.err.println(e.getMessage()+"\n"+ Arrays.toString(e.getStackTrace()));
         }
+
     }
 }
