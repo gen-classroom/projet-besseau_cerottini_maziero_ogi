@@ -82,6 +82,12 @@ public class ServeTest {
 
     @AfterClass
     public static void cleanAll() throws IOException {
+        server.interrupt();
+        try {
+            Thread.sleep(600);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         Path path = Paths.get("./test_folder").normalize().toAbsolutePath();
         System.out.println("Cleaning ALL");
         if (!path.toFile().exists()) {

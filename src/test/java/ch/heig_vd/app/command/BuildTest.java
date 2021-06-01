@@ -222,6 +222,11 @@ public class BuildTest {
         }
 
         thread.interrupt();
+        try {
+            Thread.sleep(600);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
