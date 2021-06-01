@@ -2,7 +2,6 @@ package ch.heig_vd.app.command;
 
 import ch.heig_vd.app.command.utils.ExitHandler;
 import ch.heig_vd.app.converter.Converter;
-import org.openjdk.jmh.annotations.Benchmark;
 import ch.heig_vd.app.fileWatcher.FileWatcher;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -77,7 +76,7 @@ public class Build implements Runnable {
      * @param path The path to watch
      */
     public void enableFileWatcher(Path path) {
-        if(converter == null){
+        if (converter == null) {
             File configFile = new File(path + "/config.json");
             if (!configFile.exists()) {
                 throw new RuntimeException("Config file does not exist");
@@ -88,13 +87,13 @@ public class Build implements Runnable {
         try {
             String buildDirectory = path + "/build";
             new FileWatcher(path, (name, path1) -> {
-                String extension = FilenameUtils.getExtension(path1.toString());
                 File file = path1.toFile();
                 if (FilenameUtils.getExtension(path1.toString()).equals("md")) {
                     if (!name.equals("ENTRY_DELETE")) {
                         converter.markdownToHTML(path1.toFile(), buildDirectory);
                     }
-                } else if(!file.getName().startsWith(".")){
+                } else if (!file.getName().startsWith(".")) {
+                    // No need to rebuild if hidden file.
                     try {
                         explore(path.toFile(), new File(buildDirectory));
                     } catch (IOException e) {
@@ -105,7 +104,7 @@ public class Build implements Runnable {
             });
         } catch (IOException e) {
             System.err.println("File watcher error\n" + e.getMessage());
-            throw new RuntimeException("An error occurred during the build phase. "+e.getMessage());
+            throw new RuntimeException("An error occurred during the build phase. " + e.getMessage());
         }
     }
 
@@ -120,7 +119,7 @@ public class Build implements Runnable {
     void explore(File filesDirectory, File buildDirectory) throws IOException {
 
         File[] listOfFiles = filesDirectory.listFiles();
-        try{
+        try {
             if (listOfFiles != null) {
                 for (File file : listOfFiles) {
                     String fileName = file.getName();
@@ -138,8 +137,8 @@ public class Build implements Runnable {
                     }
                 }
             }
-        }catch (NullPointerException e){
-            System.err.println(e.getMessage()+"\n"+ Arrays.toString(e.getStackTrace()));
+        } catch (NullPointerException e) {
+            System.err.println(e.getMessage() + "\n" + Arrays.toString(e.getStackTrace()));
         }
 
     }
