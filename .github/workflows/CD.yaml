@@ -26,5 +26,6 @@ jobs:
           automatic_release_tag: ${{ steps.vars.outputs.tag }}
           files: 
             target/statique.jar
+            target/apidocs/*
           
       
