@@ -20,11 +20,11 @@ Pour initialiser le site statique, utilisez la commande `java -jar <release>.jar
 
 ### Build
 
-Pour compiler le site statique, utilisez la commande `java -jar <release>.jar build <dossier>`. Cette commande va créer un dossier `build` dans le dosser `<dossier>` contenant un fichier `index.html` ainsi que les fichiers `.md` transformé en `.html`.
+Pour compiler le site statique, utilisez la commande `java -jar <release>.jar build [-w] <dossier>`.  Le **-w** est optionnel. Il permet d'activer le file watcher. Si un fichier est modifié lors de l'exécution, il sera reconverti. Cette commande va créer un dossier `build` dans le dosser `<dossier>` contenant un fichier `index.html` ainsi que les fichiers `.md` transformé en `.html`.
 
 ### Serve
 
-Pour visualiser le résultat de la compilation dans un navigateur web, utilisez la commande `java -jar <release>.jar serve <dossier>`. Il suffit de taper `localhost:8080` sur un navigateur web pour visualiser le résultat. La page par défaut sera le `index.html`. Pour naviguer dans les autres fichier `.html`, il faut préciser leur chemin dans l'URL.
+Pour visualiser le résultat de la compilation dans un navigateur web, utilisez la commande `java -jar <release>.jar serve [-w] <dossier>`.  Le **-w** est optionnel. Il permet d'activer le file watcher. Si un fichier est modifié lors de l'exécution, il sera reconverti. Il suffit de taper `localhost:8080` sur un navigateur web pour visualiser le résultat. La page par défaut sera le `index.html`. Pour naviguer dans les autres fichier `.html`, il faut préciser leur chemin dans l'URL.
 
 ### Clean
 
@@ -127,7 +127,7 @@ Nous allons maintenant ajouter trois templates dans notre dossier `template` (en
 </html>
 ```
 
-Ce template
+Ce template comporte la particularité d'insérer un autre fichier avec `{{> menu}}`. Il insérera à cet emplacement le fichier `menu.html`.
 
 `menu.html`:
 
@@ -152,7 +152,7 @@ Ce template
 </html>
 ```
 
-
+Ce template va insérer un fichier `noMeta.md` ne comportant pas de metadatas.
 
 Nous allons également ajouter un dossier `content` à `mon/site`. Nous y créons deux fichiers Markdown.
 
@@ -206,13 +206,11 @@ ___
 
 Nous créons un dossier `images` dans lequel nous ajoutons nos deux images `Usage.png` et `putin.gif`.
 
-
-
-Nous allons dans un troisième temps compiler notre site statique avec la commande `java -jar <release>.jar build mon/site`.
+Nous allons dans un troisième temps compiler notre site statique et activer le fileWatcher avec la commande `java -jar <release>.jar build -w mon/site`.
 
 ![](images/build.png)
 
-Nous allons ensuite visualiser notre site statique avec la commande `java -jar <release>.jar serve mon/site`.
+Nous allons ensuite visualiser notre site statique et activer le fileWatcher avec la commande `java -jar <release>.jar serve -w mon/site`.
 
 ![](images/serve.png)
 
@@ -223,6 +221,14 @@ En allant sur un navigateur web et en tapant `localhost:8080`, nous sommes capab
 <img src="images/site2.png" alt="image-20210529011238919" style="zoom:67%;" />
 
 <img src="images/site3.png" alt="image-20210529011322179" style="zoom:67%;" />
+
+Nous remarquons tout à coup une faute d'ortographe dans le titre de la page.
+
+![](images/examble.png)
+
+Nous reprenons donc notre fichier `index.md` et modifions la premire ligne `title:MysuperbExamble` par `title:MysuperbExample`. Nous sauvgardons puis rechargeons la page du site web et nous voyons que la modification a bien été effectuée.
+
+![](images/example.png)
 
 Pour terminer, nous allons nettoyer notre site statique avec la commande `java -jar <release>.jar clean mon/site`.
 
