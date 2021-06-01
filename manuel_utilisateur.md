@@ -20,7 +20,7 @@ Pour initialiser le site statique, utilisez la commande `java -jar <release>.jar
 
 ### Build
 
-Pour compiler le site statique, utilisez la commande `java -jar <release>.jar build <dossier>`. Cette commande va créer un dossier `build` dans le dosser `<dossier>` contenant un fichier `index.html` ainsi que les fichier `.md` transformé en `.html`.
+Pour compiler le site statique, utilisez la commande `java -jar <release>.jar build <dossier>`. Cette commande va créer un dossier `build` dans le dosser `<dossier>` contenant un fichier `index.html` ainsi que les fichiers `.md` transformé en `.html`.
 
 ### Serve
 
@@ -36,7 +36,7 @@ Pour nettoyer le site statique, utilisez la commande `java -jar <release>.jar cl
 
 ### Dossiers réservés
 
-`build` et `template` sont des dossiers spéciaux. Tous les fichiers en format Markdown incluts seront ignorés. Le dossier `build ` est utilisé comme sortie pour la conversion des fichiers Markdown et le dossier `template` est utilisé pour stocker le modèle pour le site.
+`build` et `template` sont des dossiers spéciaux. Tous les fichiers en format Markdown inclus seront ignorés. Le dossier `build ` est utilisé comme sortie pour la conversion des fichiers Markdown et le dossier `template` est utilisé pour stocker les modèles pour le site.
 
 ### Utilisation du template
 
@@ -50,7 +50,9 @@ Pour spécifier où insérer du contenu dans le template, il faut utiliser `{{IN
 
 À l'intérieur des accolades, vous pouvez spécifier les propriétés à afficher.
 
-Par exemple, si vous voulez accéder à vos méta-données globales (définies dans `config.json`), vous pouvez utiliser `{{site:member}}` où member est la propriété à laquelle vous voulez accéder. Sinon, si vous voulez accéder aux méta-données de votre fichier, vous pouvez utiliser `{{page:member}}`. Enfin, pour afficher le contenu de votre page, utilisez `{{md content}}`.
+Par exemple, si vous voulez accéder à vos méta-données globales (définies dans `config.json`), vous pouvez utiliser `{{site:member}}` où member est la propriété à laquelle vous voulez accéder. Sinon, si vous voulez accéder aux méta-données de votre fichier, vous pouvez utiliser `{{page:member}}`. Enfin, pour afficher le contenu de votre page, utilisez `{{md content}}`. Il y a aussi possibilité d'ajouter du contenu brut (texte).
+
+La conversion échoue si des métadonnées sont attendues par le template mais qu'elles ne sont pas présentent.
 
 ### Lien sur un autre fichier
 
@@ -68,7 +70,7 @@ Dans les fichiers Markdown, il faut obligatoirement séparer les metadatas du co
 
 Quelques exemples:
 
-Fichier correcte:
+Fichier correct:
 
 ```
 template:noMeta
@@ -77,14 +79,14 @@ template:noMeta
 Actually it has a metaData to specify the template to use but otherwise it only has global meta-data accesible.
 ```
 
-Fichier incorrecte:
+Fichier incorrect:
 
 ```
 # No metaData
 Actually it has a metaData to specify the template to use but otherwise it only has global meta-data accesible.
 ```
 
-Fichier correcte:
+Fichier correct:
 
 ```
 ---
@@ -98,7 +100,7 @@ Actually it has a metaData to specify the template to use but otherwise it only 
 
 Voici un exemple pratique pour vous permettre de mieux comprendre l'utilisation du générateur de site statique.
 
-Nous allons premièrement commencer par afficher la version du générateur de site statique avec la commande `java -jar <release>.jar -v`.
+Nous allons commencer par afficher la version du générateur de site statique avec la commande `java -jar <release>.jar -v`.
 
 ![](images/version.png)
 
@@ -125,6 +127,8 @@ Nous allons maintenant ajouter trois templates dans notre dossier `template` (en
 </html>
 ```
 
+Ce template
+
 `menu.html`:
 
 ```html
@@ -147,6 +151,8 @@ Nous allons maintenant ajouter trois templates dans notre dossier `template` (en
 </body>
 </html>
 ```
+
+
 
 Nous allons également ajouter un dossier `content` à `mon/site`. Nous y créons deux fichiers Markdown.
 
