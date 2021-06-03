@@ -52,7 +52,7 @@ Pour spécifier où insérer du contenu dans le template, il faut utiliser `{{IN
 
 Par exemple, si vous voulez accéder à vos méta-données globales (définies dans `config.json`), vous pouvez utiliser `{{site:member}}` où member est la propriété à laquelle vous voulez accéder. Sinon, si vous voulez accéder aux méta-données de votre fichier, vous pouvez utiliser `{{page:member}}`. Enfin, pour afficher le contenu de votre page, utilisez `{{md content}}`. Il y a aussi possibilité d'ajouter du contenu brut (texte).
 
-La conversion échoue si des métadonnées sont attendues par le template mais qu'elles ne sont pas présentent.
+La conversion échoue si des métadonnées sont attendues par le template mais qu'elles ne sont pas présentes.
 
 ### Lien sur un autre fichier
 
@@ -108,7 +108,7 @@ Nous allons dans un second temps initialiser notre site statique avec la command
 
 ![](images/init.png)
 
-Nous allons maintenant ajouter trois templates dans notre dossier `template` (en plus du `default.html`) déjà existant.
+Nous allons maintenant ajouter deux templates dans notre dossier `template` (en plus du `default.html`) déjà existant.
 
 `index.html`:
 
@@ -127,7 +127,7 @@ Nous allons maintenant ajouter trois templates dans notre dossier `template` (en
 </html>
 ```
 
-Ce template comporte la particularité d'insérer un autre fichier avec `{{> menu}}`. Il insérera à cet emplacement le fichier `menu.html`.
+Ce template comporte la particularité d'insérer un autre fichier avec `{{> menu}}`. Le fichier `menu.html` sera inséré à cet emplacement.
 
 `menu.html`:
 
@@ -152,7 +152,7 @@ Ce template comporte la particularité d'insérer un autre fichier avec `{{> men
 </html>
 ```
 
-Ce template va insérer un fichier `noMeta.md` ne comportant pas de metadatas.
+Ce template peut être appliqué pour des fichiers n'ayant pas de métadonnées.
 
 Nous allons également ajouter un dossier `content` à `mon/site`. Nous y créons deux fichiers Markdown.
 
@@ -206,7 +206,7 @@ ___
 
 Nous créons un dossier `images` dans lequel nous ajoutons nos deux images `Usage.png` et `putin.gif`.
 
-Nous allons dans un troisième temps compiler notre site statique et activer le fileWatcher avec la commande `java -jar <release>.jar build -w mon/site`.
+Nous allons dans un troisième temps compiler notre site statique et activer le fileWatcher avec la commande `java -jar <release>.jar build mon/site`.
 
 ![](images/build.png)
 
