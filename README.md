@@ -28,7 +28,6 @@ Executing it should produce the following result:
 
 Initialise the static website to the given path. Make sure you have the permission to do so. For now, it creates a config file (`config.json`) and an index.md. In another iteration we might allow you to directly specifies those information.
 
-![Init_structure](README/images/Init_structure.png)
 
 -  `statique build PATH` 
 
