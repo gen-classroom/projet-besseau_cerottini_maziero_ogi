@@ -15,7 +15,7 @@ public class LinkAttributeProvider implements AttributeProvider {
 
     /**
      * Modify a markdown node
-     * @param node, The node to modify
+     * @param node The node to modify
      * @param tagName The name of the node
      * @param attributes The attributes of the node
      */
